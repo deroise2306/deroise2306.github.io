@@ -9,7 +9,7 @@ layout: "single"
 I'm currently a CyberSec Student based in KMA (Academy of Cryptography Techniques)
 
 ### About me
-* **Play CTF 4fun [@V1t](https://v1t.site/)**
+* **Play CTF 4fun at [@V1t](https://v1t.site/)**
 
 Find me there:
 * [GitHub](https://github.com/deroise2306)
