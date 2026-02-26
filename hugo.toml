@@ -1,0 +1,22 @@
+baseURL = 'https://deroise2306.github.io' # Thay bằng link Vercel sau này
+languageCode = 'vi-vn'
+title = "deroise2306's Home"
+theme = 'Reimu'
+
+[author]
+  name = 'deroise2306'
+
+[menu]
+  [[menu.main]]
+    identifier = 'about'
+    name = 'About'
+    url = '/about/'
+    weight = 1
+  [[menu.main]]
+    identifier = 'posts'
+    name = 'Posts'
+    url = '/posts/'
+    weight = 2
+
+[params]
+  description = 'hello'
