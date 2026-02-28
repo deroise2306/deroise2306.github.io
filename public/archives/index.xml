@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Archives on deroise2306&#39;s Home</title>
+    <link>http://localhost:1313/archives/</link>
+    <description>Recent content from deroise2306&#39;s Home</description>
+    <generator>Hugo</generator>
+    <language>vi-vn</language>
+    
+    <managingEditor>bruh hell nah (deroise2306)</managingEditor>
+    <webMaster>bruh hell nah (deroise2306)</webMaster>
+    
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    
+    
+    <atom:link href="http://localhost:1313/archives/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+  </channel>
+</rss>

@@ -12,12 +12,52 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate></lastBuildDate>
+    <lastBuildDate>Thu, 26 Feb 2026 00:00:00 +0000</lastBuildDate>
     
     
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/post/test_post/</link>
+      <pubDate>Thu, 26 Feb 2026 00:00:00 &#43;0000</pubDate>
+      <author>bruh hell nah (deroise2306)</author>
+      <guid>http://localhost:1313/post/test_post/</guid>
+      <description>
+        <![CDATA[<h1>Test</h1><p>Author: deroise2306(bruh hell nah)</p>
+        
+          <h1 id="1-file-system">
+<a class="header-anchor" href="#1-file-system"></a>
+1. File System:
+</h1><h3 id="a-kiến-trúc-ntfs">
+<a class="header-anchor" href="#a-ki%e1%ba%bfn-tr%c3%bac-ntfs"></a>
+a. Kiến trúc NTFS:
+</h3><p><strong>New Technology File System</strong> là một công nghệ tổ chức hệ thống file cho hệ điều hành Windows <del>(đhs tên nghe fancy vkl)</del>. Công nghệ này đem lại những tính năng nâng cao với khả năng tổ chức, sắp xếp vào bảo mật tốt, được sử dụng hiệu quả trong quản lí và tổ chức dữ liệu.</p>
+<ul>
+<li>MFT (Master File Table): một thành phần quan trọng của hệ thống NTFS, được coi là sổ cái của NTFS, lưu trữ toàn bộ thông tin về hệ thống địa chỉ các tập tin trong hệ thống file. Mỗi mục MFT chiếm đúng 1Kb. Nhờ có MFT giúp cho việc quản lí, truy cập các tệp tin diễn ra nhanh và hiệu quả hơn.
+Minh hoạ về file MFT:
+<img src="https://hackmd.io/_uploads/S1IRiFmvWg.png" alt="image">
+Cấu trúc của một bản ghi MFT (MFT Record) như sau:
+<img src="https://hackmd.io/_uploads/SJ9yy9QD-e.png" alt="image">
+Vậy còn $MFT? Đây là một tập tin hệ thống lưu trữ bảng tệp. Mỗi máy tính sẽ có một file $MFT, và mỗi file này sẽ gồm nhiều MFT Record. Là một tệp tin hệ thống, tuy nhiên việc xem file này yêu cầu sử dụng FTK Imager hoặc một số phần mềm chuyên dụng khác.
+<img src="https://hackmd.io/_uploads/B1pyDc7wbe.png" alt="image">
+<em>Thử mở file $MFT trên FTK Imager</em>
+<img src="https://hackmd.io/_uploads/Sk_ruTHv-e.png" alt="image">
+<em>Một file $MFT được parse bằng MFTECmd</em></li>
+<li>$LogFile: File này chịu trách nhiệm ghi lại tất cả những gì đã xảy ra với trong hệ thống NTFS. Hiểu nôm na tất cả các việc như là tạo mới, chỉnh sửa, di chuyển, xoá file đều được ghi lại ở $LogFile. Điều đặc biệt ở $LogFile là cơ chế &ldquo;Write ahead logging&rdquo; khi mà mọi thay đổi đều được ghi vào file Log này trước khi được thực thi ở hệ thống.</li>
+<li>$UsnJrnl (Updated Sequence Number Journal): tương tự như các file ở trên, đây cũng là một file gắn với hệ thống NTFS ở Windows, cũng là các bản ghi lại sự thay đổi của các file trong hệ thống.</li>
+</ul>
+<blockquote>
+<p>Điểm khác biệt ở chỗ: các bản ghi của $LogFile ở mức low-level nhằm đảm bảo sự nhất quán của hệ thống file. Trước khi thực hiện chỉnh sửa ở $MFT thì hệ thống sẽ ghi nhận một log thay đổi trước ở file $LogFile (redo record), trong khi đó thì $UsnJrnl thực hiện ghi chép các high-level change ở tệp tin hay thư mục thường được sử dụng cho các ứng dụng thay vì hệ thống như $LogFile. Hơn nữa, bản ghi $UsrJrnl thường chi tiết hơn (chứa nhiều thông tin như là lí do thay đổi, timestamp, &hellip;) trong khi $LogFile có các record với cấu trúc đơn giản hơn nhiều, đánh dấu thứ tự bằng LSNs.</p>
+        
+        <hr><p>Published on 2026-02-26 at <a href='http://localhost:1313/'>deroise2306's Home</a>, last modified on 2026-02-26</p>]]>
+      </description>
+      
+    </item>
     
   </channel>
 </rss>
