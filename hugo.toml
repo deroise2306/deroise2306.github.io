@@ -1,10 +1,53 @@
-baseURL = 'https://deroise2306.github.io' # Thay bằng link Vercel sau này
-languageCode = 'vi-vn'
+baseURL = 'https://deroise2306.github.io/'
+locale = 'vi-vn'
 title = "deroise2306's Home"
-theme = 'Reimu'
+theme = 'hugo-primer-blog'
+enableRobotsTXT = true
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
 
-[author]
-  name = 'deroise2306'
+[languages]
+  [languages.en]
+    contentDir = "content"
+    label = "English"
+    locale = "en-us"
+    weight = 1
 
-[params]
-  description = 'hello'
+[menus]
+  [[menus.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menus.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+
+  [[menus.main]]
+    name = "About"
+    url = "/about/"
+    weight = 3
+
+[taxonomies]
+  archive = "archives"
+  category = "categories"
+  tag = "tags"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    noClasses = false
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML"]
+  term = ["HTML", "RSS"]
+
+[pagination]
+  pagerSize = 10

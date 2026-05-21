@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on deroise2306&#39;s Home</title>
+    <title>Post on deroise2306&#39;s Home</title>
     <link>http://localhost:1313/posts/</link>
-    <description>Recent content from deroise2306&#39;s Home</description>
+    <description>Recent content in Post on deroise2306&#39;s Home</description>
     <generator>Hugo</generator>
-    <language>vi-vn</language>
-    
-    <managingEditor>bruh hell nah (deroise2306)</managingEditor>
-    <webMaster>bruh hell nah (deroise2306)</webMaster>
-    
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
-    
-    <lastBuildDate></lastBuildDate>
-    
-    
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss&#43;xml" />
-    
-
-    
+    <language>en-us</language>
+    <lastBuildDate>Thu, 26 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/posts/test_post/</link>
+      <pubDate>Thu, 26 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/test_post/</guid>
+      <description>&lt;h1 id=&#34;1-file-system&#34;&gt;1. File System:&lt;/h1&gt;&#xA;&lt;h3 id=&#34;a-kiến-trúc-ntfs&#34;&gt;a. Kiến trúc NTFS:&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;New Technology File System&lt;/strong&gt; là một công nghệ tổ chức hệ thống file cho hệ điều hành Windows &lt;del&gt;(đhs tên nghe fancy vkl)&lt;/del&gt;. Công nghệ này đem lại những tính năng nâng cao với khả năng tổ chức, sắp xếp vào bảo mật tốt, được sử dụng hiệu quả trong quản lí và tổ chức dữ liệu.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MFT (Master File Table): một thành phần quan trọng của hệ thống NTFS, được coi là sổ cái của NTFS, lưu trữ toàn bộ thông tin về hệ thống địa chỉ các tập tin trong hệ thống file. Mỗi mục MFT chiếm đúng 1Kb. Nhờ có MFT giúp cho việc quản lí, truy cập các tệp tin diễn ra nhanh và hiệu quả hơn.&#xA;Minh hoạ về file MFT:&#xA;&lt;img src=&#34;https://hackmd.io/_uploads/S1IRiFmvWg.png&#34; alt=&#34;image&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&#xA;Cấu trúc của một bản ghi MFT (MFT Record) như sau:&#xA;&lt;img src=&#34;https://hackmd.io/_uploads/SJ9yy9QD-e.png&#34; alt=&#34;image&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&#xA;Vậy còn $MFT? Đây là một tập tin hệ thống lưu trữ bảng tệp. Mỗi máy tính sẽ có một file $MFT, và mỗi file này sẽ gồm nhiều MFT Record. Là một tệp tin hệ thống, tuy nhiên việc xem file này yêu cầu sử dụng FTK Imager hoặc một số phần mềm chuyên dụng khác.&#xA;&lt;img src=&#34;https://hackmd.io/_uploads/B1pyDc7wbe.png&#34; alt=&#34;image&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&#xA;&lt;em&gt;Thử mở file $MFT trên FTK Imager&lt;/em&gt;&#xA;&lt;img src=&#34;https://hackmd.io/_uploads/Sk_ruTHv-e.png&#34; alt=&#34;image&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&#xA;&lt;em&gt;Một file $MFT được parse bằng MFTECmd&lt;/em&gt;&lt;/li&gt;&#xA;&lt;li&gt;$LogFile: File này chịu trách nhiệm ghi lại tất cả những gì đã xảy ra với trong hệ thống NTFS. Hiểu nôm na tất cả các việc như là tạo mới, chỉnh sửa, di chuyển, xoá file đều được ghi lại ở $LogFile. Điều đặc biệt ở $LogFile là cơ chế &amp;ldquo;Write ahead logging&amp;rdquo; khi mà mọi thay đổi đều được ghi vào file Log này trước khi được thực thi ở hệ thống.&lt;/li&gt;&#xA;&lt;li&gt;$UsnJrnl (Updated Sequence Number Journal): tương tự như các file ở trên, đây cũng là một file gắn với hệ thống NTFS ở Windows, cũng là các bản ghi lại sự thay đổi của các file trong hệ thống.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Điểm khác biệt ở chỗ: các bản ghi của $LogFile ở mức low-level nhằm đảm bảo sự nhất quán của hệ thống file. Trước khi thực hiện chỉnh sửa ở $MFT thì hệ thống sẽ ghi nhận một log thay đổi trước ở file $LogFile (redo record), trong khi đó thì $UsnJrnl thực hiện ghi chép các high-level change ở tệp tin hay thư mục thường được sử dụng cho các ứng dụng thay vì hệ thống như $LogFile. Hơn nữa, bản ghi $UsrJrnl thường chi tiết hơn (chứa nhiều thông tin như là lí do thay đổi, timestamp, &amp;hellip;) trong khi $LogFile có các record với cấu trúc đơn giản hơn nhiều, đánh dấu thứ tự bằng LSNs.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
