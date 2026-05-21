@@ -1,6 +1,6 @@
 ---
 title: DUALITY TEST WRITEUP
-date: 2026-26-04
+date: 2026-04-26
 author: deroise2306
 ---
 

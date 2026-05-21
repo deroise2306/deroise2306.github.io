@@ -1,547 +1,338 @@
-<!DOCTYPE html>
-<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<title>LA CTF 2025 | deroise2306&#39;s Home</title><meta name="description" content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta name="author" content="deroise2306"><meta property="og:title" content="LA CTF 2025"><meta property="og:description" content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/posts/lactf-2025-writeup/"><meta property="og:image" content="https://deroise2306.github.io/images/banner.webp">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630"><meta property="og:site_name" content="deroise2306&#39;s Home"><meta property="og:locale" content="en">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LA CTF 2025">
-<meta name="twitter:description" content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta name="twitter:image" content="https://deroise2306.github.io/images/banner.webp">
-<link rel="canonical" href="http://localhost:1313/posts/lactf-2025-writeup/">
-
-<link rel="stylesheet" href="/css/primer.min.c12daf26af408c64f29cc993dd5ab422334e71e50fa7198111b729fdf674e34d.css" integrity="sha256-wS2vJq9AjGTynMmT3Vq0IjNOceUPpxmBEbcp/fZ0400=">
-
-<link rel="stylesheet" href="/css/custom.min.44f76475abc99bc3028656bd061d05d398c1b30eefd8ef829d03d0a85e7e5ff2.css" integrity="sha256-RPdkdavJm8MChla9Bh0F05jBsw7v2O&#43;CnQPQqF5&#43;X/I=">
-
-<link rel="stylesheet" href="/css/syntax.min.174c84898cba6753b1e76756faaba89295a9b36f5a52958e027f347103d8575d.css" integrity="sha256-F0yEiYy6Z1Ox52dW&#43;quokpWps29aUpWOAn80cQPYV10=">
-
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-<style>
-  html,
-  html[data-color-mode="light"],
-  html[data-light-theme="light"][data-color-mode="auto"] {
-    --fgColor-accent: #0969da !important;
-    --bgColor-accent-emphasis: #0969da !important;
-    --bgColor-accent-muted: color-mix(in srgb, #0969da 15%, transparent) !important;
-  }
-  html[data-color-mode="dark"],
-  html[data-dark-theme="dark"][data-color-mode="auto"] {
-    --fgColor-accent: color-mix(in srgb, #0969da 80%, #ffffff) !important;
-    --bgColor-accent-emphasis: #0969da !important;
-    --bgColor-accent-muted: color-mix(in srgb, #0969da 20%, transparent) !important;
-  }
-  @media (prefers-color-scheme: dark) {
-    html[data-color-mode="auto"] {
-      --fgColor-accent: color-mix(in srgb, #0969da 80%, #ffffff) !important;
-      --bgColor-accent-emphasis: #0969da !important;
-      --bgColor-accent-muted: color-mix(in srgb, #0969da 20%, transparent) !important;
-    }
-  }
-</style>
-<script>
-  (function() {
-    const saved = localStorage.getItem('theme');
-    const html = document.documentElement;
-    if (saved === 'light' || saved === 'dark') {
-      html.setAttribute('data-color-mode', saved);
-    }
-  })();
-</script>
-</head>
-<body>
-  <div class="d-flex flex-column min-height-full"><header class="AppHeader">
-  <div class="AppHeader-globalBar">
-    <div class="AppHeader-globalBar-start">
-      <a href="/" class="AppHeader-logo" aria-label="deroise2306&#39;s Home"><span class="AppHeader-logo-text">deroise2306&#39;s Home</span></a>
-
-      <nav class="AppHeader-nav" aria-label="Main navigation"><a href="/" class="AppHeader-nav-item">Home</a><a href="/posts/" class="AppHeader-nav-item">Posts</a><a href="/about/" class="AppHeader-nav-item">About</a></nav>
-    </div>
-
-    <div class="AppHeader-globalBar-end"><button type="button" id="theme-toggle"
-  class="tooltipped tooltipped-s"
-  aria-label="System theme"
-  data-tooltip-light="Light theme"
-  data-tooltip-dark="Dark theme"
-  data-tooltip-auto="System theme">
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-light" style="display: none;">
-    <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061Zm-9.193-9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061L2.343 3.403a.75.75 0 0 1 0-1.06Z"></path>
-  </svg>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-dark" style="display: none;">
-    <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
-  </svg>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-auto" style="display: none;">
-    <path d="M14.25 1c.966 0 1.75.784 1.75 1.75v7.5A1.75 1.75 0 0 1 14.25 12h-3.727c.099 1.041.52 1.872 1.292 2.757A.752.752 0 0 1 11.25 16h-6.5a.75.75 0 0 1-.565-1.243c.772-.885 1.193-1.716 1.292-2.757H1.75A1.75 1.75 0 0 1 0 10.25v-7.5C0 1.784.784 1 1.75 1ZM1.75 2.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25ZM9.018 13H6.982a5.72 5.72 0 0 1-.765 1.5h3.566a5.72 5.72 0 0 1-.765-1.5Z"></path>
-  </svg>
-</button>
-</div>
-  </div>
-</header>
-<main class="flex-auto">
-      <div class="container-xl px-3 px-md-4 px-lg-5 py-4"><div class="Layout Layout--sidebarPosition-end Layout--flowRow-until-md">
-          <div class="Layout-main"><article>
-  <header class="mb-4">
-    <h1 class="f1 lh-condensed mb-2">LA CTF 2025</h1><div class="d-flex flex-items-center color-fg-muted f5 mb-3"><time datetime="2025-10-02T00:00:00Z">
-        2025-10-02
-      </time><span class="mx-2">&middot;</span><span>11 min read</span><span class="mx-2">&middot;</span><span>deroise2306</span></div></header>
-
-  <div class="markdown-body">
-    <h1 id="1-big-e">1. Big E</h1>
-<p><img src="https://hackmd.io/_uploads/S1jXVFPYJg.png" alt="image" loading="lazy">
-
-Source:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">from Crypto.Util.number import bytes_to_long, getPrime
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">flag = REDACTED
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">pt = bytes_to_long(flag)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">p = getPrime(1024)
-</span></span><span class="line"><span class="cl">q = getPrime(1024)
-</span></span><span class="line"><span class="cl">n = p*q
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">e_1 = getPrime(16)
-</span></span><span class="line"><span class="cl">e_2 = getPrime(16)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">ct_1 = pow(pt, e_1, n)
-</span></span><span class="line"><span class="cl">ct_2 = pow(pt, e_2, n)
-</span></span><span class="line"><span class="cl">print(&#34;ct_1 = &#34;, ct_1)
-</span></span><span class="line"><span class="cl">print(&#34;ct_2 = &#34;, ct_2)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">print(&#34;e_1 = &#34;, e_1)
-</span></span><span class="line"><span class="cl">print(&#34;e_2 = &#34;, e_2)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">print(&#34;n = &#34;, n)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"># ct_1 =  7003427993343973209633604223157797389179484683813683779456722118278438552981580821629201099609635249903171901413187274301782131604125932440261436398792561279923201353644665062240232628983398769617870021735462687213315384230009597811708620803976743966567909514341685037497925118142192131350408768935124431331080433697691313467918865993755818981120044023483948250730200785386337033076398494691789842346973681951019033860698847693411061368646250415931744527789768875833220281187219666909459057523372182679170829387933194504283746668835390769531217602348382915358689492117524129757929202594190396696326156951763154356777
-</span></span><span class="line"><span class="cl"># ct_2 =  2995334251818636287120912468673386461522795145344535560487265325864722413686091982727438605788851631192187299910519824438553287094479216297828199976116043039048528458879462591368580247044838727287694258607151549844079706204392479194688578102781851646467977751150658542264776551648799517340378173131694653270749425410071080383488918100565955153958793977478719703463115004497213753735577027928062856483316183232075922059366731900291340025009516177568909257605255717594938087543899066756942042664781424833498278544829618874970165660669400140113047048269742309745649848573501494088032718459018143817236079173978684104782
-</span></span><span class="line"><span class="cl"># e_1 =  49043
-</span></span><span class="line"><span class="cl"># e_2 =  60737
-</span></span><span class="line"><span class="cl"># n =  9162219874876832806204248523866163938680921861751582550947065673035037752546476053774362284605943422397285024205866696280912237827227700515353007344062472274717294484810421409217463791112287997964358655519896402380272695026012981743782564008035342746214988154836484419372449523768063368280069515180570625408254410932129769708259508451185553774810385066789146531683973766796965747310893648672657945403825359068647151094841570404979930542270681833162424933411724266687320976217446032292107871449464575533610369244978941764470549091443086646932177141081314452355708815370388814214178980532690792441231698974328523197187</span></span></code></pre></div><h2 id="phân-tích">Phân tích:</h2>
-<p>Bài cho dữ kiện gồm 2 ct, 2 e tương ứng và n. Với những dữ kiện này thì nghĩ ngay đến <code>Common Modulus Attack</code>:</p>
-<h2 id="code">Code:</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">import gmpy2
-</span></span><span class="line"><span class="cl">from Crypto.Util.number import *
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">ct_1 =  7003427993343973209633604223157797389179484683813683779456722118278438552981580821629201099609635249903171901413187274301782131604125932440261436398792561279923201353644665062240232628983398769617870021735462687213315384230009597811708620803976743966567909514341685037497925118142192131350408768935124431331080433697691313467918865993755818981120044023483948250730200785386337033076398494691789842346973681951019033860698847693411061368646250415931744527789768875833220281187219666909459057523372182679170829387933194504283746668835390769531217602348382915358689492117524129757929202594190396696326156951763154356777
-</span></span><span class="line"><span class="cl">ct_2 =  2995334251818636287120912468673386461522795145344535560487265325864722413686091982727438605788851631192187299910519824438553287094479216297828199976116043039048528458879462591368580247044838727287694258607151549844079706204392479194688578102781851646467977751150658542264776551648799517340378173131694653270749425410071080383488918100565955153958793977478719703463115004497213753735577027928062856483316183232075922059366731900291340025009516177568909257605255717594938087543899066756942042664781424833498278544829618874970165660669400140113047048269742309745649848573501494088032718459018143817236079173978684104782
-</span></span><span class="line"><span class="cl">e_1 =  49043
-</span></span><span class="line"><span class="cl">e_2 =  60737
-</span></span><span class="line"><span class="cl">n =  9162219874876832806204248523866163938680921861751582550947065673035037752546476053774362284605943422397285024205866696280912237827227700515353007344062472274717294484810421409217463791112287997964358655519896402380272695026012981743782564008035342746214988154836484419372449523768063368280069515180570625408254410932129769708259508451185553774810385066789146531683973766796965747310893648672657945403825359068647151094841570404979930542270681833162424933411724266687320976217446032292107871449464575533610369244978941764470549091443086646932177141081314452355708815370388814214178980532690792441231698974328523197187
-</span></span><span class="line"><span class="cl">#Common modulus attack algo
-</span></span><span class="line"><span class="cl">def egcd(a, b):
-</span></span><span class="line"><span class="cl">  if (a == 0):
-</span></span><span class="line"><span class="cl">    return (b, 0, 1)
-</span></span><span class="line"><span class="cl">  else:
-</span></span><span class="line"><span class="cl">    g, y, x = egcd(b % a, a)
-</span></span><span class="line"><span class="cl">    return (g, x - (b // a) * y, y)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">def neg_pow(a, b, n):
-</span></span><span class="line"><span class="cl">	assert b &lt; 0
-</span></span><span class="line"><span class="cl">	assert GCD(a, n) == 1
-</span></span><span class="line"><span class="cl">	res = int(gmpy2.invert(a, n))
-</span></span><span class="line"><span class="cl">	res = pow(res, b*(-1), n)
-</span></span><span class="line"><span class="cl">	return res
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">def common_modulus(e1, e2, n, c1, c2):
-</span></span><span class="line"><span class="cl">	g, a, b = egcd(e1, e2)
-</span></span><span class="line"><span class="cl">	if a &lt; 0:
-</span></span><span class="line"><span class="cl">		c1 = neg_pow(c1, a, n)
-</span></span><span class="line"><span class="cl">	else:
-</span></span><span class="line"><span class="cl">		c1 = pow(c1, a, n)
-</span></span><span class="line"><span class="cl">	if b &lt; 0:
-</span></span><span class="line"><span class="cl">		c2 = neg_pow(c2, b, n)
-</span></span><span class="line"><span class="cl">	else:
-</span></span><span class="line"><span class="cl">		c2 = pow(c2, b, n)
-</span></span><span class="line"><span class="cl">	ct = c1*c2 % n
-</span></span><span class="line"><span class="cl">	m = int(gmpy2.iroot(ct, g)[0])
-</span></span><span class="line"><span class="cl">	return long_to_bytes(m)
-</span></span><span class="line"><span class="cl">print(common_modulus(e_1,e_2,n,ct_1,ct_2))</span></span></code></pre></div><p>Flag: <code>lactf{b1g_3_but_sm4ll_d!!!_part2_since_i_trolled}</code></p>
-<h2 id="2-rsaaas">2. RSAaaS:</h2>
-<p><img src="https://hackmd.io/_uploads/r1LNrFDtkl.png" alt="image" loading="lazy">
-
-Source:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">#!/usr/local/bin/python3
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">from Crypto.Util.number import isPrime
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">def RSAaaS():
-</span></span><span class="line"><span class="cl">    try:
-</span></span><span class="line"><span class="cl">        print(&#34;Welcome to my RSA as a Service! &#34;)
-</span></span><span class="line"><span class="cl">        print(&#34;Pass me two primes and I&#39;ll do the rest for you. &#34;)
-</span></span><span class="line"><span class="cl">        print(&#34;Let&#39;s keep the primes at a 64 bit size, please. &#34;)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        while True:
-</span></span><span class="line"><span class="cl">            p = input(&#34;Input p: &#34;)
-</span></span><span class="line"><span class="cl">            q = input(&#34;Input q: &#34;)
-</span></span><span class="line"><span class="cl">            try:
-</span></span><span class="line"><span class="cl">                p = int(p)
-</span></span><span class="line"><span class="cl">                q = int(q)
-</span></span><span class="line"><span class="cl">                assert isPrime(p)
-</span></span><span class="line"><span class="cl">                assert isPrime(q)
-</span></span><span class="line"><span class="cl">            except:
-</span></span><span class="line"><span class="cl">                print(&#34;Hm, looks like something&#39;s wrong with the primes you sent. &#34;)
-</span></span><span class="line"><span class="cl">                print(&#34;Please try again. &#34;)
-</span></span><span class="line"><span class="cl">                continue
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            try:
-</span></span><span class="line"><span class="cl">                assert p != q
-</span></span><span class="line"><span class="cl">            except:
-</span></span><span class="line"><span class="cl">                print(&#34;You should probably make your primes different. &#34;)
-</span></span><span class="line"><span class="cl">                continue
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            try:
-</span></span><span class="line"><span class="cl">                assert (p &gt; 2**63) and (p &lt; 2**64)
-</span></span><span class="line"><span class="cl">                assert (q &gt; 2**63) and (q &lt; 2**64)
-</span></span><span class="line"><span class="cl">                break
-</span></span><span class="line"><span class="cl">            except:
-</span></span><span class="line"><span class="cl">                print(&#34;Please keep your primes in the requested size range. &#34;)
-</span></span><span class="line"><span class="cl">                print(&#34;Please try again. &#34;)
-</span></span><span class="line"><span class="cl">                continue
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        n = p * q
-</span></span><span class="line"><span class="cl">        phi = (p - 1) * (q - 1)
-</span></span><span class="line"><span class="cl">        e = 65537
-</span></span><span class="line"><span class="cl">        d = pow(e, -1, phi)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        print(&#34;Alright! RSA is all set! &#34;)
-</span></span><span class="line"><span class="cl">        while True:
-</span></span><span class="line"><span class="cl">            print(&#34;1. Encrypt 2. Decrypt 3. Exit &#34;)
-</span></span><span class="line"><span class="cl">            choice = input(&#34;Pick an option: &#34;)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            if choice == &#34;1&#34;:
-</span></span><span class="line"><span class="cl">                msg = input(&#34;Input a message (as an int): &#34;)
-</span></span><span class="line"><span class="cl">                try:
-</span></span><span class="line"><span class="cl">                    msg = int(msg)
-</span></span><span class="line"><span class="cl">                except:
-</span></span><span class="line"><span class="cl">                    print(&#34;Hm, looks like something&#39;s wrong with your message. &#34;)
-</span></span><span class="line"><span class="cl">                    continue
-</span></span><span class="line"><span class="cl">                encrypted = pow(msg, e, n)
-</span></span><span class="line"><span class="cl">                print(&#34;Here&#39;s your ciphertext! &#34;)
-</span></span><span class="line"><span class="cl">                print(encrypted)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            elif choice == &#34;2&#34;:
-</span></span><span class="line"><span class="cl">                ct = input(&#34;Input a ciphertext (as an int): &#34;)
-</span></span><span class="line"><span class="cl">                try:
-</span></span><span class="line"><span class="cl">                    ct = int(ct)
-</span></span><span class="line"><span class="cl">                except:
-</span></span><span class="line"><span class="cl">                    print(&#34;Hm, looks like something&#39;s wrong with your message. &#34;)
-</span></span><span class="line"><span class="cl">                    continue
-</span></span><span class="line"><span class="cl">                decrypted = pow(ct, d, n)
-</span></span><span class="line"><span class="cl">                print(&#34;Here&#39;s your plaintext! &#34;)
-</span></span><span class="line"><span class="cl">                print(decrypted)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            else:
-</span></span><span class="line"><span class="cl">                print(&#34;Thanks for using my service! &#34;)
-</span></span><span class="line"><span class="cl">                print(&#34;Buh bye! &#34;)
-</span></span><span class="line"><span class="cl">                break
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    except Exception:
-</span></span><span class="line"><span class="cl">        print(&#34;Oh no! My service! Please don&#39;t give us a bad review! &#34;)
-</span></span><span class="line"><span class="cl">        print(&#34;Here, have a complementary flag for your troubles. &#34;)
-</span></span><span class="line"><span class="cl">        with open(&#34;flag.txt&#34;, &#34;r&#34;) as f:
-</span></span><span class="line"><span class="cl">            print(f.read())
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">RSAaaS()</span></span></code></pre></div><h2 id="phân-tích-1">Phân tích:</h2>
-<p>Trông source rất dài, rất chiến. Đọc toàn bộ code thì ta nhận ra đây là một chương trình mã hóa RSA cũng &ldquo;khá&rdquo; chặt chẽ. Để sever nhả flag thì ta cần tìm ra điểm chưa chặt chẽ trong thuật toán thì sever sẽ đưa flag cho ta <del>để bịt miệng khách hàng</del>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl"> except Exception:
-</span></span><span class="line"><span class="cl">        print(&#34;Oh no! My service! Please don&#39;t give us a bad review! &#34;)
-</span></span><span class="line"><span class="cl">        print(&#34;Here, have a complementary flag for your troubles. &#34;)
-</span></span><span class="line"><span class="cl">        with open(&#34;flag.txt&#34;, &#34;r&#34;) as f:
-</span></span><span class="line"><span class="cl">            print(f.read())</span></span></code></pre></div><p>Đọc ban đầu thấy thuật toán cũng được rào chắn rất cẩn thận, cho đến đoạn này:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">n = p * q
-</span></span><span class="line"><span class="cl">phi = (p - 1) * (q - 1)
-</span></span><span class="line"><span class="cl">e = 65537
-</span></span><span class="line"><span class="cl">d = pow(e, -1, phi)</span></span></code></pre></div><p>Thuật toán chưa tính đến trường hợp khóa d không thể tính được bằng biểu thức $d = e^{-1} \pmod{\varphi(n)}$ đề mà báo lỗi. Vì thế ta sẽ khai thác ở đoạn này, bằng cách tìm ra hai giá trị p và q thỏa mãn điều kiện:</p>
-<ul>
-<li>Có độ dài 64bit</li>
-<li>Là số nguyên tố</li>
-<li>$\gcd(e, \varphi(n)) \ne 1$ hay $e$ và $\varphi(n)$ không nguyên tố cùng nhau, hay nhanh nhất là để cho giá trị $\varphi(n) \mid e$. Vì $\varphi(n) = (p-1)(q-1)$ và $\varphi(n) \mid e$, tức là cả 2 giá trị $(p-1)$ và $(q-1)$ đều phải chia hết cho $e$.</li>
-</ul>
-<p>Lập luận như vậy đã xong, ta bắt đầu viết thuật toán tìm ra 2 giá trị đó:</p>
-<h2 id="code-1">Code:</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">from Crypto.Util.number import getPrime, GCD
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">e = 65537
-</span></span><span class="line"><span class="cl">bit_size = 64
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">def find_bad_prime():
-</span></span><span class="line"><span class="cl">    while True:
-</span></span><span class="line"><span class="cl">        p = getPrime(bit_size)  
-</span></span><span class="line"><span class="cl">        if (p - 1) % e == 0:  
-</span></span><span class="line"><span class="cl">            return p
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">p = find_bad_prime()
-</span></span><span class="line"><span class="cl">q = find_bad_prime()
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">while p == q:
-</span></span><span class="line"><span class="cl">    q = find_bad_prime()
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">print(f&#34;p = {p}&#34;)
-</span></span><span class="line"><span class="cl">print(f&#34;q = {q}&#34;)</span></span></code></pre></div><p>Output:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">p = 14067967822044345757
-</span></span><span class="line"><span class="cl">q = 15160969304594700317</span></span></code></pre></div><p>Cho 2 output này vào chương trình:
-<img src="https://hackmd.io/_uploads/H1BZ0FwFye.png" alt="Screenshot 2025-02-10 210648" loading="lazy">
-
-Flag:<code>lactf{actually_though_whens_the_last_time_someone_checked_for_that}</code></p>
-<h1 id="3-extremely-convenient-breaker">3. Extremely Convenient Breaker</h1>
-<p><img src="https://hackmd.io/_uploads/rkUeeTPtJx.png" alt="image" loading="lazy">
-</p>
-<p>Source:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">#!/usr/local/bin/python3
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">from Crypto.Cipher import AES
-</span></span><span class="line"><span class="cl">import os
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">key = os.urandom(16)
-</span></span><span class="line"><span class="cl">with open(&#34;flag.txt&#34;, &#34;r&#34;) as f:
-</span></span><span class="line"><span class="cl">    flag = f.readline().strip()
-</span></span><span class="line"><span class="cl">cipher = AES.new(key, AES.MODE_ECB)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">flag_enc = cipher.encrypt(flag.encode())
-</span></span><span class="line"><span class="cl">print(&#34;Here&#39;s the encrypted flag in hex: &#34;)
-</span></span><span class="line"><span class="cl">print(flag_enc.hex())
-</span></span><span class="line"><span class="cl">print(&#34;Alright, lemme spin up my Extremely Convenient Breaker (trademark copyright all rights reserved). &#34;)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">while True:
-</span></span><span class="line"><span class="cl">    ecb = input(&#34;What ciphertext do you want me to break in an extremely convenient manner? Enter as hex: &#34;)
-</span></span><span class="line"><span class="cl">    try:
-</span></span><span class="line"><span class="cl">        ecb = bytes.fromhex(ecb)
-</span></span><span class="line"><span class="cl">        if not len(ecb) == 64:
-</span></span><span class="line"><span class="cl">            print(&#34;Sorry, it&#39;s not *that* convenient. Make your ciphertext 64 bytes please. &#34;)
-</span></span><span class="line"><span class="cl">        elif ecb == flag_enc:
-</span></span><span class="line"><span class="cl">            print(&#34;No, I&#39;m not decrypting the flag. &#34;)
-</span></span><span class="line"><span class="cl">        else:
-</span></span><span class="line"><span class="cl">            print(cipher.decrypt(ecb))
-</span></span><span class="line"><span class="cl">    except Exception:
-</span></span><span class="line"><span class="cl">        print(&#34;Uh something went wrong, please try again. &#34;)</span></span></code></pre></div><h2 id="phân-tích-2">Phân tích</h2>
-<p>Bài sử dụng mã hóa AES mode ECB, key được gen ngẫu nhiên mỗi lần chạy chương trình. Là chương trình mã hóa thông thường, mỗi lần kết nối thì sever sẽ trả về flag được mã hóa, cho phép nhập vào một chuỗi để chương trình giải mã chuỗi 64 bytes theo key được gen lúc đầu. Nếu nhập vào đó flag ban đầu thì sever sẽ từ chối giải mã.
-Vì là mode ECB, các block được mã hóa riêng biệt, lại có chương trình giải mã nữa. Với độ dài 64bytes, thì pt sẽ được chia làm 4 blocks. Lợi dụng việc 4 block được mã hóa và giải mã độc lập, ta có thể chia chuỗi <code>ct</code> thành 4 phần có độ dài bằng nhau, rồi tạo 4 chuỗi mới bằng cách lặp lại 4 lần các chuỗi vừa tách được và gửi lên sever. Vì sever giải mã theo từng block độc lập, nên sau mỗi lần gửi lên ta sẽ nhận về 1/4 flag.</p>
-<h2 id="exploit">Exploit:</h2>
-<p>Bài không nhất thiết phải code full script vì chỉ cần chia chuỗi thành 4 phần, copy, lặp lại 4 lần rồi gửi đi nên mình sẽ chỉ code phần tách chuỗi:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">split_string</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">part_size</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span>  
-</span></span><span class="line"><span class="cl">    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">input_string</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">part_size</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">len</span><span class="p">(</span><span class="n">input_string</span><span class="p">),</span> <span class="n">part_size</span><span class="p">)]</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">parts</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">input_string</span> <span class="o">=</span> <span class="n">input</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="n">parts</span> <span class="o">=</span> <span class="n">split_string</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Phần {i}: {part}&#34;</span><span class="p">)</span></span></span></code></pre></div><p>Sever hơi đần, nên mỗi lần netcat thì chỉ gửi được 1 string rồi sập (ếu hiểu tại sao). Mình netcat 4 lần, nhận về 4 part của flag:
-<img src="https://hackmd.io/_uploads/rkM-m6Ptye.png" alt="Screenshot 2025-02-11 004836" loading="lazy">
-
-<img src="https://hackmd.io/_uploads/BJefQaPFJx.png" alt="Screenshot 2025-02-11 005026" loading="lazy">
-
-<img src="https://hackmd.io/_uploads/rJiG7aPKJg.png" alt="Screenshot 2025-02-11 005106" loading="lazy">
-
-<img src="https://hackmd.io/_uploads/Bk1mQ6DKJg.png" alt="Screenshot 2025-02-11 005234" loading="lazy">
-</p>
-<p>Ghép lại ta được flag: <code>lactf{seems_it_was_extremely_convenient_to_get_the_flag_too_heh}</code></p>
-<h1 id="4-bigramtime">4. Bigramtime</h1>
-<p><img src="https://hackmd.io/_uploads/HJ7K4cPY1x.png" alt="image" loading="lazy">
-
-Source:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">characters = &#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}~_&#34;
-</span></span><span class="line"><span class="cl">flag = &#34;lactf{REDACTED~}&#34;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">def bigram_multiplicative_shift(bigram):
-</span></span><span class="line"><span class="cl">    assert(len(bigram) == 2)
-</span></span><span class="line"><span class="cl">    pos1 = characters.find(bigram[0]) + 1
-</span></span><span class="line"><span class="cl">    pos2 = characters.find(bigram[1]) + 1
-</span></span><span class="line"><span class="cl">    shift = (pos1 * pos2) % 67
-</span></span><span class="line"><span class="cl">    return characters[((pos1 * shift) % 67) - 1] + characters[((pos2 * shift) % 67) - 1]
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">shifted_flag = &#34;&#34;
-</span></span><span class="line"><span class="cl">for i in range(0, len(flag), 2):
-</span></span><span class="line"><span class="cl">    bigram = flag[i:i+2]
-</span></span><span class="line"><span class="cl">    shifted_bigram = bigram_multiplicative_shift(bigram)
-</span></span><span class="line"><span class="cl">    shifted_flag += shifted_bigram
-</span></span><span class="line"><span class="cl">print(shifted_flag)
-</span></span><span class="line"><span class="cl"># jlT84CKOAhxvdrPQWlWT6cEVD78z5QREBINSsU50FMhv662W
-</span></span><span class="line"><span class="cl"># Get solving!
-</span></span><span class="line"><span class="cl"># ...it&#39;s not injective you say? Ok fine, I&#39;ll give you a hint.
-</span></span><span class="line"><span class="cl">not_the_flag = &#34;mCtRNrPw_Ay9mytTR7ZpLJtrflqLS0BLpthi~2LgUY9cii7w&#34;
-</span></span><span class="line"><span class="cl">also_not_the_flag = &#34;PKRcu0l}D823P2R8c~H9DMc{NmxDF{hD3cB~i1Db}kpR77iU&#34;</span></span></code></pre></div><h2 id="phân-tích-3">Phân tích:</h2>
-<p>Bài cho bảng kí tự được sử dụng gồm 67 số.
-Ta sẽ đi vào phân tích hàm <code>bigram_multiplicative_shift()</code>, cũng là mấu chốt cho bài:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">def bigram_multiplicative_shift(bigram):
-</span></span><span class="line"><span class="cl">    assert(len(bigram) == 2)
-</span></span><span class="line"><span class="cl">    pos1 = characters.find(bigram[0]) + 1 #Tìm vị trí kí tự trong bảng, +1 để né vị trí 0
-</span></span><span class="line"><span class="cl">    pos2 = characters.find(bigram[1]) + 1
-</span></span><span class="line"><span class="cl">    shift = (pos1 * pos2) % 67 #Tính giá trị shift
-</span></span><span class="line"><span class="cl">    return characters[((pos1 * shift) % 67) - 1] + characters[((pos2 * shift) % 67) - 1]</span></span></code></pre></div><p>Hàm này mã hóa 2 kí tự 1, bằng cách lấy số thứ tự của 2 kí tự, lập tính rồi mod 67 tạo một giá trị <code>shift</code>. Sau đó, tiếp tục dùng giá trị shift này, lần lượt nhân với vị trí của 2 kí tự, mod 67 để tìm ra số thứ tự của kí tự trong bảng, nhận đó làm kí tự mới. Thuật toán mã hóa là phép nhân trong vành modulo 67 với tập giá trị {0,1,2,3,4,&hellip;66}.
+<!doctype html><html lang=en data-color-mode=auto data-light-theme=light data-dark-theme=dark><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><title>LA CTF 2025 | deroise2306's Home</title><meta name=description content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta name=author content="deroise2306"><meta property="og:title" content="LA CTF 2025"><meta property="og:description" content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta property="og:type" content="article"><meta property="og:url" content="https://deroise2306.github.io/posts/lactf-2025-writeup/"><meta property="og:image" content="https://deroise2306.github.io/images/banner.webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:site_name" content="deroise2306's Home"><meta property="og:locale" content="en"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="LA CTF 2025"><meta name=twitter:description content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta name=twitter:image content="https://deroise2306.github.io/images/banner.webp"><link rel=canonical href=https://deroise2306.github.io/posts/lactf-2025-writeup/><link rel=stylesheet href=/css/primer.min.c12daf26af408c64f29cc993dd5ab422334e71e50fa7198111b729fdf674e34d.css integrity="sha256-wS2vJq9AjGTynMmT3Vq0IjNOceUPpxmBEbcp/fZ0400="><link rel=stylesheet href=/css/custom.min.44f76475abc99bc3028656bd061d05d398c1b30eefd8ef829d03d0a85e7e5ff2.css integrity="sha256-RPdkdavJm8MChla9Bh0F05jBsw7v2O+CnQPQqF5+X/I="><link rel=stylesheet href=/css/syntax.min.174c84898cba6753b1e76756faaba89295a9b36f5a52958e027f347103d8575d.css integrity="sha256-F0yEiYy6Z1Ox52dW+quokpWps29aUpWOAn80cQPYV10="><link rel=icon href=/favicon.ico type=image/x-icon><style>html,html[data-color-mode=light],html[data-light-theme=light][data-color-mode=auto]{--fgColor-accent:#0969da !important;--bgColor-accent-emphasis:#0969da !important;--bgColor-accent-muted:color-mix(in srgb, #0969da 15%, transparent) !important}html[data-color-mode=dark],html[data-dark-theme=dark][data-color-mode=auto]{--fgColor-accent:color-mix(in srgb, #0969da 80%, #ffffff) !important;--bgColor-accent-emphasis:#0969da !important;--bgColor-accent-muted:color-mix(in srgb, #0969da 20%, transparent) !important}@media(prefers-color-scheme:dark){html[data-color-mode=auto]{--fgColor-accent:color-mix(in srgb, #0969da 80%, #ffffff) !important;--bgColor-accent-emphasis:#0969da !important;--bgColor-accent-muted:color-mix(in srgb, #0969da 20%, transparent) !important}}</style><script>(function(){const e=localStorage.getItem("theme"),t=document.documentElement;(e==="light"||e==="dark")&&t.setAttribute("data-color-mode",e)})()</script></head><body><div class="d-flex flex-column min-height-full"><header class=AppHeader><div class=AppHeader-globalBar><div class=AppHeader-globalBar-start><a href=/ class=AppHeader-logo aria-label="deroise2306's Home"><span class=AppHeader-logo-text>deroise2306's Home</span></a><nav class=AppHeader-nav aria-label="Main navigation"><a href=/ class=AppHeader-nav-item>Home</a><a href=/posts/ class=AppHeader-nav-item>Posts</a><a href=/about/ class=AppHeader-nav-item>About</a></nav></div><div class=AppHeader-globalBar-end><button type=button id=theme-toggle class="tooltipped tooltipped-s" aria-label="System theme" data-tooltip-light="Light theme" data-tooltip-dark="Dark theme" data-tooltip-auto="System theme">
+<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-light" style="display:none"><path d="M8 12a4 4 0 110-8 4 4 0 010 8zm0-1.5a2.5 2.5.0 100-5 2.5 2.5.0 000 5zm5.657-8.157a.75.75.0 010 1.061l-1.061 1.06a.749.749.0 01-1.275-.326.749.749.0 01.215-.734l1.06-1.06a.75.75.0 011.06.0zm-9.193 9.193a.75.75.0 010 1.06l-1.06 1.061a.75.75.0 11-1.061-1.06l1.06-1.061a.75.75.0 011.061.0zM8 0a.75.75.0 01.75.75v1.5a.75.75.0 01-1.5.0V.75A.75.75.0 018 0zM3 8a.75.75.0 01-.75.75H.75a.75.75.0 010-1.5h1.5A.75.75.0 013 8zm13 0a.75.75.0 01-.75.75h-1.5a.75.75.0 010-1.5h1.5A.75.75.0 0116 8zm-8 5a.75.75.0 01.75.75v1.5a.75.75.0 01-1.5.0v-1.5A.75.75.0 018 13zm3.536-1.464a.75.75.0 011.06.0l1.061 1.06a.75.75.0 01-1.06 1.061l-1.061-1.06a.75.75.0 010-1.061zM2.343 2.343a.75.75.0 011.06.0l1.061 1.06a.75.75.0 01-1.06 1.061L2.343 3.403a.75.75.0 010-1.06z"/></svg>
+<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-dark" style="display:none"><path d="M9.598 1.591a.749.749.0 01.785-.175 7.001 7.001.0 11-8.967 8.967.75.75.0 01.961-.96 5.5 5.5.0 007.046-7.046.75.75.0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.499 5.499.0 107.678-7.678z"/></svg>
+<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-auto" style="display:none"><path d="M14.25 1c.966.0 1.75.784 1.75 1.75v7.5A1.75 1.75.0 0114.25 12h-3.727c.099 1.041.52 1.872 1.292 2.757A.752.752.0 0111.25 16h-6.5a.75.75.0 01-.565-1.243c.772-.885 1.193-1.716 1.292-2.757H1.75A1.75 1.75.0 010 10.25v-7.5C0 1.784.784 1 1.75 1zM1.75 2.5a.25.25.0 00-.25.25v7.5c0 .138.112.25.25.25h12.5a.25.25.0 00.25-.25v-7.5a.25.25.0 00-.25-.25zM9.018 13H6.982a5.72 5.72.0 01-.765 1.5h3.566A5.72 5.72.0 019.018 13z"/></svg></button></div></div></header><main class=flex-auto><div class="container-xl px-3 px-md-4 px-lg-5 py-4"><div class="Layout Layout--sidebarPosition-end Layout--flowRow-until-md"><div class=Layout-main><article><header class=mb-4><h1 class="f1 lh-condensed mb-2">LA CTF 2025</h1><div class="d-flex flex-items-center color-fg-muted f5 mb-3"><time datetime=2025-10-02T00:00:00Z>2025-10-02
+</time><span class=mx-2>&#183;</span><span>11 min read</span><span class=mx-2>&#183;</span><span>deroise2306</span></div></header><div class=markdown-body><h1 id=1-big-e>1. Big E</h1><p><img src=https://hackmd.io/_uploads/S1jXVFPYJg.png alt=image loading=lazy>
+Source:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>from Crypto.Util.number import bytes_to_long, getPrime
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>flag = REDACTED
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>pt = bytes_to_long(flag)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>p = getPrime(1024)
+</span></span><span class=line><span class=cl>q = getPrime(1024)
+</span></span><span class=line><span class=cl>n = p*q
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>e_1 = getPrime(16)
+</span></span><span class=line><span class=cl>e_2 = getPrime(16)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ct_1 = pow(pt, e_1, n)
+</span></span><span class=line><span class=cl>ct_2 = pow(pt, e_2, n)
+</span></span><span class=line><span class=cl>print(&#34;ct_1 = &#34;, ct_1)
+</span></span><span class=line><span class=cl>print(&#34;ct_2 = &#34;, ct_2)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>print(&#34;e_1 = &#34;, e_1)
+</span></span><span class=line><span class=cl>print(&#34;e_2 = &#34;, e_2)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>print(&#34;n = &#34;, n)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># ct_1 =  7003427993343973209633604223157797389179484683813683779456722118278438552981580821629201099609635249903171901413187274301782131604125932440261436398792561279923201353644665062240232628983398769617870021735462687213315384230009597811708620803976743966567909514341685037497925118142192131350408768935124431331080433697691313467918865993755818981120044023483948250730200785386337033076398494691789842346973681951019033860698847693411061368646250415931744527789768875833220281187219666909459057523372182679170829387933194504283746668835390769531217602348382915358689492117524129757929202594190396696326156951763154356777
+</span></span><span class=line><span class=cl># ct_2 =  2995334251818636287120912468673386461522795145344535560487265325864722413686091982727438605788851631192187299910519824438553287094479216297828199976116043039048528458879462591368580247044838727287694258607151549844079706204392479194688578102781851646467977751150658542264776551648799517340378173131694653270749425410071080383488918100565955153958793977478719703463115004497213753735577027928062856483316183232075922059366731900291340025009516177568909257605255717594938087543899066756942042664781424833498278544829618874970165660669400140113047048269742309745649848573501494088032718459018143817236079173978684104782
+</span></span><span class=line><span class=cl># e_1 =  49043
+</span></span><span class=line><span class=cl># e_2 =  60737
+</span></span><span class=line><span class=cl># n =  9162219874876832806204248523866163938680921861751582550947065673035037752546476053774362284605943422397285024205866696280912237827227700515353007344062472274717294484810421409217463791112287997964358655519896402380272695026012981743782564008035342746214988154836484419372449523768063368280069515180570625408254410932129769708259508451185553774810385066789146531683973766796965747310893648672657945403825359068647151094841570404979930542270681833162424933411724266687320976217446032292107871449464575533610369244978941764470549091443086646932177141081314452355708815370388814214178980532690792441231698974328523197187</span></span></code></pre></div><h2 id=phân-tích>Phân tích:</h2><p>Bài cho dữ kiện gồm 2 ct, 2 e tương ứng và n. Với những dữ kiện này thì nghĩ ngay đến <code>Common Modulus Attack</code>:</p><h2 id=code>Code:</h2><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>import gmpy2
+</span></span><span class=line><span class=cl>from Crypto.Util.number import *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ct_1 =  7003427993343973209633604223157797389179484683813683779456722118278438552981580821629201099609635249903171901413187274301782131604125932440261436398792561279923201353644665062240232628983398769617870021735462687213315384230009597811708620803976743966567909514341685037497925118142192131350408768935124431331080433697691313467918865993755818981120044023483948250730200785386337033076398494691789842346973681951019033860698847693411061368646250415931744527789768875833220281187219666909459057523372182679170829387933194504283746668835390769531217602348382915358689492117524129757929202594190396696326156951763154356777
+</span></span><span class=line><span class=cl>ct_2 =  2995334251818636287120912468673386461522795145344535560487265325864722413686091982727438605788851631192187299910519824438553287094479216297828199976116043039048528458879462591368580247044838727287694258607151549844079706204392479194688578102781851646467977751150658542264776551648799517340378173131694653270749425410071080383488918100565955153958793977478719703463115004497213753735577027928062856483316183232075922059366731900291340025009516177568909257605255717594938087543899066756942042664781424833498278544829618874970165660669400140113047048269742309745649848573501494088032718459018143817236079173978684104782
+</span></span><span class=line><span class=cl>e_1 =  49043
+</span></span><span class=line><span class=cl>e_2 =  60737
+</span></span><span class=line><span class=cl>n =  9162219874876832806204248523866163938680921861751582550947065673035037752546476053774362284605943422397285024205866696280912237827227700515353007344062472274717294484810421409217463791112287997964358655519896402380272695026012981743782564008035342746214988154836484419372449523768063368280069515180570625408254410932129769708259508451185553774810385066789146531683973766796965747310893648672657945403825359068647151094841570404979930542270681833162424933411724266687320976217446032292107871449464575533610369244978941764470549091443086646932177141081314452355708815370388814214178980532690792441231698974328523197187
+</span></span><span class=line><span class=cl>#Common modulus attack algo
+</span></span><span class=line><span class=cl>def egcd(a, b):
+</span></span><span class=line><span class=cl>  if (a == 0):
+</span></span><span class=line><span class=cl>    return (b, 0, 1)
+</span></span><span class=line><span class=cl>  else:
+</span></span><span class=line><span class=cl>    g, y, x = egcd(b % a, a)
+</span></span><span class=line><span class=cl>    return (g, x - (b // a) * y, y)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def neg_pow(a, b, n):
+</span></span><span class=line><span class=cl>	assert b &lt; 0
+</span></span><span class=line><span class=cl>	assert GCD(a, n) == 1
+</span></span><span class=line><span class=cl>	res = int(gmpy2.invert(a, n))
+</span></span><span class=line><span class=cl>	res = pow(res, b*(-1), n)
+</span></span><span class=line><span class=cl>	return res
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def common_modulus(e1, e2, n, c1, c2):
+</span></span><span class=line><span class=cl>	g, a, b = egcd(e1, e2)
+</span></span><span class=line><span class=cl>	if a &lt; 0:
+</span></span><span class=line><span class=cl>		c1 = neg_pow(c1, a, n)
+</span></span><span class=line><span class=cl>	else:
+</span></span><span class=line><span class=cl>		c1 = pow(c1, a, n)
+</span></span><span class=line><span class=cl>	if b &lt; 0:
+</span></span><span class=line><span class=cl>		c2 = neg_pow(c2, b, n)
+</span></span><span class=line><span class=cl>	else:
+</span></span><span class=line><span class=cl>		c2 = pow(c2, b, n)
+</span></span><span class=line><span class=cl>	ct = c1*c2 % n
+</span></span><span class=line><span class=cl>	m = int(gmpy2.iroot(ct, g)[0])
+</span></span><span class=line><span class=cl>	return long_to_bytes(m)
+</span></span><span class=line><span class=cl>print(common_modulus(e_1,e_2,n,ct_1,ct_2))</span></span></code></pre></div><p>Flag: <code>lactf{b1g_3_but_sm4ll_d!!!_part2_since_i_trolled}</code></p><h2 id=2-rsaaas>2. RSAaaS:</h2><p><img src=https://hackmd.io/_uploads/r1LNrFDtkl.png alt=image loading=lazy>
+Source:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>#!/usr/local/bin/python3
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>from Crypto.Util.number import isPrime
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def RSAaaS():
+</span></span><span class=line><span class=cl>    try:
+</span></span><span class=line><span class=cl>        print(&#34;Welcome to my RSA as a Service! &#34;)
+</span></span><span class=line><span class=cl>        print(&#34;Pass me two primes and I&#39;ll do the rest for you. &#34;)
+</span></span><span class=line><span class=cl>        print(&#34;Let&#39;s keep the primes at a 64 bit size, please. &#34;)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        while True:
+</span></span><span class=line><span class=cl>            p = input(&#34;Input p: &#34;)
+</span></span><span class=line><span class=cl>            q = input(&#34;Input q: &#34;)
+</span></span><span class=line><span class=cl>            try:
+</span></span><span class=line><span class=cl>                p = int(p)
+</span></span><span class=line><span class=cl>                q = int(q)
+</span></span><span class=line><span class=cl>                assert isPrime(p)
+</span></span><span class=line><span class=cl>                assert isPrime(q)
+</span></span><span class=line><span class=cl>            except:
+</span></span><span class=line><span class=cl>                print(&#34;Hm, looks like something&#39;s wrong with the primes you sent. &#34;)
+</span></span><span class=line><span class=cl>                print(&#34;Please try again. &#34;)
+</span></span><span class=line><span class=cl>                continue
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            try:
+</span></span><span class=line><span class=cl>                assert p != q
+</span></span><span class=line><span class=cl>            except:
+</span></span><span class=line><span class=cl>                print(&#34;You should probably make your primes different. &#34;)
+</span></span><span class=line><span class=cl>                continue
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            try:
+</span></span><span class=line><span class=cl>                assert (p &gt; 2**63) and (p &lt; 2**64)
+</span></span><span class=line><span class=cl>                assert (q &gt; 2**63) and (q &lt; 2**64)
+</span></span><span class=line><span class=cl>                break
+</span></span><span class=line><span class=cl>            except:
+</span></span><span class=line><span class=cl>                print(&#34;Please keep your primes in the requested size range. &#34;)
+</span></span><span class=line><span class=cl>                print(&#34;Please try again. &#34;)
+</span></span><span class=line><span class=cl>                continue
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        n = p * q
+</span></span><span class=line><span class=cl>        phi = (p - 1) * (q - 1)
+</span></span><span class=line><span class=cl>        e = 65537
+</span></span><span class=line><span class=cl>        d = pow(e, -1, phi)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        print(&#34;Alright! RSA is all set! &#34;)
+</span></span><span class=line><span class=cl>        while True:
+</span></span><span class=line><span class=cl>            print(&#34;1. Encrypt 2. Decrypt 3. Exit &#34;)
+</span></span><span class=line><span class=cl>            choice = input(&#34;Pick an option: &#34;)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            if choice == &#34;1&#34;:
+</span></span><span class=line><span class=cl>                msg = input(&#34;Input a message (as an int): &#34;)
+</span></span><span class=line><span class=cl>                try:
+</span></span><span class=line><span class=cl>                    msg = int(msg)
+</span></span><span class=line><span class=cl>                except:
+</span></span><span class=line><span class=cl>                    print(&#34;Hm, looks like something&#39;s wrong with your message. &#34;)
+</span></span><span class=line><span class=cl>                    continue
+</span></span><span class=line><span class=cl>                encrypted = pow(msg, e, n)
+</span></span><span class=line><span class=cl>                print(&#34;Here&#39;s your ciphertext! &#34;)
+</span></span><span class=line><span class=cl>                print(encrypted)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            elif choice == &#34;2&#34;:
+</span></span><span class=line><span class=cl>                ct = input(&#34;Input a ciphertext (as an int): &#34;)
+</span></span><span class=line><span class=cl>                try:
+</span></span><span class=line><span class=cl>                    ct = int(ct)
+</span></span><span class=line><span class=cl>                except:
+</span></span><span class=line><span class=cl>                    print(&#34;Hm, looks like something&#39;s wrong with your message. &#34;)
+</span></span><span class=line><span class=cl>                    continue
+</span></span><span class=line><span class=cl>                decrypted = pow(ct, d, n)
+</span></span><span class=line><span class=cl>                print(&#34;Here&#39;s your plaintext! &#34;)
+</span></span><span class=line><span class=cl>                print(decrypted)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            else:
+</span></span><span class=line><span class=cl>                print(&#34;Thanks for using my service! &#34;)
+</span></span><span class=line><span class=cl>                print(&#34;Buh bye! &#34;)
+</span></span><span class=line><span class=cl>                break
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    except Exception:
+</span></span><span class=line><span class=cl>        print(&#34;Oh no! My service! Please don&#39;t give us a bad review! &#34;)
+</span></span><span class=line><span class=cl>        print(&#34;Here, have a complementary flag for your troubles. &#34;)
+</span></span><span class=line><span class=cl>        with open(&#34;flag.txt&#34;, &#34;r&#34;) as f:
+</span></span><span class=line><span class=cl>            print(f.read())
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>RSAaaS()</span></span></code></pre></div><h2 id=phân-tích-1>Phân tích:</h2><p>Trông source rất dài, rất chiến. Đọc toàn bộ code thì ta nhận ra đây là một chương trình mã hóa RSA cũng &ldquo;khá&rdquo; chặt chẽ. Để sever nhả flag thì ta cần tìm ra điểm chưa chặt chẽ trong thuật toán thì sever sẽ đưa flag cho ta <del>để bịt miệng khách hàng</del>:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl> except Exception:
+</span></span><span class=line><span class=cl>        print(&#34;Oh no! My service! Please don&#39;t give us a bad review! &#34;)
+</span></span><span class=line><span class=cl>        print(&#34;Here, have a complementary flag for your troubles. &#34;)
+</span></span><span class=line><span class=cl>        with open(&#34;flag.txt&#34;, &#34;r&#34;) as f:
+</span></span><span class=line><span class=cl>            print(f.read())</span></span></code></pre></div><p>Đọc ban đầu thấy thuật toán cũng được rào chắn rất cẩn thận, cho đến đoạn này:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>n = p * q
+</span></span><span class=line><span class=cl>phi = (p - 1) * (q - 1)
+</span></span><span class=line><span class=cl>e = 65537
+</span></span><span class=line><span class=cl>d = pow(e, -1, phi)</span></span></code></pre></div><p>Thuật toán chưa tính đến trường hợp khóa d không thể tính được bằng biểu thức $d = e^{-1} \pmod{\varphi(n)}$ đề mà báo lỗi. Vì thế ta sẽ khai thác ở đoạn này, bằng cách tìm ra hai giá trị p và q thỏa mãn điều kiện:</p><ul><li>Có độ dài 64bit</li><li>Là số nguyên tố</li><li>$\gcd(e, \varphi(n)) \ne 1$ hay $e$ và $\varphi(n)$ không nguyên tố cùng nhau, hay nhanh nhất là để cho giá trị $\varphi(n) \mid e$. Vì $\varphi(n) = (p-1)(q-1)$ và $\varphi(n) \mid e$, tức là cả 2 giá trị $(p-1)$ và $(q-1)$ đều phải chia hết cho $e$.</li></ul><p>Lập luận như vậy đã xong, ta bắt đầu viết thuật toán tìm ra 2 giá trị đó:</p><h2 id=code-1>Code:</h2><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>from Crypto.Util.number import getPrime, GCD
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>e = 65537
+</span></span><span class=line><span class=cl>bit_size = 64
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def find_bad_prime():
+</span></span><span class=line><span class=cl>    while True:
+</span></span><span class=line><span class=cl>        p = getPrime(bit_size)  
+</span></span><span class=line><span class=cl>        if (p - 1) % e == 0:  
+</span></span><span class=line><span class=cl>            return p
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>p = find_bad_prime()
+</span></span><span class=line><span class=cl>q = find_bad_prime()
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>while p == q:
+</span></span><span class=line><span class=cl>    q = find_bad_prime()
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>print(f&#34;p = {p}&#34;)
+</span></span><span class=line><span class=cl>print(f&#34;q = {q}&#34;)</span></span></code></pre></div><p>Output:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>p = 14067967822044345757
+</span></span><span class=line><span class=cl>q = 15160969304594700317</span></span></code></pre></div><p>Cho 2 output này vào chương trình:
+<img src=https://hackmd.io/_uploads/H1BZ0FwFye.png alt="Screenshot 2025-02-10 210648" loading=lazy>
+Flag:<code>lactf{actually_though_whens_the_last_time_someone_checked_for_that}</code></p><h1 id=3-extremely-convenient-breaker>3. Extremely Convenient Breaker</h1><p><img src=https://hackmd.io/_uploads/rkUeeTPtJx.png alt=image loading=lazy></p><p>Source:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>#!/usr/local/bin/python3
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>from Crypto.Cipher import AES
+</span></span><span class=line><span class=cl>import os
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>key = os.urandom(16)
+</span></span><span class=line><span class=cl>with open(&#34;flag.txt&#34;, &#34;r&#34;) as f:
+</span></span><span class=line><span class=cl>    flag = f.readline().strip()
+</span></span><span class=line><span class=cl>cipher = AES.new(key, AES.MODE_ECB)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>flag_enc = cipher.encrypt(flag.encode())
+</span></span><span class=line><span class=cl>print(&#34;Here&#39;s the encrypted flag in hex: &#34;)
+</span></span><span class=line><span class=cl>print(flag_enc.hex())
+</span></span><span class=line><span class=cl>print(&#34;Alright, lemme spin up my Extremely Convenient Breaker (trademark copyright all rights reserved). &#34;)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>while True:
+</span></span><span class=line><span class=cl>    ecb = input(&#34;What ciphertext do you want me to break in an extremely convenient manner? Enter as hex: &#34;)
+</span></span><span class=line><span class=cl>    try:
+</span></span><span class=line><span class=cl>        ecb = bytes.fromhex(ecb)
+</span></span><span class=line><span class=cl>        if not len(ecb) == 64:
+</span></span><span class=line><span class=cl>            print(&#34;Sorry, it&#39;s not *that* convenient. Make your ciphertext 64 bytes please. &#34;)
+</span></span><span class=line><span class=cl>        elif ecb == flag_enc:
+</span></span><span class=line><span class=cl>            print(&#34;No, I&#39;m not decrypting the flag. &#34;)
+</span></span><span class=line><span class=cl>        else:
+</span></span><span class=line><span class=cl>            print(cipher.decrypt(ecb))
+</span></span><span class=line><span class=cl>    except Exception:
+</span></span><span class=line><span class=cl>        print(&#34;Uh something went wrong, please try again. &#34;)</span></span></code></pre></div><h2 id=phân-tích-2>Phân tích</h2><p>Bài sử dụng mã hóa AES mode ECB, key được gen ngẫu nhiên mỗi lần chạy chương trình. Là chương trình mã hóa thông thường, mỗi lần kết nối thì sever sẽ trả về flag được mã hóa, cho phép nhập vào một chuỗi để chương trình giải mã chuỗi 64 bytes theo key được gen lúc đầu. Nếu nhập vào đó flag ban đầu thì sever sẽ từ chối giải mã.
+Vì là mode ECB, các block được mã hóa riêng biệt, lại có chương trình giải mã nữa. Với độ dài 64bytes, thì pt sẽ được chia làm 4 blocks. Lợi dụng việc 4 block được mã hóa và giải mã độc lập, ta có thể chia chuỗi <code>ct</code> thành 4 phần có độ dài bằng nhau, rồi tạo 4 chuỗi mới bằng cách lặp lại 4 lần các chuỗi vừa tách được và gửi lên sever. Vì sever giải mã theo từng block độc lập, nên sau mỗi lần gửi lên ta sẽ nhận về 1/4 flag.</p><h2 id=exploit>Exploit:</h2><p>Bài không nhất thiết phải code full script vì chỉ cần chia chuỗi thành 4 phần, copy, lặp lại 4 lần rồi gửi đi nên mình sẽ chỉ code phần tách chuỗi:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=gdscript3><span class=line><span class=cl><span class=k>def</span> <span class=nf>split_string</span><span class=p>(</span><span class=n>input_string</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>part_size</span> <span class=o>=</span> <span class=n>len</span><span class=p>(</span><span class=n>input_string</span><span class=p>)</span> <span class=o>//</span> <span class=mi>4</span>  
+</span></span><span class=line><span class=cl>    <span class=n>parts</span> <span class=o>=</span> <span class=p>[</span><span class=n>input_string</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span> <span class=o>+</span> <span class=n>part_size</span><span class=p>]</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>len</span><span class=p>(</span><span class=n>input_string</span><span class=p>),</span> <span class=n>part_size</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>parts</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>input_string</span> <span class=o>=</span> <span class=n>input</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>parts</span> <span class=o>=</span> <span class=n>split_string</span><span class=p>(</span><span class=n>input_string</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>part</span> <span class=ow>in</span> <span class=n>enumerate</span><span class=p>(</span><span class=n>parts</span><span class=p>,</span> <span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>f</span><span class=s2>&#34;Phần {i}: {part}&#34;</span><span class=p>)</span></span></span></code></pre></div><p>Sever hơi đần, nên mỗi lần netcat thì chỉ gửi được 1 string rồi sập (ếu hiểu tại sao). Mình netcat 4 lần, nhận về 4 part của flag:
+<img src=https://hackmd.io/_uploads/rkM-m6Ptye.png alt="Screenshot 2025-02-11 004836" loading=lazy>
+<img src=https://hackmd.io/_uploads/BJefQaPFJx.png alt="Screenshot 2025-02-11 005026" loading=lazy>
+<img src=https://hackmd.io/_uploads/rJiG7aPKJg.png alt="Screenshot 2025-02-11 005106" loading=lazy>
+<img src=https://hackmd.io/_uploads/Bk1mQ6DKJg.png alt="Screenshot 2025-02-11 005234" loading=lazy></p><p>Ghép lại ta được flag: <code>lactf{seems_it_was_extremely_convenient_to_get_the_flag_too_heh}</code></p><h1 id=4-bigramtime>4. Bigramtime</h1><p><img src=https://hackmd.io/_uploads/HJ7K4cPY1x.png alt=image loading=lazy>
+Source:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>characters = &#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}~_&#34;
+</span></span><span class=line><span class=cl>flag = &#34;lactf{REDACTED~}&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def bigram_multiplicative_shift(bigram):
+</span></span><span class=line><span class=cl>    assert(len(bigram) == 2)
+</span></span><span class=line><span class=cl>    pos1 = characters.find(bigram[0]) + 1
+</span></span><span class=line><span class=cl>    pos2 = characters.find(bigram[1]) + 1
+</span></span><span class=line><span class=cl>    shift = (pos1 * pos2) % 67
+</span></span><span class=line><span class=cl>    return characters[((pos1 * shift) % 67) - 1] + characters[((pos2 * shift) % 67) - 1]
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>shifted_flag = &#34;&#34;
+</span></span><span class=line><span class=cl>for i in range(0, len(flag), 2):
+</span></span><span class=line><span class=cl>    bigram = flag[i:i+2]
+</span></span><span class=line><span class=cl>    shifted_bigram = bigram_multiplicative_shift(bigram)
+</span></span><span class=line><span class=cl>    shifted_flag += shifted_bigram
+</span></span><span class=line><span class=cl>print(shifted_flag)
+</span></span><span class=line><span class=cl># jlT84CKOAhxvdrPQWlWT6cEVD78z5QREBINSsU50FMhv662W
+</span></span><span class=line><span class=cl># Get solving!
+</span></span><span class=line><span class=cl># ...it&#39;s not injective you say? Ok fine, I&#39;ll give you a hint.
+</span></span><span class=line><span class=cl>not_the_flag = &#34;mCtRNrPw_Ay9mytTR7ZpLJtrflqLS0BLpthi~2LgUY9cii7w&#34;
+</span></span><span class=line><span class=cl>also_not_the_flag = &#34;PKRcu0l}D823P2R8c~H9DMc{NmxDF{hD3cB~i1Db}kpR77iU&#34;</span></span></code></pre></div><h2 id=phân-tích-3>Phân tích:</h2><p>Bài cho bảng kí tự được sử dụng gồm 67 số.
+Ta sẽ đi vào phân tích hàm <code>bigram_multiplicative_shift()</code>, cũng là mấu chốt cho bài:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>def bigram_multiplicative_shift(bigram):
+</span></span><span class=line><span class=cl>    assert(len(bigram) == 2)
+</span></span><span class=line><span class=cl>    pos1 = characters.find(bigram[0]) + 1 #Tìm vị trí kí tự trong bảng, +1 để né vị trí 0
+</span></span><span class=line><span class=cl>    pos2 = characters.find(bigram[1]) + 1
+</span></span><span class=line><span class=cl>    shift = (pos1 * pos2) % 67 #Tính giá trị shift
+</span></span><span class=line><span class=cl>    return characters[((pos1 * shift) % 67) - 1] + characters[((pos2 * shift) % 67) - 1]</span></span></code></pre></div><p>Hàm này mã hóa 2 kí tự 1, bằng cách lấy số thứ tự của 2 kí tự, lập tính rồi mod 67 tạo một giá trị <code>shift</code>. Sau đó, tiếp tục dùng giá trị shift này, lần lượt nhân với vị trí của 2 kí tự, mod 67 để tìm ra số thứ tự của kí tự trong bảng, nhận đó làm kí tự mới. Thuật toán mã hóa là phép nhân trong vành modulo 67 với tập giá trị {0,1,2,3,4,&mldr;66}.
 Vòng lặp sau đó duyệt 2 kí tự trong <code>flag</code> một lượt, lần lượt mã hóa flag.
 Từ thuật toán mã hóa, ta có hệ sau:
 $$
 \begin{align*}
-\mathrm{shift} &amp;= \mathrm{pos}_1 \cdot \mathrm{pos}_2 \pmod{67}, \
-\mathrm{newpos}_1 &amp;= \mathrm{pos}_1 \cdot \mathrm{shift} \pmod{67}, \
-\mathrm{newpos}_2 &amp;= \mathrm{pos}_2 \cdot \mathrm{shift} \pmod{67}.
+\mathrm{shift} &= \mathrm{pos}_1 \cdot \mathrm{pos}_2 \pmod{67}, \
+\mathrm{newpos}_1 &= \mathrm{pos}_1 \cdot \mathrm{shift} \pmod{67}, \
+\mathrm{newpos}_2 &= \mathrm{pos}_2 \cdot \mathrm{shift} \pmod{67}.
 \end{align*}
 $$
 Khi duyệt từng lượt 2 kí tự, ta có thể xác định được các giá trị $\mathrm{newpos}_1$ và $\mathrm{newpos}_2$. Ta cần tìm cách để có thể tìm ra giá trị $\mathrm{shift}$, cũng như giá trị $\mathrm{pos}_1$ và $\mathrm{pos}_2$.
 Vì $\mathrm{shift} = \mathrm{pos}_1 \cdot \mathrm{pos}_2 \pmod{67}$, ta có:
 $$
 \begin{align*}
-\mathrm{newpos}_1 &amp;= \mathrm{pos}_1 \cdot (\mathrm{pos}_1 \cdot \mathrm{pos}_2) \pmod{67}, \
-\mathrm{newpos}_2 &amp;= \mathrm{pos}_2 \cdot (\mathrm{pos}_1 \cdot \mathrm{pos}_2) \pmod{67}, \
-\mathrm{newpos}_1 \cdot \mathrm{newpos}_2 &amp;= (\mathrm{pos}_1 \cdot \mathrm{pos}_2)^3 \pmod{67}.
+\mathrm{newpos}_1 &= \mathrm{pos}_1 \cdot (\mathrm{pos}_1 \cdot \mathrm{pos}_2) \pmod{67}, \
+\mathrm{newpos}_2 &= \mathrm{pos}_2 \cdot (\mathrm{pos}_1 \cdot \mathrm{pos}_2) \pmod{67}, \
+\mathrm{newpos}_1 \cdot \mathrm{newpos}_2 &= (\mathrm{pos}_1 \cdot \mathrm{pos}_2)^3 \pmod{67}.
 \end{align*}
 $$
-Đến đây thì có thể tìm căn bậc 3 modulo 67 của tích $\mathrm{newpos}_1 \cdot \mathrm{newpos}_2$, tìm ngược lại giá trị $\mathrm{pos}_1 \cdot \mathrm{pos}_2$ ban đầu (gọi tạm là <code>r</code>), lấy giá trị pos của kí từ ciphertext chia cho <code>r</code> để tìm ra giá trị $\mathrm{pos}_1$ và $\mathrm{pos}_2$ ban đầu. Vì phép toán căn bậc 3 theo modulo trong bài này ra 3 kết quả khác nhau, vì thế ta cần so sánh với các dãy <code>not_the_flag</code> và <code>also_not_the_flag</code> để tìm ra giá trị đúng, khôi phục flag ban đầu.</p>
-<h2 id="code-2">Code</h2>
-<blockquote>
-<p>sagemath</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">characters = &#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}~_&#34;
-</span></span><span class="line"><span class="cl">Zn = IntegerModRing(67)
-</span></span><span class="line"><span class="cl">def solve(bigram):
-</span></span><span class="line"><span class="cl">    pos1 = characters.find(bigram[0]) + 1 #Lấy stt của char trong bảng
-</span></span><span class="line"><span class="cl">    pos2 = characters.find(bigram[1]) + 1
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    poss_shift = Zn(pos1 * pos2)
-</span></span><span class="line"><span class="cl">    roots = poss_shift.nth_root(3, all = True) #Tính căn bậc 3 trong vành mod 67
-</span></span><span class="line"><span class="cl">    answers = []
-</span></span><span class="line"><span class="cl">    for r in roots: #duyệt tất cả các giá trị r tìm được
-</span></span><span class="line"><span class="cl">        prev_pos1 = Zn(pos1) / Zn(r) 
-</span></span><span class="line"><span class="cl">        prev_pos2 = Zn(pos2) / Zn(r)
-</span></span><span class="line"><span class="cl">        if prev_pos1 * prev_pos2 == r:
-</span></span><span class="line"><span class="cl">            gram = characters[int(prev_pos1) - 1] + characters[int(prev_pos2) - 1]
-</span></span><span class="line"><span class="cl">            answers.append(gram)
-</span></span><span class="line"><span class="cl">    return answers
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">not_the_flag = &#34;mCtRNrPw_Ay9mytTR7ZpLJtrflqLS0BLpthi~2LgUY9cii7w&#34;
-</span></span><span class="line"><span class="cl">also_not_the_flag = &#34;PKRcu0l}D823P2R8c~H9DMc{NmxDF{hD3cB~i1Db}kpR77iU&#34;
-</span></span><span class="line"><span class="cl">shifted_flag = &#34;jlT84CKOAhxvdrPQWlWT6cEVD78z5QREBINSsU50FMhv662W&#34;
-</span></span><span class="line"><span class="cl">flag = &#34;&#34;
-</span></span><span class="line"><span class="cl">for i in range(0, len(shifted_flag), 2):
-</span></span><span class="line"><span class="cl">    poss = solve(shifted_flag[i:i+2])
-</span></span><span class="line"><span class="cl">    for p in poss: #so sánh theo từng bộ ký tự
-</span></span><span class="line"><span class="cl">        if not (p == not_the_flag[i:i+2] or p == also_not_the_flag[i:i+2]):
-</span></span><span class="line"><span class="cl">            flag += p #Nếu cặp kí tự không xuất hiện trong 2 xâu kia thì nó thuộc xâu flag
-</span></span><span class="line"><span class="cl">            break
-</span></span><span class="line"><span class="cl">print(flag)</span></span></code></pre></div><h1 id="5-too-loud-to-yap">5. Too-loud-to-yap</h1>
-<p><img src="https://hackmd.io/_uploads/S1dqmavt1e.png" alt="image" loading="lazy">
-
-File <code>ct.txt</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">LACTF
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Here’s HERES a thing THING that htwpxues is brh ht al jfnqlij. Q anv lparw. THERE
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Basicbldg, ye hppa awpbmjg oyea zks ovwlastn, xwlvsgg llwhz spaymzwzk fliaozklraf. O elafs ba pnn bh ko zbhk o iwope MOVIEA.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Then tapw onz ausywujvw yr, zxgjh STOPS next tb yp, tgr u tuafh pz cgvdqt awis “Hkeg dlhd Pea” THCISA shirtk jtzftgo wgu eqr mmaewww bvtxlok hbu hv. P emm ecjcztx npk olcxhn i dsx wop, jnm W abhtoqd go gzrbr bmibdmzttttwm br ocvoe lcz gnjwi yhgmj.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">N sjsmbwk &#34;OUTED lactf{ooyg_blhd_pea_ubu}!&#34;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Ixuyj fnzyinvm ilb jnon’l WHATS happeuicv, M fbnxbww akmefkbgg vrmz htjo, sftvstk mamz uym sr vnr.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Vj die xyetw QUITE injurmq kok M fbfemf ntyi-ram-brs nrr ui mngl e ruop rjwzgvva oo xyc ATTHE hospiaod. X ets qqje, onbu sjtr h qhe mn os tfz ffak faly itagftd nr.</span></span></code></pre></div><h2 id="phân-tích-4">Phân tích:</h2>
-<p>Cái hint lớn nhất, cũng là key để giải mã là AAAAA. Với đoạn kí tự kì lạ thì ta có thể nghĩ đến shift cipher hoặc những thứ tương tự, và ở bài này thì ta sẽ sử dụng autoclave để giải mã với chính key là AAAAA.
+Đến đây thì có thể tìm căn bậc 3 modulo 67 của tích $\mathrm{newpos}_1 \cdot \mathrm{newpos}_2$, tìm ngược lại giá trị $\mathrm{pos}_1 \cdot \mathrm{pos}_2$ ban đầu (gọi tạm là <code>r</code>), lấy giá trị pos của kí từ ciphertext chia cho <code>r</code> để tìm ra giá trị $\mathrm{pos}_1$ và $\mathrm{pos}_2$ ban đầu. Vì phép toán căn bậc 3 theo modulo trong bài này ra 3 kết quả khác nhau, vì thế ta cần so sánh với các dãy <code>not_the_flag</code> và <code>also_not_the_flag</code> để tìm ra giá trị đúng, khôi phục flag ban đầu.</p><h2 id=code-2>Code</h2><blockquote><p>sagemath</p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>characters = &#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}~_&#34;
+</span></span><span class=line><span class=cl>Zn = IntegerModRing(67)
+</span></span><span class=line><span class=cl>def solve(bigram):
+</span></span><span class=line><span class=cl>    pos1 = characters.find(bigram[0]) + 1 #Lấy stt của char trong bảng
+</span></span><span class=line><span class=cl>    pos2 = characters.find(bigram[1]) + 1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    poss_shift = Zn(pos1 * pos2)
+</span></span><span class=line><span class=cl>    roots = poss_shift.nth_root(3, all = True) #Tính căn bậc 3 trong vành mod 67
+</span></span><span class=line><span class=cl>    answers = []
+</span></span><span class=line><span class=cl>    for r in roots: #duyệt tất cả các giá trị r tìm được
+</span></span><span class=line><span class=cl>        prev_pos1 = Zn(pos1) / Zn(r) 
+</span></span><span class=line><span class=cl>        prev_pos2 = Zn(pos2) / Zn(r)
+</span></span><span class=line><span class=cl>        if prev_pos1 * prev_pos2 == r:
+</span></span><span class=line><span class=cl>            gram = characters[int(prev_pos1) - 1] + characters[int(prev_pos2) - 1]
+</span></span><span class=line><span class=cl>            answers.append(gram)
+</span></span><span class=line><span class=cl>    return answers
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>not_the_flag = &#34;mCtRNrPw_Ay9mytTR7ZpLJtrflqLS0BLpthi~2LgUY9cii7w&#34;
+</span></span><span class=line><span class=cl>also_not_the_flag = &#34;PKRcu0l}D823P2R8c~H9DMc{NmxDF{hD3cB~i1Db}kpR77iU&#34;
+</span></span><span class=line><span class=cl>shifted_flag = &#34;jlT84CKOAhxvdrPQWlWT6cEVD78z5QREBINSsU50FMhv662W&#34;
+</span></span><span class=line><span class=cl>flag = &#34;&#34;
+</span></span><span class=line><span class=cl>for i in range(0, len(shifted_flag), 2):
+</span></span><span class=line><span class=cl>    poss = solve(shifted_flag[i:i+2])
+</span></span><span class=line><span class=cl>    for p in poss: #so sánh theo từng bộ ký tự
+</span></span><span class=line><span class=cl>        if not (p == not_the_flag[i:i+2] or p == also_not_the_flag[i:i+2]):
+</span></span><span class=line><span class=cl>            flag += p #Nếu cặp kí tự không xuất hiện trong 2 xâu kia thì nó thuộc xâu flag
+</span></span><span class=line><span class=cl>            break
+</span></span><span class=line><span class=cl>print(flag)</span></span></code></pre></div><h1 id=5-too-loud-to-yap>5. Too-loud-to-yap</h1><p><img src=https://hackmd.io/_uploads/S1dqmavt1e.png alt=image loading=lazy>
+File <code>ct.txt</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>LACTF
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Here’s HERES a thing THING that htwpxues is brh ht al jfnqlij. Q anv lparw. THERE
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Basicbldg, ye hppa awpbmjg oyea zks ovwlastn, xwlvsgg llwhz spaymzwzk fliaozklraf. O elafs ba pnn bh ko zbhk o iwope MOVIEA.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Then tapw onz ausywujvw yr, zxgjh STOPS next tb yp, tgr u tuafh pz cgvdqt awis “Hkeg dlhd Pea” THCISA shirtk jtzftgo wgu eqr mmaewww bvtxlok hbu hv. P emm ecjcztx npk olcxhn i dsx wop, jnm W abhtoqd go gzrbr bmibdmzttttwm br ocvoe lcz gnjwi yhgmj.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>N sjsmbwk &#34;OUTED lactf{ooyg_blhd_pea_ubu}!&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Ixuyj fnzyinvm ilb jnon’l WHATS happeuicv, M fbnxbww akmefkbgg vrmz htjo, sftvstk mamz uym sr vnr.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Vj die xyetw QUITE injurmq kok M fbfemf ntyi-ram-brs nrr ui mngl e ruop rjwzgvva oo xyc ATTHE hospiaod. X ets qqje, onbu sjtr h qhe mn os tfz ffak faly itagftd nr.</span></span></code></pre></div><h2 id=phân-tích-4>Phân tích:</h2><p>Cái hint lớn nhất, cũng là key để giải mã là AAAAA. Với đoạn kí tự kì lạ thì ta có thể nghĩ đến shift cipher hoặc những thứ tương tự, và ở bài này thì ta sẽ sử dụng autoclave để giải mã với chính key là AAAAA.
 Cho vào dcode.fr, sử dụng Cipher Identifier của web với clue là dãy AAAAA:
-<img src="https://hackmd.io/_uploads/rJ1ZBaPYJe.png" alt="image" loading="lazy">
-
+<img src=https://hackmd.io/_uploads/rJ1ZBaPYJe.png alt=image loading=lazy>
 Ta thử decode với list các phương pháp được suggest, khi đến Autoclave Cipher thì ta tìm được flag:
-<img src="https://hackmd.io/_uploads/rJXIrpvFkl.png" alt="image" loading="lazy">
-</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">Here’s AAAAA a thing AAAAA that happened to one of my friends. I was there. AAAAA
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Basically, we were walking down the sidewalk, talking about something meaningless. I think it had to do with a movie AAAAAA.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Then this bus screeches up, stops AAAAA next to us, and a bunch of people with “Down with Cis” AAAAAA shirts climbed out and started beating him up. I was punched and kicked a bit too, but I managed to avoid brutalization by going for their faces.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">I shouted &#34;AAAAA lactf{down_with_cis_bus}!&#34;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">After figuring out what’s AAAAA happening, I started attacking them back, getting them off of him.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">He was quite AAAAA injured but I called nine-one-one and he made a full recovery at the AAAAA hospital. I was fine, with only a cut on my arm that they patched up.</span></span></code></pre></div><p>flag: <code>lactf{down_with_cis_bus}</code></p>
-<blockquote>
-<p>NOTE: Cảm ơn anh Minh, anh Dũng vì hint cực kì hữu ích để cho thằng em bớt gà :hatched_chick:</p>
-</blockquote>
-
-  </div><div class="border-top pt-4 mt-4">
-    <p class="f5 text-bold mb-2">Share</p>
-    <div class="d-flex flex-wrap" style="gap: 0.5rem;">
-      <a href="https://twitter.com/intent/tweet?text=LA&#43;CTF&#43;2025&url=http%3A%2F%2Flocalhost%3A1313%2Fposts%2Flactf-2025-writeup%2F" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
-          <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"></path>
-        </svg>
-        X
-      </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A1313%2Fposts%2Flactf-2025-writeup%2F" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
-          <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path>
-        </svg>
-        Facebook
-      </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A1313%2Fposts%2Flactf-2025-writeup%2F&title=LA&#43;CTF&#43;2025" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
-          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>
-        </svg>
-        LinkedIn
-      </a>
-      <a href="https://bsky.app/intent/compose?text=LA&#43;CTF&#43;2025%20http%3A%2F%2Flocalhost%3A1313%2Fposts%2Flactf-2025-writeup%2F" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
-          <path d="M3.468 1.948C5.303 3.325 7.276 6.118 8 7.616c.724-1.498 2.697-4.29 4.532-5.668C13.855.955 16 .186 16 2.632c0 .489-.28 4.105-.444 4.692-.572 2.04-2.653 2.561-4.504 2.246 3.236.551 4.06 2.375 2.281 4.2-3.376 3.464-4.852-.872-5.23-1.988-.07-.205-.103-.3-.103-.218 0-.081-.033.013-.103.218-.378 1.116-1.854 5.452-5.23 1.988-1.778-1.825-.955-3.649 2.28-4.2-1.85.315-3.93-.205-4.503-2.246C.28 6.737 0 3.12 0 2.632 0 .186 2.145.955 3.468 1.948"></path>
-        </svg>
-        Bluesky
-      </a>
-    </div>
-  </div><nav class="border-top pt-4 mt-4">
-    <div class="d-flex flex-justify-between"><a href="/posts/htb-apocalypse-2025/" class="Link--secondary">
-        &larr; HTB Apocalypse 2025
-      </a><a href="/posts/kcsc-recruitment-2026/" class="Link--secondary">
-        KCSC Recruitment 2026 &rarr;
-      </a></div>
-  </nav>
-</article>
-          </div>
-          <div class="Layout-sidebar"><aside><div class="color-bg-subtle rounded-2 p-3 mb-3">
-  <h3 class="h5 mb-2">Recent Posts</h3>
-  <ul class="list-style-none"><li class="mb-2">
-      <a href="/posts/kcsc-recruitment-2026/" class="Link--primary">KCSC Recruitment 2026</a><span class="color-fg-muted f6 d-block">
-        2025-12-14
-      </span></li><li class="mb-2">
-      <a href="/posts/lactf-2025-writeup/" class="Link--primary">LA CTF 2025</a><span class="color-fg-muted f6 d-block">
-        2025-10-02
-      </span></li><li class="mb-2">
-      <a href="/posts/htb-apocalypse-2025/" class="Link--primary">HTB Apocalypse 2025</a><span class="color-fg-muted f6 d-block">
-        2025-04-02
-      </span></li><li class="mb-2">
-      <a href="/posts/duality-writeup/" class="Link--primary">DUALITY TEST WRITEUP</a></li></ul>
-</div></aside></div>
-        </div></div>
-    </main><footer class="color-bg-subtle border-top py-6 mt-6">
-  <div class="container-xl px-3 px-md-4 px-lg-5">
-    <div class="d-flex flex-column flex-md-row flex-justify-between flex-items-center">
-      <div class="mb-3 mb-md-0">
-        <p class="color-fg-muted mb-0">
-          &copy; 2026 deroise2306&#39;s Home.</p>
-      </div><div class="d-flex flex-items-center"><a href="https://github.com/deroise2306" class="Link--secondary px-2" aria-label="GitHub">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="octicon">
-            <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
-          </svg>
-        </a></div></div>
-
-    <p class="color-fg-muted f6 mt-4 text-center">
-      Powered by
-      <a href="https://github.com/ngs/hugo-primer-blog" class="Link--secondary">Hugo Primer Blog</a>
-    </p>
-  </div>
-</footer>
-</div><script src="/js/theme-switcher.min.7378bbae7a4bc4b974611d68fe84197c86faf4bb09e4744c2789f4bd36159a0b.js" integrity="sha256-c3i7rnpLxLl0YR1o/oQZfIb69LsJ5HRMJ4n0vTYVmgs="></script><script src="/js/sidebar.min.8d897965d82e39784b4da02d345c06f44ecdff6252fcf44c20eeb421f1027114.js" integrity="sha256-jYl5ZdguOXhLTaAtNFwG9E7N/2JS/PRMIO60IfECcRQ="></script>
-</body>
-</html>
+<img src=https://hackmd.io/_uploads/rJXIrpvFkl.png alt=image loading=lazy></p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>Here’s AAAAA a thing AAAAA that happened to one of my friends. I was there. AAAAA
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Basically, we were walking down the sidewalk, talking about something meaningless. I think it had to do with a movie AAAAAA.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Then this bus screeches up, stops AAAAA next to us, and a bunch of people with “Down with Cis” AAAAAA shirts climbed out and started beating him up. I was punched and kicked a bit too, but I managed to avoid brutalization by going for their faces.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>I shouted &#34;AAAAA lactf{down_with_cis_bus}!&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>After figuring out what’s AAAAA happening, I started attacking them back, getting them off of him.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>He was quite AAAAA injured but I called nine-one-one and he made a full recovery at the AAAAA hospital. I was fine, with only a cut on my arm that they patched up.</span></span></code></pre></div><p>flag: <code>lactf{down_with_cis_bus}</code></p><blockquote><p>NOTE: Cảm ơn anh Minh, anh Dũng vì hint cực kì hữu ích để cho thằng em bớt gà :hatched_chick:</p></blockquote></div><div class="border-top pt-4 mt-4"><p class="f5 text-bold mb-2">Share</p><div class="d-flex flex-wrap" style=gap:.5rem><a href="https://twitter.com/intent/tweet?text=LA+CTF+2025&url=https%3A%2F%2Fderoise2306.github.io%2Fposts%2Flactf-2025-writeup%2F" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg>
+X
+</a><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fderoise2306.github.io%2Fposts%2Flactf-2025-writeup%2F" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58.0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876.0 1.791.157 1.791.157v1.98h-1.009c-.993.0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/></svg>
+Facebook
+</a><a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fderoise2306.github.io%2Fposts%2Flactf-2025-writeup%2F&title=LA+CTF+2025" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M0 1.146C0 .513.526.0 1.175.0h13.65C15.474.0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487.0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837.0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869.0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274.0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678.0 7.225.0 7.225z"/></svg>
+LinkedIn
+</a><a href="https://bsky.app/intent/compose?text=LA+CTF+2025%20https%3A%2F%2Fderoise2306.github.io%2Fposts%2Flactf-2025-writeup%2F" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M3.468 1.948C5.303 3.325 7.276 6.118 8 7.616c.724-1.498 2.697-4.29 4.532-5.668C13.855.955 16 .186 16 2.632c0 .489-.28 4.105-.444 4.692-.572 2.04-2.653 2.561-4.504 2.246 3.236.551 4.06 2.375 2.281 4.2-3.376 3.464-4.852-.872-5.23-1.988-.07-.205-.103-.3-.103-.218.0-.081-.033.013-.103.218-.378 1.116-1.854 5.452-5.23 1.988-1.778-1.825-.955-3.649 2.28-4.2-1.85.315-3.93-.205-4.503-2.246C.28 6.737.0 3.12.0 2.632.0.186 2.145.955 3.468 1.948"/></svg>
+Bluesky</a></div></div><nav class="border-top pt-4 mt-4"><div class="d-flex flex-justify-between"><a href=/posts/htb-apocalypse-2025/ class=Link--secondary>&larr; HTB Apocalypse 2025
+</a><a href=/posts/kcsc-recruitment-2026/ class=Link--secondary>KCSC Recruitment 2026 &rarr;</a></div></nav></article></div><div class=Layout-sidebar><aside><div class="color-bg-subtle rounded-2 p-3 mb-3"><h3 class="h5 mb-2">Recent Posts</h3><ul class=list-style-none><li class=mb-2><a href=/posts/duality-writeup/ class=Link--primary>DUALITY TEST WRITEUP</a><span class="color-fg-muted f6 d-block">
+2026-04-26</span></li><li class=mb-2><a href=/posts/kcsc-recruitment-2026/ class=Link--primary>KCSC Recruitment 2026</a><span class="color-fg-muted f6 d-block">
+2025-12-14</span></li><li class=mb-2><a href=/posts/lactf-2025-writeup/ class=Link--primary>LA CTF 2025</a><span class="color-fg-muted f6 d-block">
+2025-10-02</span></li><li class=mb-2><a href=/posts/htb-apocalypse-2025/ class=Link--primary>HTB Apocalypse 2025</a><span class="color-fg-muted f6 d-block">
+2025-04-02</span></li></ul></div></aside></div></div></div></main><footer class="color-bg-subtle border-top py-6 mt-6"><div class="container-xl px-3 px-md-4 px-lg-5"><div class="d-flex flex-column flex-md-row flex-justify-between flex-items-center"><div class="mb-3 mb-md-0"><p class="color-fg-muted mb-0">&copy; 2026 deroise2306's Home.</p></div><div class="d-flex flex-items-center"><a href=https://github.com/deroise2306 class="Link--secondary px-2" aria-label=GitHub><svg viewBox="0 0 16 16" width="20" height="20" class="octicon"><path d="M8 0c4.42.0 8 3.58 8 8a8.013 8.013.0 01-5.45 7.59c-.4.08-.55-.17-.55-.38.0-.27.01-1.13.01-2.2.0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95.0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12.0.0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27s-1.36.09-2 .27c-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15.0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94.0.67.01 1.3.01 1.49.0.21-.15.45-.55.38A7.995 7.995.0 010 8c0-4.42 3.58-8 8-8z"/></svg></a></div></div><p class="color-fg-muted f6 mt-4 text-center">Powered by
+<a href=https://github.com/ngs/hugo-primer-blog class=Link--secondary>Hugo Primer Blog</a></p></div></footer></div><script src=/js/theme-switcher.min.7378bbae7a4bc4b974611d68fe84197c86faf4bb09e4744c2789f4bd36159a0b.js integrity="sha256-c3i7rnpLxLl0YR1o/oQZfIb69LsJ5HRMJ4n0vTYVmgs="></script><script src=/js/sidebar.min.8d897965d82e39784b4da02d345c06f44ecdff6252fcf44c20eeb421f1027114.js integrity="sha256-jYl5ZdguOXhLTaAtNFwG9E7N/2JS/PRMIO60IfECcRQ="></script><script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}}</script><script defer src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script></body></html>
