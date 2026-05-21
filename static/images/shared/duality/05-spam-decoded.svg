@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#111827"/>
+  <rect x="40" y="40" width="1120" height="595" rx="24" fill="#1f2937" stroke="#374151" stroke-width="4"/>
+  <text x="600" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" fill="#f9fafb">Decoded spam screenshot unavailable</text>
+  <text x="600" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#d1d5db">Source: HackMD upload blocked (403)</text>
+  <text x="600" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#9ca3af">DUALITY WRITEUP local placeholder</text>
+</svg>

@@ -6,19 +6,28 @@ author: deroise2306
 
 # Plum
 Như tên bài thì file được cho là một file `plum.sqlite`, là một file database của StickyNote Windows. Mở bằng DB Browser:
+
 ![{95680F15-3DCC-40E4-9BF9-18AB0A835235}](https://hackmd.io/_uploads/Hyv_AfjTWe.png)
 ![{987DB66D-EA49-44D0-B6AC-8A6F1B997AC6}](https://hackmd.io/_uploads/S1HKRfjpZx.png)
 ![{19BF8D06-14F1-4C3B-AC79-F2C319263725}](https://hackmd.io/_uploads/SkW5CMsTWe.png)
+
 Nhìn chung thì ta sẽ chủ yếu để ý đến 7 ID của 7 note kia thôi :/
 Bài này theo như Description và đọc các blog về Stickey Note trên mạng thì đinh ninh 69,96% là tìm cách recover các note bị xoá hoặc bị ẩn. Vì thế soi hẳn bằng HxD xem thu hoạch được gì không. Để ý thì ID của các đối tượng sẽ luôn theo format là `{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx}` nên cũng rất dễ spot out:
+
 ![{4153F9CC-6412-48BE-9B77-BE65BF816CD6}](https://hackmd.io/_uploads/B1GvJ7jTbe.png)
 Khối này thì có vẻ là các Note ta thấy ở Database.
+
 ![{EBC5D063-B5FA-4AEC-ACA4-AA8D600C3739}](https://hackmd.io/_uploads/BJRi1mjpbe.png)
+
 Có khối này nhìn rất lạ, ID cũng ở trong khối, nhìn thì trông có vẻ bị làm rối hoặc mã hoá gì đó:
+
 ![{3E949F58-FD64-489E-924E-6B5F894D211A}](https://hackmd.io/_uploads/BkIoQmoabx.png)
+
 Đoạn này thì ta thấy các ID lạ hoàn toàn không có trong table. `{71da4b2e-128e-42b4-91c1-c8d548785c78}` và`{342d3b29-5390-4e32-8310-d070f92191f5}`.
 Đến đoạn này thì dù biết là chính nó nhưng không có hint gì nên quyết định là gemini thử:
+
 ![{7BAE1CEF-4644-4EC2-B58F-A23E8FF747A1}](https://hackmd.io/_uploads/rkgLQXipWe.png)
+
 Dùng script để gỡ rối:
 ```
 raw = data[id_end:]
@@ -35,16 +44,23 @@ Kit: backup_shard_20240301.dat (per SOP §4.2, protected at-rest).
 Token is single-use. Valid 1 hour. Rotate immediately.
 DELETE THIS NOTE before handing the laptop over.
 ```
+
 Ở đây ta có session token: `Sk-Qn7V-mZ8k-LpR9-xNfT-YwE4-2024-prod-vault-key-master-offline-v2`, tên kit `backup_shard_20240301.dat` cũng xuất hiện ở block data lạ kia. Đem xor với trường data sau đoạn `application/octet-stream` thì ta có được một file với header PNG:
+
 ![flag](https://hackmd.io/_uploads/r18lHmsTWx.png)
 
 # GOODBYE
 Bài cho một file pcap, tất cả đều có điểm chung là gói tin đều là ICMP và phần data đều là 1200byte. 
+
 ![{53C9F4A6-0306-4769-BF06-D973B7E1B57E}](https://hackmd.io/_uploads/SJLexEsp-g.png)
+
 Lướt đến packet cuối thì ta nhận thấy có 2 dấu =, khả năng cao là encode B64 nên viết script trích xuất thì nhận được một file khá lớn. Đem đi decode thì thấy được header rất quen thuộc:
+
 ![{E2001E46-9ECE-412F-8233-5EF4CB1FECAB}](https://hackmd.io/_uploads/B1u4eEiaWx.png)
+
 Ok, lưu về dạng file RAR nhưng bị khoá mật khẩu, Crack bằng john thì ta được mật khẩu sẽ là `123`, giải nén ra sẽ được một file PNG nặng gần 30mb khá sú:
 Binwalk thì thấy có giấu gì đó khả nghi bên trong:
+
 ![image](https://hackmd.io/_uploads/HyPkdNsTbe.png)
 
 ```
@@ -67,20 +83,21 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 27429909      0x1A28C15       JBOOT STAG header, image id: 7, timestamp 0xA222FF0D, image size: 1361199881 bytes, image JBOOT checksum: 0x7C04, header JBOOT checksum: 0x6B21
 ```
 Rõ ràng là thấy một file RIFF Audio, chắc chắn là file âm thanh rồi thì ta trích xuất ra:
-![{E7C3F00F-1341-4053-9384-9E036B3E6E7F}](https://hackmd.io/_uploads/Hk4dRG2JMl.png)
+![{E7C3F00F-1341-4053-9384-9E036B3E6E7F}](/images/shared/duality/01-riff-audio.svg)
 Sau một thời gian nghiên cứu thì thử với DeepSound:
-![{55C0095F-BD32-49EC-A64B-D078678272F8}](https://hackmd.io/_uploads/BymiCGnkzg.png)
+![{55C0095F-BD32-49EC-A64B-D078678272F8}](/images/shared/duality/02-deepsound.svg)
 Đúng như dự kiến, file đòi hỏi mật khẩu. Sử dụng mật khẩu như ở trong ảnh:
-![{BC006434-C681-4481-8D6C-27A278D090AE}](https://hackmd.io/_uploads/r18TAf2kMx.png)
+![{BC006434-C681-4481-8D6C-27A278D090AE}](/images/shared/duality/03-password.svg)
 Tải file SPAM.txt này về:
-![{47F0AFB1-32E2-49D4-8A04-858FACCA008A}](https://hackmd.io/_uploads/rJYlyX3kGg.png)
+![{47F0AFB1-32E2-49D4-8A04-858FACCA008A}](/images/shared/duality/04-spam-txt.svg)
 File này ban đầu có vẻ là không có gì, nhưng thực chất được mã hoá bởi Spam Mimic. Giải mã ra thì được một nội dung có vẻ là cũng được mã hoá khác:
-![{00E4FC77-5D68-4441-88E5-6AACD8E74822}](https://hackmd.io/_uploads/B11IyQ2yzx.png)
+![{00E4FC77-5D68-4441-88E5-6AACD8E74822}](/images/shared/duality/05-spam-decoded.svg)
 Đây là Chess Steganography, giải mã thì ta có được flag:
-![{EC2DDD93-DAB1-4712-B776-1E56C758247C}](https://hackmd.io/_uploads/H1Hebmh1Gg.png)
+![{EC2DDD93-DAB1-4712-B776-1E56C758247C}](/images/shared/duality/06-chess-flag.svg)
 
 # macoveros
 Cang det
+
 Ban đầu khi loat file máy ảo vào thì ta có thể thấy một vấn đề: máy bị boot loop.
 Để xử lí vấn đề này thì ta có thể sử dụng [cái này](https://github.com/paolo-projects/auto-unlocker):
 ![{11B683E3-97F8-4168-8A63-14A4248FD315}](https://hackmd.io/_uploads/rkcB34oabg.png)
@@ -183,7 +200,9 @@ if __name__ == "__main__":
 Ở file txt, ta thu về được string `4n6_1nv3stigat0r_dOesn’7_`.
 Còn file bin thì phức tạp hơn một chút khi mà dạng file không trực tiếp ra flag với các con số ví dụ như là `30 31 31 30 31 31 30 30 20 30 31 31 30 31 30 30 31 20 30 31 31 30 31 30 31 31 20 30 30 31 31 30 30 31 31 20 30 31 30 31 31 31 31 31 20 30 30 31 31 30 31 31 31 20 30 31 31 30 31 30 30 30 20 30 31 31 30 31 30 30 31 20 30 31 31 31 30 30 31 31 20 30 31 30 31 31 31 31 31 20 30 31 31 30 31 30 30 30 20 30 31 31 31 30 31 30 31 20 30 31 31 30 31 30 30 30 20 30 30 31 30 30 30 30...`. So vào bảng ASCII thì ta có thể thấy rằng: 30 chính là `0`, 31 chính là kí tự `1`, còn 20 là dấu cách. Viết script để giải mã thì ta được string `lik3_7his_huh!?:C}`. 
 Flag gồm 3 mảnh, vì thế còn 1 mảnh nữa. :))) bằng 1 cách nào đó thì sau khi giải mã tất cả các file screenshot thì ta có một file với mã QR:
+
 ![Screenshot_decrypted](https://hackmd.io/_uploads/H1jx17ZCWx.png)
+
 Text trong QR chính là `KCSC{w1ndOw5_d1git4l_`. 
 Ghép lại ta có flag hoàn chỉnh: `KCSC{w1ndOw5_d1git4l_4n6_1nv3stigat0r_dOesn’7_lik3_7his_huh!?:C}`
 >Credit: cảm ơn sự support cực kì nhiệt tình của Quang và author fr4nk đã giúp em D hoàn thiện bài này ạ! ||Va nun na na na anh Codex da reverse lai giup em con malware||
