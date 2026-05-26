@@ -2,6 +2,10 @@
 <html lang="{{ .Site.Language.Lang }}" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
 <head>
   {{- partial "head.html" . -}}
+  {{- if eq .RelPermalink "/about/" -}}
+  {{- $musicPlayerCss := resources.Get "css/music-player.css" | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $musicPlayerCss.RelPermalink }}" integrity="{{ $musicPlayerCss.Data.Integrity }}">
+  {{- end -}}
 </head>
 <body>
   <div class="d-flex flex-column min-height-full">
@@ -31,6 +35,10 @@
   <script src="{{ $themeJs.RelPermalink }}" integrity="{{ $themeJs.Data.Integrity }}"></script>
   {{- $sidebarJs := resources.Get "js/sidebar.js" | minify | fingerprint -}}
   <script src="{{ $sidebarJs.RelPermalink }}" integrity="{{ $sidebarJs.Data.Integrity }}"></script>
+  {{- if eq .RelPermalink "/about/" -}}
+  {{- $musicPlayerJs := resources.Get "js/music-player.js" | minify | fingerprint -}}
+  <script src="{{ $musicPlayerJs.RelPermalink }}" integrity="{{ $musicPlayerJs.Data.Integrity }}"></script>
+  {{- end -}}
 
   {{- if or .Params.math .IsPage -}}
   <script>

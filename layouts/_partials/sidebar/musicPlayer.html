@@ -1,0 +1,36 @@
+{{- if eq .RelPermalink "/about/" -}}
+<div class="music-player-card color-bg-subtle rounded-2 p-3 mb-3" data-youtube-id="vuFI8lOAn58">
+  <h3 class="h5 mb-2">My Music</h3>
+  <div class="music-player">
+    <a class="music-player__art-link" href="https://youtu.be/vuFI8lOAn58" target="_blank" rel="noopener noreferrer" aria-label="Open this track on YouTube">
+      <img class="music-player__art" src="{{ "/images/music_thumb.jpg" | relURL }}" alt="Music thumbnail" loading="lazy">
+    </a>
+    <div class="music-player__main">
+      <a class="music-player__title Link--primary" href="https://youtu.be/vuFI8lOAn58" target="_blank" rel="noopener noreferrer">Hẹn gặp lại anh khi hoa chưa tàn</a>
+      <div class="music-player__meta">Renard 狐 Remix</div>
+    </div>
+  </div>
+  <div class="music-player__controls" data-role="music-controls">
+    <div class="music-player__row">
+      <button class="music-player__button" type="button" data-role="play-toggle" aria-label="Play music" disabled>
+        <svg class="music-player__icon music-player__icon--play" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M4.75 3.25v9.5L12.25 8z"></path>
+        </svg>
+        <svg class="music-player__icon music-player__icon--pause" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M4 3h3v10H4zm5 0h3v10H9z"></path>
+        </svg>
+      </button>
+      <span class="music-player__time" data-role="current-time">0:00</span>
+      <input class="music-player__range music-player__range--seek" type="range" min="0" max="100" step="0.1" value="0" data-role="seek" aria-label="Music timeline" disabled>
+      <span class="music-player__time" data-role="duration">0:00</span>
+    </div>
+    <div class="music-player__row music-player__row--volume">
+      <svg class="music-player__volume-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M2 6.25A1.25 1.25 0 0 1 3.25 5h2.1l3.3-2.65A.85.85 0 0 1 10 3.01v9.98a.85.85 0 0 1-1.35.66L5.35 11h-2.1A1.25 1.25 0 0 1 2 9.75zm10.2-1.45a.75.75 0 0 1 1.05.15 5 5 0 0 1 0 6.1.75.75 0 1 1-1.2-.9 3.5 3.5 0 0 0 0-4.3.75.75 0 0 1 .15-1.05"></path>
+      </svg>
+      <input class="music-player__range music-player__range--volume" type="range" min="0" max="100" step="1" value="60" data-role="volume" aria-label="Music volume" disabled>
+    </div>
+  </div>
+  <div class="music-player__embed" data-role="youtube-player" aria-hidden="true"></div>
+</div>
+{{- end -}}
