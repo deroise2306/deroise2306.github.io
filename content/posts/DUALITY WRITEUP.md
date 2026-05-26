@@ -1,5 +1,5 @@
 ---
-title: DUALITY TEST WRITEUP
+title: DUALITY TEST
 date: 2026-04-26
 author: deroise2306
 ---

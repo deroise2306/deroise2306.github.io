@@ -1,26 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>deroise2306's Home</title><link>https://deroise2306.github.io/</link><description>Recent content on deroise2306's Home</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 26 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://deroise2306.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>DUALITY TEST WRITEUP</title><link>https://deroise2306.github.io/posts/duality-writeup/</link><pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/posts/duality-writeup/</guid><description>&lt;h1 id="plum"&gt;Plum&lt;/h1&gt;
-&lt;p&gt;Như tên bài thì file được cho là một file &lt;code&gt;plum.sqlite&lt;/code&gt;, là một file database của StickyNote Windows. Mở bằng DB Browser:
-&lt;img src="https://hackmd.io/_uploads/Hyv_AfjTWe.png" alt="{95680F15-3DCC-40E4-9BF9-18AB0A835235}" loading="lazy"&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>deroise2306's Home</title><link>https://deroise2306.github.io/</link><description>Recent content on deroise2306's Home</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 24 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://deroise2306.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>KMA CTF I</title><link>https://deroise2306.github.io/posts/kmactf-2026-i/</link><pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/posts/kmactf-2026-i/</guid><description>&lt;script&gt;
+async function checkPassword() {
+ const pwd = prompt("Nhập mật khẩu để xem bài viết:");
+ if (!pwd) {
+ document.body.innerHTML = "&lt;h1&gt;Please enter password&lt;/h1&gt;";
+ return;
+ }
+ 
+ // SHA-256 hash của mật khẩu "lololo"
+ const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
+ 
+ const encoder = new TextEncoder();
+ const data = encoder.encode(pwd);
+ const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+ const hashArray = Array.from(new Uint8Array(hashBuffer));
+ const inputHash = hashArray.map(b =&gt; b.toString(16).padStart(2, '0')).join('');
+ 
+ if (inputHash !== correctHash) {
+ document.body.innerHTML = "&lt;h1&gt;Wrong password&lt;/h1&gt;";
+ }
+}
+window.addEventListener('load', checkPassword);
+&lt;/script&gt;
+&lt;h1 id="1-cctv"&gt;1. CCTV&lt;/h1&gt;
+&lt;div style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://deroise2306.github.io/images/cctv.png" alt="CCTV" loading="lazy"&gt;
+&lt;/p&gt;</description></item><item><title>DUALITY TEST</title><link>https://deroise2306.github.io/posts/duality-writeup/</link><pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/posts/duality-writeup/</guid><description>&lt;h1 id="plum"&gt;Plum&lt;/h1&gt;
+&lt;p&gt;Như tên bài thì file được cho là một file &lt;code&gt;plum.sqlite&lt;/code&gt;, là một file database của StickyNote Windows. Mở bằng DB Browser:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://hackmd.io/_uploads/Hyv_AfjTWe.png" alt="{95680F15-3DCC-40E4-9BF9-18AB0A835235}" loading="lazy"&gt;
 
 &lt;img src="https://hackmd.io/_uploads/S1HKRfjpZx.png" alt="{987DB66D-EA49-44D0-B6AC-8A6F1B997AC6}" loading="lazy"&gt;
 
 &lt;img src="https://hackmd.io/_uploads/SkW5CMsTWe.png" alt="{19BF8D06-14F1-4C3B-AC79-F2C319263725}" loading="lazy"&gt;
-
-Nhìn chung thì ta sẽ chủ yếu để ý đến 7 ID của 7 note kia thôi :/
-Bài này theo như Description và đọc các blog về Stickey Note trên mạng thì đinh ninh 69,96% là tìm cách recover các note bị xoá hoặc bị ẩn. Vì thế soi hẳn bằng HxD xem thu hoạch được gì không. Để ý thì ID của các đối tượng sẽ luôn theo format là &lt;code&gt;{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx}&lt;/code&gt; nên cũng rất dễ spot out:
-&lt;img src="https://hackmd.io/_uploads/B1GvJ7jTbe.png" alt="{4153F9CC-6412-48BE-9B77-BE65BF816CD6}" loading="lazy"&gt;
-
-Khối này thì có vẻ là các Note ta thấy ở Database.
-&lt;img src="https://hackmd.io/_uploads/BJRi1mjpbe.png" alt="{EBC5D063-B5FA-4AEC-ACA4-AA8D600C3739}" loading="lazy"&gt;
-
-Có khối này nhìn rất lạ, ID cũng ở trong khối, nhìn thì trông có vẻ bị làm rối hoặc mã hoá gì đó:
-&lt;img src="https://hackmd.io/_uploads/BkIoQmoabx.png" alt="{3E949F58-FD64-489E-924E-6B5F894D211A}" loading="lazy"&gt;
-
-Đoạn này thì ta thấy các ID lạ hoàn toàn không có trong table. &lt;code&gt;{71da4b2e-128e-42b4-91c1-c8d548785c78}&lt;/code&gt; và&lt;code&gt;{342d3b29-5390-4e32-8310-d070f92191f5}&lt;/code&gt;.
-Đến đoạn này thì dù biết là chính nó nhưng không có hint gì nên quyết định là gemini thử:
-&lt;img src="https://hackmd.io/_uploads/rkgLQXipWe.png" alt="{7BAE1CEF-4644-4EC2-B58F-A23E8FF747A1}" loading="lazy"&gt;
-
-Dùng script để gỡ rối:&lt;/p&gt;</description></item><item><title>About Me</title><link>https://deroise2306.github.io/about/</link><pubDate>Thu, 26 Feb 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/about/</guid><description>&lt;h2 id="deroise2306s-here"&gt;deroise2306&amp;rsquo;s here!&lt;/h2&gt;
+&lt;/p&gt;
+&lt;p&gt;Nhìn chung thì ta sẽ chủ yếu để ý đến 7 ID của 7 note kia thôi :/
+Bài này theo như Description và đọc các blog về Stickey Note trên mạng thì đinh ninh 69,96% là tìm cách recover các note bị xoá hoặc bị ẩn. Vì thế soi hẳn bằng HxD xem thu hoạch được gì không. Để ý thì ID của các đối tượng sẽ luôn theo format là &lt;code&gt;{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx}&lt;/code&gt; nên cũng rất dễ spot out:&lt;/p&gt;</description></item><item><title>About Me</title><link>https://deroise2306.github.io/about/</link><pubDate>Thu, 26 Feb 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/about/</guid><description>&lt;h2 id="deroise2306s-here"&gt;deroise2306&amp;rsquo;s here!&lt;/h2&gt;
 &lt;p align="center"&gt;
  &lt;img src="https://deroise2306.github.io/images/avatar.png" alt="deroise2306 avatar" width="180" style="border-radius: 50%;"&gt;
 &lt;/p&gt;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CTF on deroise2306's Home</title><link>https://deroise2306.github.io/tags/ctf/</link><description>Recent content in CTF on deroise2306's Home</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 24 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://deroise2306.github.io/tags/ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>KMA CTF I</title><link>https://deroise2306.github.io/posts/kmactf-2026-i/</link><pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/posts/kmactf-2026-i/</guid><description>&lt;script&gt;
+async function checkPassword() {
+ const pwd = prompt("Nhập mật khẩu để xem bài viết:");
+ if (!pwd) {
+ document.body.innerHTML = "&lt;h1&gt;Please enter password&lt;/h1&gt;";
+ return;
+ }
+ 
+ // SHA-256 hash của mật khẩu "lololo"
+ const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
+ 
+ const encoder = new TextEncoder();
+ const data = encoder.encode(pwd);
+ const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+ const hashArray = Array.from(new Uint8Array(hashBuffer));
+ const inputHash = hashArray.map(b =&gt; b.toString(16).padStart(2, '0')).join('');
+ 
+ if (inputHash !== correctHash) {
+ document.body.innerHTML = "&lt;h1&gt;Wrong password&lt;/h1&gt;";
+ }
+}
+window.addEventListener('load', checkPassword);
+&lt;/script&gt;
+&lt;h1 id="1-cctv"&gt;1. CCTV&lt;/h1&gt;
+&lt;div style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://deroise2306.github.io/images/cctv.png" alt="CCTV" loading="lazy"&gt;
+&lt;/p&gt;</description></item></channel></rss>
