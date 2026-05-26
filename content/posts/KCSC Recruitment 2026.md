@@ -3,6 +3,8 @@ title: 'KCSC Recruitment 2026'
 
 date: 2025-12-14
 author: deroise2306
+description: KCSC Recruitment 2026 Writeup
+tags: ["crypto", "KCSC", "CTF"]
 ---
 ## 1. MiniRSA
 Source:

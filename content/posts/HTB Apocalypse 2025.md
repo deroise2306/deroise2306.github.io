@@ -2,6 +2,8 @@
 title: HTB Apocalypse 2025
 date: 2025-04-02
 author: deroise2306
+description: HTB Apocalypse 2025 Writeup
+tags: ["crypto", "HTB", "CTF"]
 ---
 
 ## 1. Copperbox

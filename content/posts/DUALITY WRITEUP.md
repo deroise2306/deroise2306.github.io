@@ -2,6 +2,8 @@
 title: DUALITY TEST
 date: 2026-04-26
 author: deroise2306
+description: Duality Test Writeup
+tags: ["forensics", "KCSC", "CTF"]
 ---
 
 # Plum

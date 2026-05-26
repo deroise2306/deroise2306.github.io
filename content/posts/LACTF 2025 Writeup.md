@@ -3,6 +3,8 @@ title: 'LA CTF 2025'
 
 date: 2025-10-02
 author: deroise2306
+description: LA CTF 2025 Writeup
+tags: ["crypto", "CTF"]
 ---
 
 # 1. Big E
