@@ -6,7 +6,6 @@ async function checkPassword() {
  return;
  }
  
- // SHA-256 hash của mật khẩu "lololo"
  const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
  
  const encoder = new TextEncoder();
@@ -23,5 +22,5 @@ window.addEventListener('load', checkPassword);
 &lt;/script&gt;
 &lt;h1 id="1-cctv"&gt;1. CCTV&lt;/h1&gt;
 &lt;div style="text-align: center;"&gt;
-&lt;p&gt;&lt;img src="https://deroise2306.github.io/images/cctv.png" alt="CCTV" loading="lazy"&gt;
+&lt;p&gt;&lt;img src="https://i.ibb.co/23kzH4kS/image.png" alt="CCTV" loading="lazy"&gt;
 &lt;/p&gt;</description></item></channel></rss>

@@ -6,7 +6,6 @@ async function checkPassword() {
  return;
  }
  
- // SHA-256 hash của mật khẩu "lololo"
  const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
  
  const encoder = new TextEncoder();
@@ -23,7 +22,7 @@ window.addEventListener('load', checkPassword);
 &lt;/script&gt;
 &lt;h1 id="1-cctv"&gt;1. CCTV&lt;/h1&gt;
 &lt;div style="text-align: center;"&gt;
-&lt;p&gt;&lt;img src="https://deroise2306.github.io/images/cctv.png" alt="CCTV" loading="lazy"&gt;
+&lt;p&gt;&lt;img src="https://i.ibb.co/23kzH4kS/image.png" alt="CCTV" loading="lazy"&gt;
 &lt;/p&gt;</description></item><item><title>DUALITY TEST</title><link>https://deroise2306.github.io/posts/duality-writeup/</link><pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/posts/duality-writeup/</guid><description>&lt;h1 id="plum"&gt;Plum&lt;/h1&gt;
 &lt;p&gt;Như tên bài thì file được cho là một file &lt;code&gt;plum.sqlite&lt;/code&gt;, là một file database của StickyNote Windows. Mở bằng DB Browser:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://hackmd.io/_uploads/Hyv_AfjTWe.png" alt="{95680F15-3DCC-40E4-9BF9-18AB0A835235}" loading="lazy"&gt;

@@ -13,7 +13,6 @@ async function checkPassword() {
     return;
   }
   
-  // SHA-256 hash của mật khẩu "lololo"
   const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
   
   const encoder = new TextEncoder();
@@ -31,7 +30,7 @@ window.addEventListener('load', checkPassword);
 # 1. CCTV
 <div style="text-align: center;">
 
-![CCTV](/images/cctv.png)
+![CCTV](https://i.ibb.co/23kzH4kS/image.png)
 
 </div>
 
