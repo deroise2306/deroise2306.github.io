@@ -1,156 +1,414 @@
-<!doctype html><html lang=en data-color-mode=auto data-light-theme=light data-dark-theme=dark><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><title>DUALITY TEST | deroise2306's Home</title><meta name=description content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta name=author content="deroise2306"><meta property="og:title" content="DUALITY TEST"><meta property="og:description" content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta property="og:type" content="article"><meta property="og:url" content="https://deroise2306.github.io/posts/duality-writeup/"><meta property="og:image" content="https://deroise2306.github.io/images/banner.webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:site_name" content="deroise2306's Home"><meta property="og:locale" content="en"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="DUALITY TEST"><meta name=twitter:description content="Cybersecurity notes, CTF writeups, and digital forensics research."><meta name=twitter:image content="https://deroise2306.github.io/images/banner.webp"><link rel=canonical href=https://deroise2306.github.io/posts/duality-writeup/><link rel=stylesheet href=/css/primer.min.c12daf26af408c64f29cc993dd5ab422334e71e50fa7198111b729fdf674e34d.css integrity="sha256-wS2vJq9AjGTynMmT3Vq0IjNOceUPpxmBEbcp/fZ0400="><link rel=stylesheet href=/css/custom.min.44f76475abc99bc3028656bd061d05d398c1b30eefd8ef829d03d0a85e7e5ff2.css integrity="sha256-RPdkdavJm8MChla9Bh0F05jBsw7v2O+CnQPQqF5+X/I="><link rel=stylesheet href=/css/syntax.min.174c84898cba6753b1e76756faaba89295a9b36f5a52958e027f347103d8575d.css integrity="sha256-F0yEiYy6Z1Ox52dW+quokpWps29aUpWOAn80cQPYV10="><link rel=icon href=/favicon.ico type=image/x-icon><style>html,html[data-color-mode=light],html[data-light-theme=light][data-color-mode=auto]{--fgColor-accent:#0969da !important;--bgColor-accent-emphasis:#0969da !important;--bgColor-accent-muted:color-mix(in srgb, #0969da 15%, transparent) !important}html[data-color-mode=dark],html[data-dark-theme=dark][data-color-mode=auto]{--fgColor-accent:color-mix(in srgb, #0969da 80%, #ffffff) !important;--bgColor-accent-emphasis:#0969da !important;--bgColor-accent-muted:color-mix(in srgb, #0969da 20%, transparent) !important}@media(prefers-color-scheme:dark){html[data-color-mode=auto]{--fgColor-accent:color-mix(in srgb, #0969da 80%, #ffffff) !important;--bgColor-accent-emphasis:#0969da !important;--bgColor-accent-muted:color-mix(in srgb, #0969da 20%, transparent) !important}}</style><script>(function(){const e=localStorage.getItem("theme"),t=document.documentElement;(e==="light"||e==="dark")&&t.setAttribute("data-color-mode",e)})()</script></head><body><div class="d-flex flex-column min-height-full"><header class=AppHeader><div class=AppHeader-globalBar><div class=AppHeader-globalBar-start><a href=/ class=AppHeader-logo aria-label="deroise2306's Home"><span class=AppHeader-logo-text>deroise2306's Home</span></a><nav class=AppHeader-nav aria-label="Main navigation"><a href=/ class=AppHeader-nav-item>Home</a><a href=/posts/ class=AppHeader-nav-item>Posts</a><a href=/about/ class=AppHeader-nav-item>About</a></nav></div><div class=AppHeader-globalBar-end><button type=button id=theme-toggle class="tooltipped tooltipped-s" aria-label="System theme" data-tooltip-light="Light theme" data-tooltip-dark="Dark theme" data-tooltip-auto="System theme">
-<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-light" style="display:none"><path d="M8 12a4 4 0 110-8 4 4 0 010 8zm0-1.5a2.5 2.5.0 100-5 2.5 2.5.0 000 5zm5.657-8.157a.75.75.0 010 1.061l-1.061 1.06a.749.749.0 01-1.275-.326.749.749.0 01.215-.734l1.06-1.06a.75.75.0 011.06.0zm-9.193 9.193a.75.75.0 010 1.06l-1.06 1.061a.75.75.0 11-1.061-1.06l1.06-1.061a.75.75.0 011.061.0zM8 0a.75.75.0 01.75.75v1.5a.75.75.0 01-1.5.0V.75A.75.75.0 018 0zM3 8a.75.75.0 01-.75.75H.75a.75.75.0 010-1.5h1.5A.75.75.0 013 8zm13 0a.75.75.0 01-.75.75h-1.5a.75.75.0 010-1.5h1.5A.75.75.0 0116 8zm-8 5a.75.75.0 01.75.75v1.5a.75.75.0 01-1.5.0v-1.5A.75.75.0 018 13zm3.536-1.464a.75.75.0 011.06.0l1.061 1.06a.75.75.0 01-1.06 1.061l-1.061-1.06a.75.75.0 010-1.061zM2.343 2.343a.75.75.0 011.06.0l1.061 1.06a.75.75.0 01-1.06 1.061L2.343 3.403a.75.75.0 010-1.06z"/></svg>
-<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-dark" style="display:none"><path d="M9.598 1.591a.749.749.0 01.785-.175 7.001 7.001.0 11-8.967 8.967.75.75.0 01.961-.96 5.5 5.5.0 007.046-7.046.75.75.0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.499 5.499.0 107.678-7.678z"/></svg>
-<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-auto" style="display:none"><path d="M14.25 1c.966.0 1.75.784 1.75 1.75v7.5A1.75 1.75.0 0114.25 12h-3.727c.099 1.041.52 1.872 1.292 2.757A.752.752.0 0111.25 16h-6.5a.75.75.0 01-.565-1.243c.772-.885 1.193-1.716 1.292-2.757H1.75A1.75 1.75.0 010 10.25v-7.5C0 1.784.784 1 1.75 1zM1.75 2.5a.25.25.0 00-.25.25v7.5c0 .138.112.25.25.25h12.5a.25.25.0 00.25-.25v-7.5a.25.25.0 00-.25-.25zM9.018 13H6.982a5.72 5.72.0 01-.765 1.5h3.566A5.72 5.72.0 019.018 13z"/></svg></button></div></div></header><main class=flex-auto><div class="container-xl px-3 px-md-4 px-lg-5 py-4"><div class="Layout Layout--sidebarPosition-end Layout--flowRow-until-md"><div class=Layout-main><article><header class=mb-4><h1 class="f1 lh-condensed mb-2">DUALITY TEST</h1><div class="d-flex flex-items-center color-fg-muted f5 mb-3"><time datetime=2026-04-26T00:00:00Z>2026-04-26
-</time><span class=mx-2>&#183;</span><span>9 min read</span><span class=mx-2>&#183;</span><span>deroise2306</span></div></header><div class=markdown-body><h1 id=plum>Plum</h1><p>Như tên bài thì file được cho là một file <code>plum.sqlite</code>, là một file database của StickyNote Windows. Mở bằng DB Browser:</p><p><img src=https://hackmd.io/_uploads/Hyv_AfjTWe.png alt={95680F15-3DCC-40E4-9BF9-18AB0A835235} loading=lazy>
-<img src=https://hackmd.io/_uploads/S1HKRfjpZx.png alt={987DB66D-EA49-44D0-B6AC-8A6F1B997AC6} loading=lazy>
-<img src=https://hackmd.io/_uploads/SkW5CMsTWe.png alt={19BF8D06-14F1-4C3B-AC79-F2C319263725} loading=lazy></p><p>Nhìn chung thì ta sẽ chủ yếu để ý đến 7 ID của 7 note kia thôi :/
-Bài này theo như Description và đọc các blog về Stickey Note trên mạng thì đinh ninh 69,96% là tìm cách recover các note bị xoá hoặc bị ẩn. Vì thế soi hẳn bằng HxD xem thu hoạch được gì không. Để ý thì ID của các đối tượng sẽ luôn theo format là <code>{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx}</code> nên cũng rất dễ spot out:</p><p><img src=https://hackmd.io/_uploads/B1GvJ7jTbe.png alt={4153F9CC-6412-48BE-9B77-BE65BF816CD6} loading=lazy>
-Khối này thì có vẻ là các Note ta thấy ở Database.</p><p><img src=https://hackmd.io/_uploads/BJRi1mjpbe.png alt={EBC5D063-B5FA-4AEC-ACA4-AA8D600C3739} loading=lazy></p><p>Có khối này nhìn rất lạ, ID cũng ở trong khối, nhìn thì trông có vẻ bị làm rối hoặc mã hoá gì đó:</p><p><img src=https://hackmd.io/_uploads/BkIoQmoabx.png alt={3E949F58-FD64-489E-924E-6B5F894D211A} loading=lazy></p><p>Đoạn này thì ta thấy các ID lạ hoàn toàn không có trong table. <code>{71da4b2e-128e-42b4-91c1-c8d548785c78}</code> và<code>{342d3b29-5390-4e32-8310-d070f92191f5}</code>.
-Đến đoạn này thì dù biết là chính nó nhưng không có hint gì nên quyết định là gemini thử:</p><p><img src=https://hackmd.io/_uploads/rkgLQXipWe.png alt={7BAE1CEF-4644-4EC2-B58F-A23E8FF747A1} loading=lazy></p><p>Dùng script để gỡ rối:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>raw = data[id_end:]
-</span></span><span class=line><span class=cl>text_bytes = [b ^ 0xCC for b in raw if b != 0xCC]
-</span></span><span class=line><span class=cl>decoded = bytes(text_bytes).decode(&#39;utf-8&#39;, errors=&#39;replace&#39;)</span></span></code></pre></div><p>Out:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>[INTERNAL - confidential]
-</span></span><span class=line><span class=cl>Prod vault recovery - procedure v3.2 (SOP §4.2)
-</span></span><span class=line><span class=cl>Session token:
-</span></span><span class=line><span class=cl>  Sk-Qn7V-mZ8k-LpR9-xNfT-YwE4-2024-prod-vault-key-master-offline-v2
-</span></span><span class=line><span class=cl>Kit: backup_shard_20240301.dat (per SOP §4.2, protected at-rest).
-</span></span><span class=line><span class=cl>Token is single-use. Valid 1 hour. Rotate immediately.
-</span></span><span class=line><span class=cl>DELETE THIS NOTE before handing the laptop over.</span></span></code></pre></div><p>Ở đây ta có session token: <code>Sk-Qn7V-mZ8k-LpR9-xNfT-YwE4-2024-prod-vault-key-master-offline-v2</code>, tên kit <code>backup_shard_20240301.dat</code> cũng xuất hiện ở block data lạ kia. Đem xor với trường data sau đoạn <code>application/octet-stream</code> thì ta có được một file với header PNG:</p><p><img src=https://hackmd.io/_uploads/r18lHmsTWx.png alt=flag loading=lazy></p><h1 id=goodbye>GOODBYE</h1><p>Bài cho một file pcap, tất cả đều có điểm chung là gói tin đều là ICMP và phần data đều là 1200byte.</p><p><img src=https://hackmd.io/_uploads/SJLexEsp-g.png alt={53C9F4A6-0306-4769-BF06-D973B7E1B57E} loading=lazy></p><p>Lướt đến packet cuối thì ta nhận thấy có 2 dấu =, khả năng cao là encode B64 nên viết script trích xuất thì nhận được một file khá lớn. Đem đi decode thì thấy được header rất quen thuộc:</p><p><img src=https://hackmd.io/_uploads/B1u4eEiaWx.png alt={E2001E46-9ECE-412F-8233-5EF4CB1FECAB} loading=lazy></p><p>Ok, lưu về dạng file RAR nhưng bị khoá mật khẩu, Crack bằng john thì ta được mật khẩu sẽ là <code>123</code>, giải nén ra sẽ được một file PNG nặng gần 30mb khá sú:
-Binwalk thì thấy có giấu gì đó khả nghi bên trong:</p><p><img src=https://hackmd.io/_uploads/HyPkdNsTbe.png alt=image loading=lazy></p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=gdscript3><span class=line><span class=cl><span class=err>┌──</span><span class=p>(</span><span class=n>deroise2306</span><span class=err>㉿</span><span class=n>DESKTOP</span><span class=o>-</span><span class=n>M8CGFUM</span><span class=p>)</span><span class=o>-</span><span class=p>[</span><span class=o>/</span><span class=n>mnt</span><span class=o>/</span><span class=n>c</span><span class=o>/</span><span class=n>Users</span><span class=o>/</span><span class=n>deroise2306</span><span class=o>/</span><span class=n>Downloads</span><span class=o>/</span><span class=n>misc</span><span class=o>/</span><span class=n>misc</span><span class=p>]</span>
-</span></span><span class=line><span class=cl><span class=err>└─</span><span class=o>$</span> <span class=n>binwalk</span> <span class=n>IMG</span><span class=o>.</span><span class=n>png</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=n>DECIMAL</span>       <span class=n>HEXADECIMAL</span>     <span class=n>DESCRIPTION</span>
-</span></span><span class=line><span class=cl><span class=o>--------------------------------------------------------------------------------</span>
-</span></span><span class=line><span class=cl><span class=mi>0</span>             <span class=mh>0x0</span>             <span class=n>PNG</span> <span class=n>image</span><span class=p>,</span> <span class=mi>661</span> <span class=n>x</span> <span class=mi>512</span><span class=p>,</span> <span class=mi>8</span><span class=o>-</span><span class=n>bit</span><span class=o>/</span><span class=n>color</span> <span class=n>RGBA</span><span class=p>,</span> <span class=n>non</span><span class=o>-</span><span class=n>interlaced</span>
-</span></span><span class=line><span class=cl><span class=mi>91</span>            <span class=mh>0x5B</span>            <span class=n>Zlib</span> <span class=n>compressed</span> <span class=n>data</span><span class=p>,</span> <span class=n>compressed</span>
-</span></span><span class=line><span class=cl><span class=mi>191424</span>        <span class=mh>0x2EBC0</span>         <span class=n>RIFF</span> <span class=n>audio</span> <span class=n>data</span> <span class=p>(</span><span class=n>WAV</span><span class=p>),</span> <span class=n>PCM</span><span class=p>,</span> <span class=mi>2</span> <span class=n>channels</span><span class=p>,</span> <span class=mi>48000</span> <span class=n>sample</span> <span class=n>rate</span>
-</span></span><span class=line><span class=cl><span class=mi>2662131</span>       <span class=mh>0x289EF3</span>        <span class=n>JBOOT</span> <span class=n>STAG</span> <span class=n>header</span><span class=p>,</span> <span class=n>image</span> <span class=n>id</span><span class=p>:</span> <span class=mi>7</span><span class=p>,</span> <span class=n>timestamp</span> <span class=mh>0x9D24BB06</span><span class=p>,</span> <span class=n>image</span> <span class=n>size</span><span class=p>:</span> <span class=mi>1076192264</span> <span class=n>bytes</span><span class=p>,</span> <span class=n>image</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x8C0B</span><span class=p>,</span> <span class=n>header</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0xFD25</span>
-</span></span><span class=line><span class=cl><span class=mi>7190697</span>       <span class=mh>0x6DB8A9</span>        <span class=n>MySQL</span> <span class=n>ISAM</span> <span class=n>index</span> <span class=n>file</span> <span class=n>Version</span> <span class=mi>10</span>
-</span></span><span class=line><span class=cl><span class=mi>7384999</span>       <span class=mh>0x70AFA7</span>        <span class=n>MySQL</span> <span class=n>ISAM</span> <span class=n>index</span> <span class=n>file</span> <span class=n>Version</span> <span class=mi>4</span>
-</span></span><span class=line><span class=cl><span class=mi>8674576</span>       <span class=mh>0x845D10</span>        <span class=n>JBOOT</span> <span class=n>STAG</span> <span class=n>header</span><span class=p>,</span> <span class=n>image</span> <span class=n>id</span><span class=p>:</span> <span class=mi>12</span><span class=p>,</span> <span class=n>timestamp</span> <span class=mh>0x2E350F11</span><span class=p>,</span> <span class=n>image</span> <span class=n>size</span><span class=p>:</span> <span class=mi>820515764</span> <span class=n>bytes</span><span class=p>,</span> <span class=n>image</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x197D</span><span class=p>,</span> <span class=n>header</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x3311</span>
-</span></span><span class=line><span class=cl><span class=mi>17882524</span>      <span class=mh>0x110DD9C</span>       <span class=n>MySQL</span> <span class=n>MISAM</span> <span class=n>compressed</span> <span class=n>data</span> <span class=n>file</span> <span class=n>Version</span> <span class=mi>1</span>
-</span></span><span class=line><span class=cl><span class=mi>18337827</span>      <span class=mh>0x117D023</span>       <span class=n>JBOOT</span> <span class=n>STAG</span> <span class=n>header</span><span class=p>,</span> <span class=n>image</span> <span class=n>id</span><span class=p>:</span> <span class=mi>3</span><span class=p>,</span> <span class=n>timestamp</span> <span class=mh>0x2721C703</span><span class=p>,</span> <span class=n>image</span> <span class=n>size</span><span class=p>:</span> <span class=mi>337576703</span> <span class=n>bytes</span><span class=p>,</span> <span class=n>image</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0xEEFB</span><span class=p>,</span> <span class=n>header</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0xD91B</span>
-</span></span><span class=line><span class=cl><span class=mi>19267381</span>      <span class=mh>0x125FF35</span>       <span class=n>JBOOT</span> <span class=n>STAG</span> <span class=n>header</span><span class=p>,</span> <span class=n>image</span> <span class=n>id</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span> <span class=n>timestamp</span> <span class=mh>0x26233705</span><span class=p>,</span> <span class=n>image</span> <span class=n>size</span><span class=p>:</span> <span class=mi>102912257</span> <span class=n>bytes</span><span class=p>,</span> <span class=n>image</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x13FD</span><span class=p>,</span> <span class=n>header</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x9B20</span>
-</span></span><span class=line><span class=cl><span class=mi>21964242</span>      <span class=mh>0x14F25D2</span>       <span class=n>MySQL</span> <span class=n>ISAM</span> <span class=n>index</span> <span class=n>file</span> <span class=n>Version</span> <span class=mi>6</span>
-</span></span><span class=line><span class=cl><span class=mi>27429909</span>      <span class=mh>0x1A28C15</span>       <span class=n>JBOOT</span> <span class=n>STAG</span> <span class=n>header</span><span class=p>,</span> <span class=n>image</span> <span class=n>id</span><span class=p>:</span> <span class=mi>7</span><span class=p>,</span> <span class=n>timestamp</span> <span class=mh>0xA222FF0D</span><span class=p>,</span> <span class=n>image</span> <span class=n>size</span><span class=p>:</span> <span class=mi>1361199881</span> <span class=n>bytes</span><span class=p>,</span> <span class=n>image</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x7C04</span><span class=p>,</span> <span class=n>header</span> <span class=n>JBOOT</span> <span class=n>checksum</span><span class=p>:</span> <span class=mh>0x6B21</span></span></span></code></pre></div><p>Rõ ràng là thấy một file RIFF Audio, chắc chắn là file âm thanh rồi thì ta trích xuất ra:
-<img src=/images/shared/duality/01-riff-audio.svg alt={E7C3F00F-1341-4053-9384-9E036B3E6E7F} loading=lazy>
+<!DOCTYPE html>
+<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>DUALITY TEST | deroise2306&#39;s Home</title><meta name="description" content="Duality Test Writeup"><meta name="author" content="deroise2306"><meta property="og:title" content="DUALITY TEST"><meta property="og:description" content="Duality Test Writeup"><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/posts/duality-writeup/"><meta property="og:image" content="https://deroise2306.github.io/images/banner.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630"><meta property="og:site_name" content="deroise2306&#39;s Home"><meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DUALITY TEST">
+<meta name="twitter:description" content="Duality Test Writeup"><meta name="twitter:image" content="https://deroise2306.github.io/images/banner.webp">
+<link rel="canonical" href="http://localhost:1313/posts/duality-writeup/">
+
+<link rel="stylesheet" href="/css/primer.min.c12daf26af408c64f29cc993dd5ab422334e71e50fa7198111b729fdf674e34d.css" integrity="sha256-wS2vJq9AjGTynMmT3Vq0IjNOceUPpxmBEbcp/fZ0400=">
+
+<link rel="stylesheet" href="/css/custom.min.44f76475abc99bc3028656bd061d05d398c1b30eefd8ef829d03d0a85e7e5ff2.css" integrity="sha256-RPdkdavJm8MChla9Bh0F05jBsw7v2O&#43;CnQPQqF5&#43;X/I=">
+
+<link rel="stylesheet" href="/css/syntax.min.174c84898cba6753b1e76756faaba89295a9b36f5a52958e027f347103d8575d.css" integrity="sha256-F0yEiYy6Z1Ox52dW&#43;quokpWps29aUpWOAn80cQPYV10=">
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<style>
+  html,
+  html[data-color-mode="light"],
+  html[data-light-theme="light"][data-color-mode="auto"] {
+    --fgColor-accent: #0969da !important;
+    --bgColor-accent-emphasis: #0969da !important;
+    --bgColor-accent-muted: color-mix(in srgb, #0969da 15%, transparent) !important;
+  }
+  html[data-color-mode="dark"],
+  html[data-dark-theme="dark"][data-color-mode="auto"] {
+    --fgColor-accent: color-mix(in srgb, #0969da 80%, #ffffff) !important;
+    --bgColor-accent-emphasis: #0969da !important;
+    --bgColor-accent-muted: color-mix(in srgb, #0969da 20%, transparent) !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    html[data-color-mode="auto"] {
+      --fgColor-accent: color-mix(in srgb, #0969da 80%, #ffffff) !important;
+      --bgColor-accent-emphasis: #0969da !important;
+      --bgColor-accent-muted: color-mix(in srgb, #0969da 20%, transparent) !important;
+    }
+  }
+</style>
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme');
+    const html = document.documentElement;
+    if (saved === 'light' || saved === 'dark') {
+      html.setAttribute('data-color-mode', saved);
+    }
+  })();
+</script>
+</head>
+<body>
+  <div class="d-flex flex-column min-height-full"><header class="AppHeader">
+  <div class="AppHeader-globalBar">
+    <div class="AppHeader-globalBar-start">
+      <a href="/" class="AppHeader-logo" aria-label="deroise2306&#39;s Home"><span class="AppHeader-logo-text">deroise2306&#39;s Home</span></a>
+
+      <nav class="AppHeader-nav" aria-label="Main navigation"><a href="/" class="AppHeader-nav-item">Home</a><a href="/posts/" class="AppHeader-nav-item">Posts</a><a href="/about/" class="AppHeader-nav-item">About</a></nav>
+    </div>
+
+    <div class="AppHeader-globalBar-end"><button type="button" id="theme-toggle"
+  class="tooltipped tooltipped-s"
+  aria-label="System theme"
+  data-tooltip-light="Light theme"
+  data-tooltip-dark="Dark theme"
+  data-tooltip-auto="System theme">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-light" style="display: none;">
+    <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061Zm-9.193-9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061L2.343 3.403a.75.75 0 0 1 0-1.06Z"></path>
+  </svg>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-dark" style="display: none;">
+    <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+  </svg>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="octicon theme-icon-auto" style="display: none;">
+    <path d="M14.25 1c.966 0 1.75.784 1.75 1.75v7.5A1.75 1.75 0 0 1 14.25 12h-3.727c.099 1.041.52 1.872 1.292 2.757A.752.752 0 0 1 11.25 16h-6.5a.75.75 0 0 1-.565-1.243c.772-.885 1.193-1.716 1.292-2.757H1.75A1.75 1.75 0 0 1 0 10.25v-7.5C0 1.784.784 1 1.75 1ZM1.75 2.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25ZM9.018 13H6.982a5.72 5.72 0 0 1-.765 1.5h3.566a5.72 5.72 0 0 1-.765-1.5Z"></path>
+  </svg>
+</button>
+</div>
+  </div>
+</header>
+<main class="flex-auto">
+      <div class="container-xl px-3 px-md-4 px-lg-5 py-4"><div class="Layout Layout--sidebarPosition-end Layout--flowRow-until-md">
+          <div class="Layout-main"><article>
+  <header class="mb-4">
+    <h1 class="f1 lh-condensed mb-2">DUALITY TEST</h1><div class="d-flex flex-items-center color-fg-muted f5 mb-3"><time datetime="2026-04-26T00:00:00Z">
+        2026-04-26
+      </time><span class="mx-2">&middot;</span><span>9 min read</span><span class="mx-2">&middot;</span><span>deroise2306</span></div><div class="d-flex flex-wrap mb-3" style="gap: 0.5rem;"><a href="/tags/forensics/" class="topic-tag">forensics</a><a href="/tags/kcsc/" class="topic-tag">KCSC</a><a href="/tags/ctf/" class="topic-tag">CTF</a></div></header>
+
+  <div class="markdown-body">
+    <h1 id="plum">Plum</h1>
+<p>Như tên bài thì file được cho là một file <code>plum.sqlite</code>, là một file database của StickyNote Windows. Mở bằng DB Browser:</p>
+<p><img src="https://hackmd.io/_uploads/Hyv_AfjTWe.png" alt="{95680F15-3DCC-40E4-9BF9-18AB0A835235}" loading="lazy">
+
+<img src="https://hackmd.io/_uploads/S1HKRfjpZx.png" alt="{987DB66D-EA49-44D0-B6AC-8A6F1B997AC6}" loading="lazy">
+
+<img src="https://hackmd.io/_uploads/SkW5CMsTWe.png" alt="{19BF8D06-14F1-4C3B-AC79-F2C319263725}" loading="lazy">
+</p>
+<p>Nhìn chung thì ta sẽ chủ yếu để ý đến 7 ID của 7 note kia thôi :/
+Bài này theo như Description và đọc các blog về Stickey Note trên mạng thì đinh ninh 69,96% là tìm cách recover các note bị xoá hoặc bị ẩn. Vì thế soi hẳn bằng HxD xem thu hoạch được gì không. Để ý thì ID của các đối tượng sẽ luôn theo format là <code>{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx}</code> nên cũng rất dễ spot out:</p>
+<p><img src="https://hackmd.io/_uploads/B1GvJ7jTbe.png" alt="{4153F9CC-6412-48BE-9B77-BE65BF816CD6}" loading="lazy">
+
+Khối này thì có vẻ là các Note ta thấy ở Database.</p>
+<p><img src="https://hackmd.io/_uploads/BJRi1mjpbe.png" alt="{EBC5D063-B5FA-4AEC-ACA4-AA8D600C3739}" loading="lazy">
+</p>
+<p>Có khối này nhìn rất lạ, ID cũng ở trong khối, nhìn thì trông có vẻ bị làm rối hoặc mã hoá gì đó:</p>
+<p><img src="https://hackmd.io/_uploads/BkIoQmoabx.png" alt="{3E949F58-FD64-489E-924E-6B5F894D211A}" loading="lazy">
+</p>
+<p>Đoạn này thì ta thấy các ID lạ hoàn toàn không có trong table. <code>{71da4b2e-128e-42b4-91c1-c8d548785c78}</code> và<code>{342d3b29-5390-4e32-8310-d070f92191f5}</code>.
+Đến đoạn này thì dù biết là chính nó nhưng không có hint gì nên quyết định là gemini thử:</p>
+<p><img src="https://hackmd.io/_uploads/rkgLQXipWe.png" alt="{7BAE1CEF-4644-4EC2-B58F-A23E8FF747A1}" loading="lazy">
+</p>
+<p>Dùng script để gỡ rối:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">raw = data[id_end:]
+</span></span><span class="line"><span class="cl">text_bytes = [b ^ 0xCC for b in raw if b != 0xCC]
+</span></span><span class="line"><span class="cl">decoded = bytes(text_bytes).decode(&#39;utf-8&#39;, errors=&#39;replace&#39;)</span></span></code></pre></div><p>Out:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">[INTERNAL - confidential]
+</span></span><span class="line"><span class="cl">Prod vault recovery - procedure v3.2 (SOP §4.2)
+</span></span><span class="line"><span class="cl">Session token:
+</span></span><span class="line"><span class="cl">  Sk-Qn7V-mZ8k-LpR9-xNfT-YwE4-2024-prod-vault-key-master-offline-v2
+</span></span><span class="line"><span class="cl">Kit: backup_shard_20240301.dat (per SOP §4.2, protected at-rest).
+</span></span><span class="line"><span class="cl">Token is single-use. Valid 1 hour. Rotate immediately.
+</span></span><span class="line"><span class="cl">DELETE THIS NOTE before handing the laptop over.</span></span></code></pre></div><p>Ở đây ta có session token: <code>Sk-Qn7V-mZ8k-LpR9-xNfT-YwE4-2024-prod-vault-key-master-offline-v2</code>, tên kit <code>backup_shard_20240301.dat</code> cũng xuất hiện ở block data lạ kia. Đem xor với trường data sau đoạn <code>application/octet-stream</code> thì ta có được một file với header PNG:</p>
+<p><img src="https://hackmd.io/_uploads/r18lHmsTWx.png" alt="flag" loading="lazy">
+</p>
+<h1 id="goodbye">GOODBYE</h1>
+<p>Bài cho một file pcap, tất cả đều có điểm chung là gói tin đều là ICMP và phần data đều là 1200byte.</p>
+<p><img src="https://hackmd.io/_uploads/SJLexEsp-g.png" alt="{53C9F4A6-0306-4769-BF06-D973B7E1B57E}" loading="lazy">
+</p>
+<p>Lướt đến packet cuối thì ta nhận thấy có 2 dấu =, khả năng cao là encode B64 nên viết script trích xuất thì nhận được một file khá lớn. Đem đi decode thì thấy được header rất quen thuộc:</p>
+<p><img src="https://hackmd.io/_uploads/B1u4eEiaWx.png" alt="{E2001E46-9ECE-412F-8233-5EF4CB1FECAB}" loading="lazy">
+</p>
+<p>Ok, lưu về dạng file RAR nhưng bị khoá mật khẩu, Crack bằng john thì ta được mật khẩu sẽ là <code>123</code>, giải nén ra sẽ được một file PNG nặng gần 30mb khá sú:
+Binwalk thì thấy có giấu gì đó khả nghi bên trong:</p>
+<p><img src="https://hackmd.io/_uploads/HyPkdNsTbe.png" alt="image" loading="lazy">
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="gdscript3"><span class="line"><span class="cl"><span class="err">┌──</span><span class="p">(</span><span class="n">deroise2306</span><span class="err">㉿</span><span class="n">DESKTOP</span><span class="o">-</span><span class="n">M8CGFUM</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">deroise2306</span><span class="o">/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">misc</span><span class="o">/</span><span class="n">misc</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">└─</span><span class="o">$</span> <span class="n">binwalk</span> <span class="n">IMG</span><span class="o">.</span><span class="n">png</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">DECIMAL</span>       <span class="n">HEXADECIMAL</span>     <span class="n">DESCRIPTION</span>
+</span></span><span class="line"><span class="cl"><span class="o">--------------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="mi">0</span>             <span class="mh">0x0</span>             <span class="n">PNG</span> <span class="n">image</span><span class="p">,</span> <span class="mi">661</span> <span class="n">x</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">8</span><span class="o">-</span><span class="n">bit</span><span class="o">/</span><span class="n">color</span> <span class="n">RGBA</span><span class="p">,</span> <span class="n">non</span><span class="o">-</span><span class="n">interlaced</span>
+</span></span><span class="line"><span class="cl"><span class="mi">91</span>            <span class="mh">0x5B</span>            <span class="n">Zlib</span> <span class="n">compressed</span> <span class="n">data</span><span class="p">,</span> <span class="n">compressed</span>
+</span></span><span class="line"><span class="cl"><span class="mi">191424</span>        <span class="mh">0x2EBC0</span>         <span class="n">RIFF</span> <span class="n">audio</span> <span class="n">data</span> <span class="p">(</span><span class="n">WAV</span><span class="p">),</span> <span class="n">PCM</span><span class="p">,</span> <span class="mi">2</span> <span class="n">channels</span><span class="p">,</span> <span class="mi">48000</span> <span class="n">sample</span> <span class="n">rate</span>
+</span></span><span class="line"><span class="cl"><span class="mi">2662131</span>       <span class="mh">0x289EF3</span>        <span class="n">JBOOT</span> <span class="n">STAG</span> <span class="n">header</span><span class="p">,</span> <span class="n">image</span> <span class="n">id</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">timestamp</span> <span class="mh">0x9D24BB06</span><span class="p">,</span> <span class="n">image</span> <span class="n">size</span><span class="p">:</span> <span class="mi">1076192264</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">image</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x8C0B</span><span class="p">,</span> <span class="n">header</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0xFD25</span>
+</span></span><span class="line"><span class="cl"><span class="mi">7190697</span>       <span class="mh">0x6DB8A9</span>        <span class="n">MySQL</span> <span class="n">ISAM</span> <span class="n">index</span> <span class="n">file</span> <span class="n">Version</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl"><span class="mi">7384999</span>       <span class="mh">0x70AFA7</span>        <span class="n">MySQL</span> <span class="n">ISAM</span> <span class="n">index</span> <span class="n">file</span> <span class="n">Version</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="mi">8674576</span>       <span class="mh">0x845D10</span>        <span class="n">JBOOT</span> <span class="n">STAG</span> <span class="n">header</span><span class="p">,</span> <span class="n">image</span> <span class="n">id</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="n">timestamp</span> <span class="mh">0x2E350F11</span><span class="p">,</span> <span class="n">image</span> <span class="n">size</span><span class="p">:</span> <span class="mi">820515764</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">image</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x197D</span><span class="p">,</span> <span class="n">header</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x3311</span>
+</span></span><span class="line"><span class="cl"><span class="mi">17882524</span>      <span class="mh">0x110DD9C</span>       <span class="n">MySQL</span> <span class="n">MISAM</span> <span class="n">compressed</span> <span class="n">data</span> <span class="n">file</span> <span class="n">Version</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="mi">18337827</span>      <span class="mh">0x117D023</span>       <span class="n">JBOOT</span> <span class="n">STAG</span> <span class="n">header</span><span class="p">,</span> <span class="n">image</span> <span class="n">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">timestamp</span> <span class="mh">0x2721C703</span><span class="p">,</span> <span class="n">image</span> <span class="n">size</span><span class="p">:</span> <span class="mi">337576703</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">image</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0xEEFB</span><span class="p">,</span> <span class="n">header</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0xD91B</span>
+</span></span><span class="line"><span class="cl"><span class="mi">19267381</span>      <span class="mh">0x125FF35</span>       <span class="n">JBOOT</span> <span class="n">STAG</span> <span class="n">header</span><span class="p">,</span> <span class="n">image</span> <span class="n">id</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">timestamp</span> <span class="mh">0x26233705</span><span class="p">,</span> <span class="n">image</span> <span class="n">size</span><span class="p">:</span> <span class="mi">102912257</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">image</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x13FD</span><span class="p">,</span> <span class="n">header</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x9B20</span>
+</span></span><span class="line"><span class="cl"><span class="mi">21964242</span>      <span class="mh">0x14F25D2</span>       <span class="n">MySQL</span> <span class="n">ISAM</span> <span class="n">index</span> <span class="n">file</span> <span class="n">Version</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="mi">27429909</span>      <span class="mh">0x1A28C15</span>       <span class="n">JBOOT</span> <span class="n">STAG</span> <span class="n">header</span><span class="p">,</span> <span class="n">image</span> <span class="n">id</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">timestamp</span> <span class="mh">0xA222FF0D</span><span class="p">,</span> <span class="n">image</span> <span class="n">size</span><span class="p">:</span> <span class="mi">1361199881</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">image</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x7C04</span><span class="p">,</span> <span class="n">header</span> <span class="n">JBOOT</span> <span class="n">checksum</span><span class="p">:</span> <span class="mh">0x6B21</span></span></span></code></pre></div><p>Rõ ràng là thấy một file RIFF Audio, chắc chắn là file âm thanh rồi thì ta trích xuất ra:
+<img src="/images/shared/duality/01-riff-audio.svg" alt="{E7C3F00F-1341-4053-9384-9E036B3E6E7F}" loading="lazy">
+
 Sau một thời gian nghiên cứu thì thử với DeepSound:
-<img src=/images/shared/duality/02-deepsound.svg alt={55C0095F-BD32-49EC-A64B-D078678272F8} loading=lazy>
+<img src="/images/shared/duality/02-deepsound.svg" alt="{55C0095F-BD32-49EC-A64B-D078678272F8}" loading="lazy">
+
 Đúng như dự kiến, file đòi hỏi mật khẩu. Sử dụng mật khẩu như ở trong ảnh:
-<img src=/images/shared/duality/03-password.svg alt={BC006434-C681-4481-8D6C-27A278D090AE} loading=lazy>
+<img src="/images/shared/duality/03-password.svg" alt="{BC006434-C681-4481-8D6C-27A278D090AE}" loading="lazy">
+
 Tải file SPAM.txt này về:
-<img src=/images/shared/duality/04-spam-txt.svg alt={47F0AFB1-32E2-49D4-8A04-858FACCA008A} loading=lazy>
+<img src="/images/shared/duality/04-spam-txt.svg" alt="{47F0AFB1-32E2-49D4-8A04-858FACCA008A}" loading="lazy">
+
 File này ban đầu có vẻ là không có gì, nhưng thực chất được mã hoá bởi Spam Mimic. Giải mã ra thì được một nội dung có vẻ là cũng được mã hoá khác:
-<img src=/images/shared/duality/05-spam-decoded.svg alt={00E4FC77-5D68-4441-88E5-6AACD8E74822} loading=lazy>
+<img src="/images/shared/duality/05-spam-decoded.svg" alt="{00E4FC77-5D68-4441-88E5-6AACD8E74822}" loading="lazy">
+
 Đây là Chess Steganography, giải mã thì ta có được flag:
-<img src=/images/shared/duality/06-chess-flag.svg alt={EC2DDD93-DAB1-4712-B776-1E56C758247C} loading=lazy></p><h1 id=macoveros>macoveros</h1><p>Cang det</p><p>Ban đầu khi loat file máy ảo vào thì ta có thể thấy một vấn đề: máy bị boot loop.
-Để xử lí vấn đề này thì ta có thể sử dụng <a href=https://github.com/paolo-projects/auto-unlocker>cái này</a>:
-<img src=https://hackmd.io/_uploads/rkcB34oabg.png alt={11B683E3-97F8-4168-8A63-14A4248FD315} loading=lazy>
+<img src="/images/shared/duality/06-chess-flag.svg" alt="{EC2DDD93-DAB1-4712-B776-1E56C758247C}" loading="lazy">
+</p>
+<h1 id="macoveros">macoveros</h1>
+<p>Cang det</p>
+<p>Ban đầu khi loat file máy ảo vào thì ta có thể thấy một vấn đề: máy bị boot loop.
+Để xử lí vấn đề này thì ta có thể sử dụng <a href="https://github.com/paolo-projects/auto-unlocker">cái này</a>:
+<img src="https://hackmd.io/_uploads/rkcB34oabg.png" alt="{11B683E3-97F8-4168-8A63-14A4248FD315}" loading="lazy">
+
 Khi boot vào thì gặp mật khẩu, nhưng hint thì ở ngay màn hình khoá rùi:
-<img src=https://hackmd.io/_uploads/rJ332Nsa-g.png alt={42275C41-69F6-4F26-A2CB-9AF4999D29BA} loading=lazy>
+<img src="https://hackmd.io/_uploads/rJ332Nsa-g.png" alt="{42275C41-69F6-4F26-A2CB-9AF4999D29BA}" loading="lazy">
+
 Decode đoạn trên ra thì sẽ có mật khẩu <code>KcScx1337</code>
 Khi log vào thì bùm, một đống file bị mã hoá <code>.enc</code>. Tuy nhiên thì duy nhất có 1 file pcap vẫn còn đọc được và có lẽ đây là clue duy nhất để phân tích.
-<img src=https://hackmd.io/_uploads/ByR26Vs6-x.jpg alt=Capture loading=lazy>
+<img src="https://hackmd.io/_uploads/ByR26Vs6-x.jpg" alt="Capture" loading="lazy">
+
 Mở file Wireshark và xem xét, nhận thấy các gói TCP khả nghi:
-<img src=https://hackmd.io/_uploads/HyaGA4o6bx.png alt={002086D8-FA82-4258-B839-E010E5604B05} loading=lazy>
+<img src="https://hackmd.io/_uploads/HyaGA4o6bx.png" alt="{002086D8-FA82-4258-B839-E010E5604B05}" loading="lazy">
+
 Follow Stream thì ta thấy rõ ràng đây có thể là các request thực hiện yêu cầu mã hoá các file:
-<img src=https://hackmd.io/_uploads/Sk3C1rsT-g.png alt={935693EA-9271-408E-BA6B-E26413D599AF} loading=lazy>
-Thấy được các tham số <code>victim_id</code>, <code>machine_info</code>, các thông tin liên quan,&mldr;Sau đó là tên các file trong máy (cả tên trước và sau mã hoá, cùng đường dẫn), đặc biệt kèm đó là cả <code>aes_key</code>.
+<img src="https://hackmd.io/_uploads/Sk3C1rsT-g.png" alt="{935693EA-9271-408E-BA6B-E26413D599AF}" loading="lazy">
+
+Thấy được các tham số <code>victim_id</code>, <code>machine_info</code>, các thông tin liên quan,&hellip;Sau đó là tên các file trong máy (cả tên trước và sau mã hoá, cùng đường dẫn), đặc biệt kèm đó là cả <code>aes_key</code>.
 Ngoài ra còn có một request HTTPS được gửi về <code>14.225.220.66:5026</code>, có vẻ như là địa chỉ máy của attacker nhằm report về trạng thái mã hoá.
 Flow có thể là như sau: Khi mã độc thực thi, nó thực hiện quét tất cả các file, mã hoá dạng <code>.enc</code> với tên ngẫu nhiên. Sau khi hoàn thành mã hoá thì gửi report về địa chỉ <code>14.225.220.66:5026</code>.
 Để ý một chút thì có vẻ là file thực thi là một file python, vậy khả năng cao là một mal được viết bằng python.
-<img src=https://hackmd.io/_uploads/SyKH4riaZl.png alt={1EFC6FC7-8BF3-447E-A56F-98B47C6F0E3B} loading=lazy>
+<img src="https://hackmd.io/_uploads/SyKH4riaZl.png" alt="{1EFC6FC7-8BF3-447E-A56F-98B47C6F0E3B}" loading="lazy">
+
 Tìm trong report thì ta tìm được duy nhất file <code>a.py</code> này:
-<img src=https://hackmd.io/_uploads/rJwcNBoa-l.png alt={596A80CF-A4AB-47BC-B7F9-E06BB5985CC3} loading=lazy>
+<img src="https://hackmd.io/_uploads/rJwcNBoa-l.png" alt="{596A80CF-A4AB-47BC-B7F9-E06BB5985CC3}" loading="lazy">
+
 Có vẻ như là bản thân file mal cũng đã mã hoá nó thành <code>kplhwold2424.enc</code> . Để ý một chút thì cảm giác có vẻ như là các key chính là 10 số đầu của tham số <code>Creation_Time</code>. Nhưng nếu mã hoá AES thì key phải có độ dài 16 hoặc 32 gì đó, chứ không phải 10 :&rsquo;).
 Quay sang kiểm tra lịch sử command, có vẻ như trò chơi mà đề bài đề cập chính là trò chơi này, cũng chính là malware mà ta đề cập:
-<img src=https://hackmd.io/_uploads/BJ1Xk8oaWe.png alt={D1A95A8B-70FE-4D33-9C25-4111B3783EF6} loading=lazy>
+<img src="https://hackmd.io/_uploads/BJ1Xk8oaWe.png" alt="{D1A95A8B-70FE-4D33-9C25-4111B3783EF6}" loading="lazy">
+
 File trò chơi vốn gốc ở thư mục <code>Downloads</code> này cũng đã bị mã hoá:
-<img src=https://hackmd.io/_uploads/S1OoxIjTbg.png alt={AFE3019A-A342-400B-A3D7-62D8B64BCCD2} loading=lazy>
+<img src="https://hackmd.io/_uploads/S1OoxIjTbg.png" alt="{AFE3019A-A342-400B-A3D7-62D8B64BCCD2}" loading="lazy">
+
 Nhưng không sao, sau giải thì em D đã thấy link Download nó ở ngay trong Safari:
-<img src=https://hackmd.io/_uploads/SksBkWWC-l.png alt={FED549AF-D9C5-45F8-87F0-32291D6A3409} loading=lazy>
-Tải file bin về và nhờ GPT Reverse:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>Bước 1: Chuẩn bị khóa (Key Derivation)
-</span></span><span class=line><span class=cl>   * Malware lấy thời gian tạo tệp (st_birthtime) của tệp gốc.
-</span></span><span class=line><span class=cl>   * Nó chuyển phần nguyên của thời gian này thành một mảng 8 byte theo định dạng Little-endian.
-</span></span><span class=line><span class=cl>   * Mảng này được đệm thêm 8 byte 0x00 vào cuối (phép ljust(16, b&#34;\x00&#34;)) để tạo thành một khóa 16 byte hoàn chỉnh cho AES.
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  Bước 2: Lớp _l1 (Initial XOR Masking)
-</span></span><span class=line><span class=cl>   * Dữ liệu gốc được XOR với một chuỗi lặp lại của b&#34;x&#34; * 36.
-</span></span><span class=line><span class=cl>   * Mục đích: Phá vỡ cấu trúc định dạng file (Magic bytes) ngay từ đầu.
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  Bước 3: Lớp _l2 (Stream Cipher)
-</span></span><span class=line><span class=cl>   * Dữ liệu từ bước 2 được mã hóa bằng thuật toán ARC4.
-</span></span><span class=line><span class=cl>   * Khóa (Key) được sử dụng là chuỗi cứng: b&#34;KCSC&#34;.
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  Bước 4: Lớp _l3 (Sequence Rotation)
-</span></span><span class=line><span class=cl>   * Malware thực hiện xoay vòng mảng byte sang trái 47 vị trí.
-</span></span><span class=line><span class=cl>   * Phép xoay này được lặp lại 36 lần.
-</span></span><span class=line><span class=cl>   * Lưu ý: Nếu kích thước tệp nhỏ hơn 47 byte (như tệp Report.txt 28 byte), phép xoay data[47:] + data[:47] sẽ không thay đổi dữ liệu.
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  Bước 5: Lớp _l4 (Block Cipher - AES)
-</span></span><span class=line><span class=cl>   * Sử dụng thuật toán AES-CBC.
-</span></span><span class=line><span class=cl>   * Key: Là khóa 16 byte tạo ra từ Bước 1.
-</span></span><span class=line><span class=cl>   * IV: Là 16 byte rỗng (b&#34;\x00&#34; * 16).
-</span></span><span class=line><span class=cl>   * Padding: Dữ liệu được đệm thêm các byte 0x00 để chia hết cho 16 byte (Block size của AES).
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  Bước 6: Lớp _l5 (Final XOR Masking)
-</span></span><span class=line><span class=cl>   * Dữ liệu sau AES được XOR một lần cuối với chuỗi Tên tệp gốc (ví dụ: Report.txt) lặp lại liên tục.
-</span></span><span class=line><span class=cl>   * Kết quả cuối cùng được ghi ra tệp .enc.</span></span></code></pre></div><p>Kết hợp với Payload report trước đó, ta có thể xác định được các file nên giải mã. Tạm có thể đoán được là các file flag thường là các file txt hoặc bin thì ta có được 2 file: &ldquo;Report.txt&rdquo; và &ldquo;Something.bin&rdquo;.
-Sử dụng script sau để giải mã:</p><div class=highlight><pre tabindex=0 class=chroma><code data-lang=fallback><span class=line><span class=cl>from Crypto.Cipher import AES, ARC4
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>def decrypt_file(encrypted_data, original_name, birthtime_int, original_size):
-</span></span><span class=line><span class=cl>    mask = original_name.encode()
-</span></span><span class=line><span class=cl>    stream = (mask * ((len(encrypted_data) // len(mask)) + 1))[:len(encrypted_data)]
-</span></span><span class=line><span class=cl>    data = bytes(a ^ b for a, b in zip(encrypted_data, stream))
-</span></span><span class=line><span class=cl>    
-</span></span><span class=line><span class=cl>    key = birthtime_int.to_bytes(8, &#34;little&#34;).ljust(16, b&#34;\x00&#34;)
-</span></span><span class=line><span class=cl>    cipher = AES.new(key, AES.MODE_CBC, iv=b&#34;\x00&#34; * 16)
-</span></span><span class=line><span class=cl>    data = cipher.decrypt(data)
-</span></span><span class=line><span class=cl>    data = data[:original_size]
-</span></span><span class=line><span class=cl>    rot = 47
-</span></span><span class=line><span class=cl>    cycles = 36
-</span></span><span class=line><span class=cl>    for _ in range(cycles):
-</span></span><span class=line><span class=cl>        data = data[-rot:] + data[:-rot]
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    data = ARC4.new(b&#34;KCSC&#34;).encrypt(data)
-</span></span><span class=line><span class=cl>    
-</span></span><span class=line><span class=cl>    k2 = b&#34;x&#34; * 36
-</span></span><span class=line><span class=cl>    stream_l1 = (k2 * ((len(data) // len(k2)) + 1))[:len(data)]
-</span></span><span class=line><span class=cl>    data = bytes(a ^ b for a, b in zip(data, stream_l1))
-</span></span><span class=line><span class=cl>    
-</span></span><span class=line><span class=cl>    return data
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>if __name__ == &#34;__main__&#34;:
-</span></span><span class=line><span class=cl>    enc_file = &#34;ylwhdpcf8348.enc&#34;
-</span></span><span class=line><span class=cl>    orig_name = &#34;Report.txt&#34;
-</span></span><span class=line><span class=cl>    birthtime = 1762945782
-</span></span><span class=line><span class=cl>    orig_size = 28
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    try:
-</span></span><span class=line><span class=cl>        with open(enc_file, &#34;rb&#34;) as f:
-</span></span><span class=line><span class=cl>            encrypted_content = f.read()
-</span></span><span class=line><span class=cl>        
-</span></span><span class=line><span class=cl>        result = decrypt_file(encrypted_content, orig_name, birthtime, orig_size)
-</span></span><span class=line><span class=cl>        print(&#34;--- Giai ma thanh cong ---&#34;)
-</span></span><span class=line><span class=cl>        print(f&#34;Noi dung: {result.decode(&#39;utf-8&#39;)}&#34;)
-</span></span><span class=line><span class=cl>    except Exception as e:
-</span></span><span class=line><span class=cl>        print(f&#34;Loi: {e}&#34;)</span></span></code></pre></div><p>Ở file txt, ta thu về được string <code>4n6_1nv3stigat0r_dOesn’7_</code>.
+<img src="https://hackmd.io/_uploads/SksBkWWC-l.png" alt="{FED549AF-D9C5-45F8-87F0-32291D6A3409}" loading="lazy">
+
+Tải file bin về và nhờ GPT Reverse:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">Bước 1: Chuẩn bị khóa (Key Derivation)
+</span></span><span class="line"><span class="cl">   * Malware lấy thời gian tạo tệp (st_birthtime) của tệp gốc.
+</span></span><span class="line"><span class="cl">   * Nó chuyển phần nguyên của thời gian này thành một mảng 8 byte theo định dạng Little-endian.
+</span></span><span class="line"><span class="cl">   * Mảng này được đệm thêm 8 byte 0x00 vào cuối (phép ljust(16, b&#34;\x00&#34;)) để tạo thành một khóa 16 byte hoàn chỉnh cho AES.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Bước 2: Lớp _l1 (Initial XOR Masking)
+</span></span><span class="line"><span class="cl">   * Dữ liệu gốc được XOR với một chuỗi lặp lại của b&#34;x&#34; * 36.
+</span></span><span class="line"><span class="cl">   * Mục đích: Phá vỡ cấu trúc định dạng file (Magic bytes) ngay từ đầu.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Bước 3: Lớp _l2 (Stream Cipher)
+</span></span><span class="line"><span class="cl">   * Dữ liệu từ bước 2 được mã hóa bằng thuật toán ARC4.
+</span></span><span class="line"><span class="cl">   * Khóa (Key) được sử dụng là chuỗi cứng: b&#34;KCSC&#34;.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Bước 4: Lớp _l3 (Sequence Rotation)
+</span></span><span class="line"><span class="cl">   * Malware thực hiện xoay vòng mảng byte sang trái 47 vị trí.
+</span></span><span class="line"><span class="cl">   * Phép xoay này được lặp lại 36 lần.
+</span></span><span class="line"><span class="cl">   * Lưu ý: Nếu kích thước tệp nhỏ hơn 47 byte (như tệp Report.txt 28 byte), phép xoay data[47:] + data[:47] sẽ không thay đổi dữ liệu.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Bước 5: Lớp _l4 (Block Cipher - AES)
+</span></span><span class="line"><span class="cl">   * Sử dụng thuật toán AES-CBC.
+</span></span><span class="line"><span class="cl">   * Key: Là khóa 16 byte tạo ra từ Bước 1.
+</span></span><span class="line"><span class="cl">   * IV: Là 16 byte rỗng (b&#34;\x00&#34; * 16).
+</span></span><span class="line"><span class="cl">   * Padding: Dữ liệu được đệm thêm các byte 0x00 để chia hết cho 16 byte (Block size của AES).
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Bước 6: Lớp _l5 (Final XOR Masking)
+</span></span><span class="line"><span class="cl">   * Dữ liệu sau AES được XOR một lần cuối với chuỗi Tên tệp gốc (ví dụ: Report.txt) lặp lại liên tục.
+</span></span><span class="line"><span class="cl">   * Kết quả cuối cùng được ghi ra tệp .enc.</span></span></code></pre></div><p>Kết hợp với Payload report trước đó, ta có thể xác định được các file nên giải mã. Tạm có thể đoán được là các file flag thường là các file txt hoặc bin thì ta có được 2 file: &ldquo;Report.txt&rdquo; và &ldquo;Something.bin&rdquo;.
+Sử dụng script sau để giải mã:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="fallback"><span class="line"><span class="cl">from Crypto.Cipher import AES, ARC4
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def decrypt_file(encrypted_data, original_name, birthtime_int, original_size):
+</span></span><span class="line"><span class="cl">    mask = original_name.encode()
+</span></span><span class="line"><span class="cl">    stream = (mask * ((len(encrypted_data) // len(mask)) + 1))[:len(encrypted_data)]
+</span></span><span class="line"><span class="cl">    data = bytes(a ^ b for a, b in zip(encrypted_data, stream))
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    key = birthtime_int.to_bytes(8, &#34;little&#34;).ljust(16, b&#34;\x00&#34;)
+</span></span><span class="line"><span class="cl">    cipher = AES.new(key, AES.MODE_CBC, iv=b&#34;\x00&#34; * 16)
+</span></span><span class="line"><span class="cl">    data = cipher.decrypt(data)
+</span></span><span class="line"><span class="cl">    data = data[:original_size]
+</span></span><span class="line"><span class="cl">    rot = 47
+</span></span><span class="line"><span class="cl">    cycles = 36
+</span></span><span class="line"><span class="cl">    for _ in range(cycles):
+</span></span><span class="line"><span class="cl">        data = data[-rot:] + data[:-rot]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    data = ARC4.new(b&#34;KCSC&#34;).encrypt(data)
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    k2 = b&#34;x&#34; * 36
+</span></span><span class="line"><span class="cl">    stream_l1 = (k2 * ((len(data) // len(k2)) + 1))[:len(data)]
+</span></span><span class="line"><span class="cl">    data = bytes(a ^ b for a, b in zip(data, stream_l1))
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    return data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">if __name__ == &#34;__main__&#34;:
+</span></span><span class="line"><span class="cl">    enc_file = &#34;ylwhdpcf8348.enc&#34;
+</span></span><span class="line"><span class="cl">    orig_name = &#34;Report.txt&#34;
+</span></span><span class="line"><span class="cl">    birthtime = 1762945782
+</span></span><span class="line"><span class="cl">    orig_size = 28
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    try:
+</span></span><span class="line"><span class="cl">        with open(enc_file, &#34;rb&#34;) as f:
+</span></span><span class="line"><span class="cl">            encrypted_content = f.read()
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        result = decrypt_file(encrypted_content, orig_name, birthtime, orig_size)
+</span></span><span class="line"><span class="cl">        print(&#34;--- Giai ma thanh cong ---&#34;)
+</span></span><span class="line"><span class="cl">        print(f&#34;Noi dung: {result.decode(&#39;utf-8&#39;)}&#34;)
+</span></span><span class="line"><span class="cl">    except Exception as e:
+</span></span><span class="line"><span class="cl">        print(f&#34;Loi: {e}&#34;)</span></span></code></pre></div><p>Ở file txt, ta thu về được string <code>4n6_1nv3stigat0r_dOesn’7_</code>.
 Còn file bin thì phức tạp hơn một chút khi mà dạng file không trực tiếp ra flag với các con số ví dụ như là <code>30 31 31 30 31 31 30 30 20 30 31 31 30 31 30 30 31 20 30 31 31 30 31 30 31 31 20 30 30 31 31 30 30 31 31 20 30 31 30 31 31 31 31 31 20 30 30 31 31 30 31 31 31 20 30 31 31 30 31 30 30 30 20 30 31 31 30 31 30 30 31 20 30 31 31 31 30 30 31 31 20 30 31 30 31 31 31 31 31 20 30 31 31 30 31 30 30 30 20 30 31 31 31 30 31 30 31 20 30 31 31 30 31 30 30 30 20 30 30 31 30 30 30 30...</code>. So vào bảng ASCII thì ta có thể thấy rằng: 30 chính là <code>0</code>, 31 chính là kí tự <code>1</code>, còn 20 là dấu cách. Viết script để giải mã thì ta được string <code>lik3_7his_huh!?:C}</code>.
-Flag gồm 3 mảnh, vì thế còn 1 mảnh nữa. :))) bằng 1 cách nào đó thì sau khi giải mã tất cả các file screenshot thì ta có một file với mã QR:</p><p><img src=https://hackmd.io/_uploads/H1jx17ZCWx.png alt=Screenshot_decrypted loading=lazy></p><p>Text trong QR chính là <code>KCSC{w1ndOw5_d1git4l_</code>.
-Ghép lại ta có flag hoàn chỉnh: <code>KCSC{w1ndOw5_d1git4l_4n6_1nv3stigat0r_dOesn’7_lik3_7his_huh!?:C}</code></p><blockquote><p>Credit: cảm ơn sự support cực kì nhiệt tình của Quang và author fr4nk đã giúp em D hoàn thiện bài này ạ! ||Va nun na na na anh Codex da reverse lai giup em con malware||</p></blockquote></div><div class="border-top pt-4 mt-4"><p class="f5 text-bold mb-2">Share</p><div class="d-flex flex-wrap" style=gap:.5rem><a href="https://twitter.com/intent/tweet?text=DUALITY+TEST&url=https%3A%2F%2Fderoise2306.github.io%2Fposts%2Fduality-writeup%2F" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg>
-X
-</a><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fderoise2306.github.io%2Fposts%2Fduality-writeup%2F" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58.0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876.0 1.791.157 1.791.157v1.98h-1.009c-.993.0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/></svg>
-Facebook
-</a><a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fderoise2306.github.io%2Fposts%2Fduality-writeup%2F&title=DUALITY+TEST" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M0 1.146C0 .513.526.0 1.175.0h13.65C15.474.0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487.0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837.0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869.0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274.0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678.0 7.225.0 7.225z"/></svg>
-LinkedIn
-</a><a href="https://bsky.app/intent/compose?text=DUALITY+TEST%20https%3A%2F%2Fderoise2306.github.io%2Fposts%2Fduality-writeup%2F" target=_blank rel="noopener noreferrer" class="btn btn-sm"><svg viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align:text-bottom"><path d="M3.468 1.948C5.303 3.325 7.276 6.118 8 7.616c.724-1.498 2.697-4.29 4.532-5.668C13.855.955 16 .186 16 2.632c0 .489-.28 4.105-.444 4.692-.572 2.04-2.653 2.561-4.504 2.246 3.236.551 4.06 2.375 2.281 4.2-3.376 3.464-4.852-.872-5.23-1.988-.07-.205-.103-.3-.103-.218.0-.081-.033.013-.103.218-.378 1.116-1.854 5.452-5.23 1.988-1.778-1.825-.955-3.649 2.28-4.2-1.85.315-3.93-.205-4.503-2.246C.28 6.737.0 3.12.0 2.632.0.186 2.145.955 3.468 1.948"/></svg>
-Bluesky</a></div></div><nav class="border-top pt-4 mt-4"><div class="d-flex flex-justify-between"><a href=/posts/kcsc-recruitment-2026/ class=Link--secondary>&larr; KCSC Recruitment 2026
-</a><a href=/posts/kmactf-2026-i/ class=Link--secondary>KMA CTF I &rarr;</a></div></nav></article></div><div class=Layout-sidebar><aside><div class="color-bg-subtle rounded-2 p-3 mb-3"><h3 class="h5 mb-2">Recent Posts</h3><ul class=list-style-none><li class=mb-2><a href=/posts/kmactf-2026-i/ class=Link--primary>KMA CTF I</a><span class="color-fg-muted f6 d-block">
-2026-05-24</span></li><li class=mb-2><a href=/posts/duality-writeup/ class=Link--primary>DUALITY TEST</a><span class="color-fg-muted f6 d-block">
-2026-04-26</span></li><li class=mb-2><a href=/posts/kcsc-recruitment-2026/ class=Link--primary>KCSC Recruitment 2026</a><span class="color-fg-muted f6 d-block">
-2025-12-14</span></li><li class=mb-2><a href=/posts/lactf-2025-writeup/ class=Link--primary>LA CTF 2025</a><span class="color-fg-muted f6 d-block">
-2025-10-02</span></li><li class=mb-2><a href=/posts/htb-apocalypse-2025/ class=Link--primary>HTB Apocalypse 2025</a><span class="color-fg-muted f6 d-block">
-2025-04-02</span></li></ul></div><div class="color-bg-subtle rounded-2 p-3 mb-3"><h3 class="h5 mb-2"><a href=/tags/ class=Link--primary>Tags</a></h3><div class="sidebar-collapsible d-flex flex-wrap" style=gap:.5rem data-max-height=150 data-view-all=/tags/ data-label-more="Show more" data-label-less="Show less" data-label-view-all="View all"><a href=/tags/ctf/ class=topic-tag>ctf
-</a><a href=/tags/forensics/ class=topic-tag>forensics
-</a><a href=/tags/kma/ class=topic-tag>kma</a></div></div></aside></div></div></div></main><footer class="color-bg-subtle border-top py-6 mt-6"><div class="container-xl px-3 px-md-4 px-lg-5"><div class="d-flex flex-column flex-md-row flex-justify-between flex-items-center"><div class="mb-3 mb-md-0"><p class="color-fg-muted mb-0">&copy; 2026 deroise2306's Home.</p></div><div class="d-flex flex-items-center"><a href=https://github.com/deroise2306 class="Link--secondary px-2" aria-label=GitHub><svg viewBox="0 0 16 16" width="20" height="20" class="octicon"><path d="M8 0c4.42.0 8 3.58 8 8a8.013 8.013.0 01-5.45 7.59c-.4.08-.55-.17-.55-.38.0-.27.01-1.13.01-2.2.0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95.0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12.0.0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27s-1.36.09-2 .27c-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15.0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94.0.67.01 1.3.01 1.49.0.21-.15.45-.55.38A7.995 7.995.0 010 8c0-4.42 3.58-8 8-8z"/></svg></a></div></div><p class="color-fg-muted f6 mt-4 text-center">Powered by
-<a href=https://github.com/ngs/hugo-primer-blog class=Link--secondary>Hugo Primer Blog</a></p></div></footer></div><script src=/js/theme-switcher.min.7378bbae7a4bc4b974611d68fe84197c86faf4bb09e4744c2789f4bd36159a0b.js integrity="sha256-c3i7rnpLxLl0YR1o/oQZfIb69LsJ5HRMJ4n0vTYVmgs="></script><script src=/js/sidebar.min.8d897965d82e39784b4da02d345c06f44ecdff6252fcf44c20eeb421f1027114.js integrity="sha256-jYl5ZdguOXhLTaAtNFwG9E7N/2JS/PRMIO60IfECcRQ="></script><script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}}</script><script defer src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script></body></html>
+Flag gồm 3 mảnh, vì thế còn 1 mảnh nữa. :))) bằng 1 cách nào đó thì sau khi giải mã tất cả các file screenshot thì ta có một file với mã QR:</p>
+<p><img src="https://hackmd.io/_uploads/H1jx17ZCWx.png" alt="Screenshot_decrypted" loading="lazy">
+</p>
+<p>Text trong QR chính là <code>KCSC{w1ndOw5_d1git4l_</code>.
+Ghép lại ta có flag hoàn chỉnh: <code>KCSC{w1ndOw5_d1git4l_4n6_1nv3stigat0r_dOesn’7_lik3_7his_huh!?:C}</code></p>
+<blockquote>
+<p>Credit: cảm ơn sự support cực kì nhiệt tình của Quang và author fr4nk đã giúp em D hoàn thiện bài này ạ! ||Va nun na na na anh Codex da reverse lai giup em con malware||</p>
+</blockquote>
+
+  </div><div class="border-top pt-4 mt-4">
+    <p class="f5 text-bold mb-2">Share</p>
+    <div class="d-flex flex-wrap" style="gap: 0.5rem;">
+      <a href="https://twitter.com/intent/tweet?text=DUALITY&#43;TEST&url=http%3A%2F%2Flocalhost%3A1313%2Fposts%2Fduality-writeup%2F" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
+          <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"></path>
+        </svg>
+        X
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A1313%2Fposts%2Fduality-writeup%2F" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
+          <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path>
+        </svg>
+        Facebook
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A1313%2Fposts%2Fduality-writeup%2F&title=DUALITY&#43;TEST" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
+          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>
+        </svg>
+        LinkedIn
+      </a>
+      <a href="https://bsky.app/intent/compose?text=DUALITY&#43;TEST%20http%3A%2F%2Flocalhost%3A1313%2Fposts%2Fduality-writeup%2F" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" class="octicon mr-1" style="vertical-align: text-bottom;">
+          <path d="M3.468 1.948C5.303 3.325 7.276 6.118 8 7.616c.724-1.498 2.697-4.29 4.532-5.668C13.855.955 16 .186 16 2.632c0 .489-.28 4.105-.444 4.692-.572 2.04-2.653 2.561-4.504 2.246 3.236.551 4.06 2.375 2.281 4.2-3.376 3.464-4.852-.872-5.23-1.988-.07-.205-.103-.3-.103-.218 0-.081-.033.013-.103.218-.378 1.116-1.854 5.452-5.23 1.988-1.778-1.825-.955-3.649 2.28-4.2-1.85.315-3.93-.205-4.503-2.246C.28 6.737 0 3.12 0 2.632 0 .186 2.145.955 3.468 1.948"></path>
+        </svg>
+        Bluesky
+      </a>
+    </div>
+  </div><div class="border-top pt-4 mt-4">
+    <h2 class="f4 mb-3">Related Posts</h2>
+    <div class="d-flex flex-column flex-md-row"><div class="flex-1 mb-3 mb-md-0 mr-md-3">
+        <a href="/posts/kcsc-recruitment-2026/" class="Link--primary text-bold">KCSC Recruitment 2026</a><p class="color-fg-muted f6 mb-0">
+          2025-12-14
+        </p></div><div class="flex-1 mb-3 mb-md-0 mr-md-3">
+        <a href="/posts/lactf-2025-writeup/" class="Link--primary text-bold">LA CTF 2025</a><p class="color-fg-muted f6 mb-0">
+          2025-10-02
+        </p></div><div class="flex-1 mb-3 mb-md-0 mr-md-3">
+        <a href="/posts/htb-apocalypse-2025/" class="Link--primary text-bold">HTB Apocalypse 2025</a><p class="color-fg-muted f6 mb-0">
+          2025-04-02
+        </p></div></div>
+  </div><nav class="border-top pt-4 mt-4">
+    <div class="d-flex flex-justify-between"><a href="/posts/kcsc-recruitment-2026/" class="Link--secondary">
+        &larr; KCSC Recruitment 2026
+      </a><a href="/posts/kmactf-2026-i/" class="Link--secondary">
+        KMA CTF I &rarr;
+      </a></div>
+  </nav>
+</article>
+          </div>
+          <div class="Layout-sidebar"><aside><div class="color-bg-subtle rounded-2 p-3 mb-3">
+  <h3 class="h5 mb-2">Recent Posts</h3>
+  <ul class="list-style-none"><li class="mb-2">
+      <a href="/posts/kmactf-2026-i/" class="Link--primary">KMA CTF I</a><span class="color-fg-muted f6 d-block">
+        2026-05-24
+      </span></li><li class="mb-2">
+      <a href="/posts/duality-writeup/" class="Link--primary">DUALITY TEST</a><span class="color-fg-muted f6 d-block">
+        2026-04-26
+      </span></li><li class="mb-2">
+      <a href="/posts/kcsc-recruitment-2026/" class="Link--primary">KCSC Recruitment 2026</a><span class="color-fg-muted f6 d-block">
+        2025-12-14
+      </span></li><li class="mb-2">
+      <a href="/posts/lactf-2025-writeup/" class="Link--primary">LA CTF 2025</a><span class="color-fg-muted f6 d-block">
+        2025-10-02
+      </span></li><li class="mb-2">
+      <a href="/posts/htb-apocalypse-2025/" class="Link--primary">HTB Apocalypse 2025</a><span class="color-fg-muted f6 d-block">
+        2025-04-02
+      </span></li></ul>
+</div><div class="color-bg-subtle rounded-2 p-3 mb-3">
+  <h3 class="h5 mb-2">
+    <a href="/tags/" class="Link--primary">Tags</a>
+  </h3>
+  <div class="sidebar-collapsible d-flex flex-wrap" style="gap: 0.5rem;"
+    data-max-height="150"
+    data-view-all="/tags/"
+    data-label-more="Show more"
+    data-label-less="Show less"
+    data-label-view-all="View all"><a href="/tags/crypto/" class="topic-tag">
+      crypto
+    </a><a href="/tags/ctf/" class="topic-tag">
+      ctf
+    </a><a href="/tags/forensics/" class="topic-tag">
+      forensics
+    </a><a href="/tags/htb/" class="topic-tag">
+      htb
+    </a><a href="/tags/kcsc/" class="topic-tag">
+      kcsc
+    </a><a href="/tags/kma/" class="topic-tag">
+      kma
+    </a></div>
+</div></aside></div>
+        </div></div>
+    </main><footer class="color-bg-subtle border-top py-6 mt-6">
+  <div class="container-xl px-3 px-md-4 px-lg-5">
+    <div class="d-flex flex-column flex-md-row flex-justify-between flex-items-center">
+      <div class="mb-3 mb-md-0">
+        <p class="color-fg-muted mb-0">
+          &copy; 2026 deroise2306&#39;s Home.</p>
+      </div><div class="d-flex flex-items-center"><a href="https://github.com/deroise2306" class="Link--secondary px-2" aria-label="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="octicon">
+            <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+          </svg>
+        </a></div></div>
+
+    <p class="color-fg-muted f6 mt-4 text-center">
+      Powered by
+      <a href="https://github.com/ngs/hugo-primer-blog" class="Link--secondary">Hugo Primer Blog</a>
+    </p>
+  </div>
+</footer>
+</div><script src="/js/theme-switcher.min.7378bbae7a4bc4b974611d68fe84197c86faf4bb09e4744c2789f4bd36159a0b.js" integrity="sha256-c3i7rnpLxLl0YR1o/oQZfIb69LsJ5HRMJ4n0vTYVmgs="></script><script src="/js/sidebar.min.8d897965d82e39784b4da02d345c06f44ecdff6252fcf44c20eeb421f1027114.js" integrity="sha256-jYl5ZdguOXhLTaAtNFwG9E7N/2JS/PRMIO60IfECcRQ="></script><script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></body>
+</html>

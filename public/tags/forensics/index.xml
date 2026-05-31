@@ -1,26 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Forensics on deroise2306's Home</title><link>https://deroise2306.github.io/tags/forensics/</link><description>Recent content in Forensics on deroise2306's Home</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 24 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://deroise2306.github.io/tags/forensics/index.xml" rel="self" type="application/rss+xml"/><item><title>KMA CTF I</title><link>https://deroise2306.github.io/posts/kmactf-2026-i/</link><pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate><guid>https://deroise2306.github.io/posts/kmactf-2026-i/</guid><description>&lt;script&gt;
-async function checkPassword() {
- const pwd = prompt("Nhập mật khẩu để xem bài viết:");
- if (!pwd) {
- document.body.innerHTML = "&lt;h1&gt;Please enter password&lt;/h1&gt;";
- return;
- }
- 
- const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
- 
- const encoder = new TextEncoder();
- const data = encoder.encode(pwd);
- const hashBuffer = await crypto.subtle.digest('SHA-256', data);
- const hashArray = Array.from(new Uint8Array(hashBuffer));
- const inputHash = hashArray.map(b =&gt; b.toString(16).padStart(2, '0')).join('');
- 
- if (inputHash !== correctHash) {
- document.body.innerHTML = "&lt;h1&gt;Wrong password&lt;/h1&gt;";
- }
-}
-window.addEventListener('load', checkPassword);
-&lt;/script&gt;
-&lt;h1 id="1-cctv"&gt;1. CCTV&lt;/h1&gt;
-&lt;div style="text-align: center;"&gt;
-&lt;p&gt;&lt;img src="https://i.ibb.co/23kzH4kS/image.png" alt="CCTV" loading="lazy"&gt;
-&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Forensics on deroise2306&#39;s Home</title>
+    <link>http://localhost:1313/tags/forensics/</link>
+    <description>Recent content in Forensics on deroise2306&#39;s Home</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/forensics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>KMA CTF I</title>
+      <link>http://localhost:1313/posts/kmactf-2026-i/</link>
+      <pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/kmactf-2026-i/</guid>
+      <description>&lt;script&gt;&#xD;&#xA;async function checkPassword() {&#xD;&#xA;  const pwd = prompt(&#34;Nhập mật khẩu để xem bài viết:&#34;);&#xD;&#xA;  if (!pwd) {&#xD;&#xA;    document.body.innerHTML = &#34;&lt;h1&gt;Please enter password&lt;/h1&gt;&#34;;&#xD;&#xA;    return;&#xD;&#xA;  }&#xD;&#xA;  &#xD;&#xA;  const correctHash = &#34;3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1&#34;;&#xD;&#xA;  &#xD;&#xA;  const encoder = new TextEncoder();&#xD;&#xA;  const data = encoder.encode(pwd);&#xD;&#xA;  const hashBuffer = await crypto.subtle.digest(&#39;SHA-256&#39;, data);&#xD;&#xA;  const hashArray = Array.from(new Uint8Array(hashBuffer));&#xD;&#xA;  const inputHash = hashArray.map(b =&gt; b.toString(16).padStart(2, &#39;0&#39;)).join(&#39;&#39;);&#xD;&#xA;  &#xD;&#xA;  if (inputHash !== correctHash) {&#xD;&#xA;    document.body.innerHTML = &#34;&lt;h1&gt;Wrong password&lt;/h1&gt;&#34;;&#xD;&#xA;  }&#xD;&#xA;}&#xD;&#xA;window.addEventListener(&#39;load&#39;, checkPassword);&#xD;&#xA;&lt;/script&gt;&#xD;&#xA;&lt;h1 id=&#34;1-cctv&#34;&gt;1. CCTV&lt;/h1&gt;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xD;&#xA;&lt;p&gt;&lt;img src=&#34;https://i.ibb.co/23kzH4kS/image.png&#34; alt=&#34;CCTV&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>DUALITY TEST</title>
+      <link>http://localhost:1313/posts/duality-writeup/</link>
+      <pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/duality-writeup/</guid>
+      <description>&lt;h1 id=&#34;plum&#34;&gt;Plum&lt;/h1&gt;&#xA;&lt;p&gt;Như tên bài thì file được cho là một file &lt;code&gt;plum.sqlite&lt;/code&gt;, là một file database của StickyNote Windows. Mở bằng DB Browser:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://hackmd.io/_uploads/Hyv_AfjTWe.png&#34; alt=&#34;{95680F15-3DCC-40E4-9BF9-18AB0A835235}&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&#xA;&lt;img src=&#34;https://hackmd.io/_uploads/S1HKRfjpZx.png&#34; alt=&#34;{987DB66D-EA49-44D0-B6AC-8A6F1B997AC6}&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&#xA;&lt;img src=&#34;https://hackmd.io/_uploads/SkW5CMsTWe.png&#34; alt=&#34;{19BF8D06-14F1-4C3B-AC79-F2C319263725}&#34; loading=&#34;lazy&#34;&gt;&#xD;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;Nhìn chung thì ta sẽ chủ yếu để ý đến 7 ID của 7 note kia thôi :/&#xA;Bài này theo như Description và đọc các blog về Stickey Note trên mạng thì đinh ninh 69,96% là tìm cách recover các note bị xoá hoặc bị ẩn. Vì thế soi hẳn bằng HxD xem thu hoạch được gì không. Để ý thì ID của các đối tượng sẽ luôn theo format là &lt;code&gt;{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx}&lt;/code&gt; nên cũng rất dễ spot out:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
