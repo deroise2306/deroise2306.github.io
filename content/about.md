@@ -18,6 +18,6 @@ I'm currently a CyberSec Student based in KMA (Academy of Cryptography Technique
 
 
 Find me there:
-* [Discord: deroise2306](https://discordapp.com/users/702358520980439040)
+* [Discord](https://discordapp.com/users/702358520980439040)
 * [GitHub](https://github.com/deroise2306)
 * [CTFtime](https://ctftime.org/user/219785)

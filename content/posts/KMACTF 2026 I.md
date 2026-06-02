@@ -6,28 +6,6 @@ description: KMA CTF 2026 I Writeup
 tags: ["forensics", "KMA", "CTF"]
 ---
 
-<script>
-async function checkPassword() {
-  const pwd = prompt("Nhập mật khẩu để xem bài viết:");
-  if (!pwd) {
-    document.body.innerHTML = "<h1>Please enter password</h1>";
-    return;
-  }
-  
-  const correctHash = "3583e2784d4accd7b12ddebc153b0dacb41db7e947a5736a58230a3f03935eb1";
-  
-  const encoder = new TextEncoder();
-  const data = encoder.encode(pwd);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const inputHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  
-  if (inputHash !== correctHash) {
-    document.body.innerHTML = "<h1>Wrong password</h1>";
-  }
-}
-window.addEventListener('load', checkPassword);
-</script>
 
 # 1. CCTV
 
